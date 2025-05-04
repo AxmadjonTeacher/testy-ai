@@ -2,7 +2,7 @@
 import React from 'react';
 import { 
   CheckIcon, 
-  DownloadIcon,
+  DownloadIcon as LucideDownloadIcon,
   ArrowUpIcon, 
   FolderIcon, 
   CheckSquareIcon,
@@ -36,6 +36,6 @@ export const Mix = ({ size = 24, ...props }) => (
 export const FileUp = ArrowUpIcon;
 export const FolderOpen = FolderIcon;
 export const Check = CheckSquareIcon;
-export const DownloadIcon = DownloadIcon;
+export const Download = LucideDownloadIcon;
 export const FileText = FileTextIcon;
 export const EditIcon = Edit;
