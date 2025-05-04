@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from 'sonner';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useNavigate } from 'react-router-dom';
 
 interface GenerateTestPanelProps {
   level: string;
@@ -17,6 +18,7 @@ const GenerateTestPanel: React.FC<GenerateTestPanelProps> = ({ level }) => {
   const [generating, setGenerating] = useState(false);
   const [teacherName, setTeacherName] = useState("");
   const [includeAnswers, setIncludeAnswers] = useState(true);
+  const navigate = useNavigate();
 
   // Example topics based on level
   const getTopics = (level: string) => {
@@ -46,11 +48,11 @@ const GenerateTestPanel: React.FC<GenerateTestPanelProps> = ({ level }) => {
     
     setGenerating(true);
     
-    // Simulate generation process
+    // Simulate generation process and navigate to the full generate page
     setTimeout(() => {
       setGenerating(false);
-      toast.success(`Test for ${level} - ${selectedTopic} generated successfully`);
-    }, 3000);
+      navigate('/generate');
+    }, 1000);
   };
 
   return (

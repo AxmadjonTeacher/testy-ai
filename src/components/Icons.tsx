@@ -6,7 +6,9 @@ import {
   ArrowUpIcon, 
   FolderIcon, 
   CheckSquareIcon,
-  FileTextIcon
+  FileTextIcon,
+  Edit,
+  Download
 } from 'lucide-react';
 
 // Custom Mix icon since it's not in lucide-react core
@@ -37,4 +39,5 @@ export const FolderOpen = FolderIcon;
 export const Check = CheckSquareIcon;
 export const Download = DownloadIcon;
 export const FileText = FileTextIcon;
+export const EditIcon = Edit;
 

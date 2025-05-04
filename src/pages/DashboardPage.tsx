@@ -2,16 +2,18 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import LandingPage from '@/components/LandingPage';
+import Dashboard from '@/components/Dashboard';
 
-const Index = () => {
+const DashboardPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <LandingPage />
+      <div className="flex-1">
+        <Dashboard />
+      </div>
       <Footer />
     </div>
   );
 };
 
-export default Index;
+export default DashboardPage;
