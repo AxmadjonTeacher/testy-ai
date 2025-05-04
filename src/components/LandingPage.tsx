@@ -1,13 +1,9 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
-
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-
-  return (
-    <div className="flex flex-col min-h-screen">
+  return <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-4xl text-center">
@@ -17,10 +13,7 @@ const LandingPage: React.FC = () => {
           <p className="text-lg text-neutral-dark/80 mb-8 max-w-2xl mx-auto">
             Information about the website and how it helps generate unique tests for all English proficiency levels
           </p>
-          <Button 
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-md"
-            onClick={() => navigate('/generate')}
-          >
+          <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-md" onClick={() => navigate('/generate')}>
             Get Started
           </Button>
         </div>
@@ -60,10 +53,7 @@ const LandingPage: React.FC = () => {
             <p className="text-xl font-medium text-neutral-dark mb-6">
               Ready to try?
             </p>
-            <Button 
-              className="bg-primary hover:bg-primary/90 text-white"
-              onClick={() => navigate('/generate')}
-            >
+            <Button className="bg-primary hover:bg-primary/90 text-white" onClick={() => navigate('/generate')}>
               Generate
             </Button>
           </div>
@@ -71,43 +61,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer - Deep green as shown in wireframe */}
-      <footer className="mt-auto bg-accent text-white py-8 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h2 className="text-xl font-bold mb-4">TestGen</h2>
-              <p className="text-sm">
-                AI-powered test generator for English language teachers. Create unique tests efficiently and save time.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-medium mb-3">Quick Links</h3>
-              <ul className="space-y-2">
-                <li><a href="/" className="hover:text-secondary">Home</a></li>
-                <li><a href="/dashboard" className="hover:text-secondary">Dashboard</a></li>
-                <li><a href="/generate" className="hover:text-secondary">Generate</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="text-lg font-medium mb-3">Support</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="hover:text-secondary">Help Center</a></li>
-                <li><a href="#" className="hover:text-secondary">Contact Us</a></li>
-                <li><a href="#" className="hover:text-secondary">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-secondary">Terms of Service</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="mt-8 pt-4 border-t border-white/20 text-center">
-            <p className="text-sm">© 2025 TestGen. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+      
+    </div>;
 };
-
 export default LandingPage;
