@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from 'sonner';
+import { topicsByLevel } from '@/utils/testTopics';
 
 interface UploadPanelProps {
   level: string;
@@ -16,6 +17,17 @@ const UploadPanel: React.FC<UploadPanelProps> = ({ level }) => {
   const [teacherName, setTeacherName] = useState("");
   const [files, setFiles] = useState<FileList | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [availableTopics, setAvailableTopics] = useState<string[]>([]);
+
+  // Update available topics when level changes
+  useEffect(() => {
+    if (level && topicsByLevel[level]) {
+      setAvailableTopics(topicsByLevel[level]);
+      setTopic(""); // Reset topic when level changes
+    } else {
+      setAvailableTopics([]);
+    }
+  }, [level]);
 
   const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -31,7 +43,7 @@ const UploadPanel: React.FC<UploadPanelProps> = ({ level }) => {
     }
     
     if (!topic) {
-      toast.error("Please enter a topic");
+      toast.error("Please select a topic");
       return;
     }
 
@@ -63,13 +75,21 @@ const UploadPanel: React.FC<UploadPanelProps> = ({ level }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="topic">Topic *</Label>
-            <Input
-              id="topic"
-              placeholder="e.g., Present Simple, Adjectives"
+            <Select
               value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-              required
-            />
+              onValueChange={setTopic}
+            >
+              <SelectTrigger id="topic">
+                <SelectValue placeholder="Select a topic" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableTopics.map((topicOption) => (
+                  <SelectItem key={topicOption} value={topicOption}>
+                    {topicOption}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="space-y-2">

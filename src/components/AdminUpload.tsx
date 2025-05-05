@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,13 +10,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { FileText, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import * as XLSX from 'xlsx';
+import { topicsByLevel } from '@/utils/testTopics';
 
 const AdminUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [level, setLevel] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
+  const [availableTopics, setAvailableTopics] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+
+  // Update available topics when level changes
+  useEffect(() => {
+    if (level && topicsByLevel[level]) {
+      setAvailableTopics(topicsByLevel[level]);
+      setTopic(""); // Reset topic when level changes
+    } else {
+      setAvailableTopics([]);
+    }
+  }, [level]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -58,7 +70,7 @@ const AdminUpload = () => {
     }
 
     if (!topic) {
-      toast.error("Please enter a topic");
+      toast.error("Please select a topic");
       return;
     }
 
@@ -214,12 +226,22 @@ const AdminUpload = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="topic">Topic</Label>
-                  <Input
-                    id="topic"
-                    placeholder="e.g., Present Simple, Past Tense"
+                  <Select
                     value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                  />
+                    onValueChange={setTopic}
+                    disabled={availableTopics.length === 0}
+                  >
+                    <SelectTrigger id="topic">
+                      <SelectValue placeholder={availableTopics.length === 0 ? "Select a level first" : "Select a topic"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableTopics.map((topicOption) => (
+                        <SelectItem key={topicOption} value={topicOption}>
+                          {topicOption}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="space-y-2">
@@ -252,7 +274,7 @@ const AdminUpload = () => {
                 
                 <Button 
                   className="w-full bg-primary hover:bg-primary/90 text-white"
-                  disabled={isUploading || !file}
+                  disabled={isUploading || !file || !topic}
                   onClick={handleUpload}
                 >
                   {isUploading ? (
