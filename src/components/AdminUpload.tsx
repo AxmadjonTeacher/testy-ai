@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText, Upload } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import * as XLSX from 'xlsx';
 
 const AdminUpload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -20,6 +22,28 @@ const AdminUpload = () => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
     }
+  };
+
+  const parseFileContent = async (file: File): Promise<any[]> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        try {
+          const data = e.target?.result;
+          const workbook = XLSX.read(data, { type: 'binary' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const json = XLSX.utils.sheet_to_json(worksheet);
+          resolve(json);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      
+      reader.onerror = (error) => reject(error);
+      reader.readAsBinaryString(file);
+    });
   };
 
   const handleUpload = async () => {
@@ -40,11 +64,43 @@ const AdminUpload = () => {
 
     setIsUploading(true);
 
-    // Mock file upload process
     try {
-      // In a real application, you would handle the file upload to your backend here
-      // For now, we'll simulate a successful upload
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Parse file content (CSV or Excel)
+      const parsedData = await parseFileContent(file);
+      
+      if (!parsedData || parsedData.length === 0) {
+        toast.error("No data found in the uploaded file");
+        setIsUploading(false);
+        return;
+      }
+      
+      // Validate and format the data for Supabase
+      const questions = parsedData.map((row: any) => {
+        // Check for required fields
+        if (!row.Question || !row['Option A'] || !row['Option B'] || !row['Option C'] || !row['Option D'] || !row['Correct Answer']) {
+          throw new Error("Missing required fields in data");
+        }
+        
+        return {
+          question_text: row.Question,
+          option_a: row['Option A'],
+          option_b: row['Option B'],
+          option_c: row['Option C'],
+          option_d: row['Option D'],
+          correct_answer: row['Correct Answer'],
+          level,
+          topic
+        };
+      });
+      
+      // Insert questions into Supabase
+      const { data, error } = await supabase
+        .from("questions")
+        .insert(questions);
+      
+      if (error) {
+        throw error;
+      }
       
       const newUpload = {
         id: Math.random().toString(36).substring(2, 9),
@@ -52,23 +108,66 @@ const AdminUpload = () => {
         level,
         topic,
         date: new Date().toLocaleDateString(),
-        questionCount: Math.floor(Math.random() * 30) + 10, // Mock question count
+        questionCount: questions.length,
       };
 
       setUploadedFiles(prev => [newUpload, ...prev]);
       
-      toast.success(`File "${file.name}" uploaded successfully!`);
+      toast.success(`Successfully uploaded ${questions.length} questions!`);
       setFile(null);
       
       // Reset the file input
       const fileInput = document.getElementById('file-upload') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
       
-    } catch (error) {
-      toast.error("Failed to upload file. Please try again.");
+    } catch (error: any) {
+      toast.error(`Failed to upload file: ${error.message || "Unknown error"}`);
       console.error("Upload error:", error);
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  // Load upload history
+  const fetchUploadHistory = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("questions")
+        .select("level, topic, created_at")
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      // Group by level, topic and date (same day)
+      const groupedData = data.reduce((acc: any, item) => {
+        const date = new Date(item.created_at).toLocaleDateString();
+        const key = `${item.level}-${item.topic}-${date}`;
+        
+        if (!acc[key]) {
+          acc[key] = {
+            id: key,
+            level: item.level,
+            topic: item.topic,
+            date,
+            questionCount: 0,
+            filename: `${item.topic}_questions.xlsx`
+          };
+        }
+        
+        acc[key].questionCount++;
+        return acc;
+      }, {});
+      
+      setUploadedFiles(Object.values(groupedData));
+    } catch (error) {
+      console.error("Error fetching upload history:", error);
+    }
+  };
+
+  // Load history when tab changes
+  const handleTabChange = (value: string) => {
+    if (value === 'history') {
+      fetchUploadHistory();
     }
   };
 
@@ -76,7 +175,7 @@ const AdminUpload = () => {
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold text-neutral-dark mb-6">Admin Upload Portal</h2>
       
-      <Tabs defaultValue="upload" className="w-full">
+      <Tabs defaultValue="upload" className="w-full" onValueChange={handleTabChange}>
         <TabsList className="mb-4">
           <TabsTrigger value="upload">Upload Questions</TabsTrigger>
           <TabsTrigger value="history">Upload History</TabsTrigger>

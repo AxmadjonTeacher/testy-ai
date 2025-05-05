@@ -7,6 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from 'sonner';
 import TestPreview from './TestPreview';
+import { fetchQuestions, saveGeneratedTest, TestParams } from '@/services/testGenerationService';
+import { generateWordDocument, downloadDocument } from '@/services/documentExportService';
+import type { Database } from "@/integrations/supabase/types";
+
+type Question = Database["public"]["Tables"]["questions"]["Row"];
 
 const GenerateTest: React.FC = () => {
   const [englishLevel, setEnglishLevel] = useState("");
@@ -16,8 +21,9 @@ const GenerateTest: React.FC = () => {
   const [includeReading, setIncludeReading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedTest, setGeneratedTest] = useState<any>(null);
+  const [generatedQuestions, setGeneratedQuestions] = useState<Question[]>([]);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!englishLevel) {
       toast.error("Please select an English level");
       return;
@@ -25,27 +31,82 @@ const GenerateTest: React.FC = () => {
 
     setIsGenerating(true);
     
-    // Simulate test generation with a delay
-    setTimeout(() => {
-      setIsGenerating(false);
+    try {
+      // Set up test parameters
+      const testParams: TestParams = {
+        level: englishLevel,
+        teacherName: teacherName || undefined,
+        grade: grade || undefined,
+        numQuestions: parseInt(numQuestions),
+        includeReading: includeReading
+      };
       
-      // Mock generated test data
+      // Fetch questions from Supabase
+      const questions = await fetchQuestions(testParams);
+      
+      if (questions.length === 0) {
+        toast.error("No questions found for the selected criteria");
+        setIsGenerating(false);
+        return;
+      }
+      
+      if (questions.length < parseInt(numQuestions)) {
+        toast.warning(`Only ${questions.length} questions available with the selected criteria`);
+      }
+      
+      // Save the generated test
+      const testName = `English Level ${englishLevel} Test`;
+      const testId = await saveGeneratedTest(testName, testParams, questions);
+      
+      setGeneratedQuestions(questions);
+      
+      // Set the generated test data for preview
       setGeneratedTest({
-        id: Math.random().toString(36).substring(2, 9),
+        id: testId,
         level: englishLevel,
         teacherName: teacherName || "Not specified",
         grade: grade || "Not specified",
-        numQuestions: parseInt(numQuestions),
+        numQuestions: questions.length,
         includesReading: includeReading,
         dateGenerated: new Date().toLocaleDateString(),
       });
       
       toast.success("Test generated successfully!");
-    }, 2500);
+    } catch (error) {
+      console.error("Error generating test:", error);
+      toast.error("Failed to generate test. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    try {
+      if (!generatedTest) return;
+      
+      const docData = {
+        title: `English Level ${englishLevel} Test`,
+        teacher: teacherName || null,
+        level: englishLevel,
+        grade: grade || undefined,
+        questions: generatedQuestions,
+        includeAnswers: includeReading,
+        dateGenerated: new Date().toLocaleDateString()
+      };
+      
+      const blob = await generateWordDocument(docData);
+      downloadDocument(blob, `english_level_${englishLevel}_test.docx`);
+      
+      toast.success("Test downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading test:", error);
+      toast.error("Failed to download test. Please try again.");
+    }
   };
 
   const resetForm = () => {
     setGeneratedTest(null);
+    setGeneratedQuestions([]);
     setIsGenerating(false);
   };
 
@@ -140,7 +201,12 @@ const GenerateTest: React.FC = () => {
           </div>
         </div>
       ) : (
-        <TestPreview test={generatedTest} onBack={resetForm} />
+        <TestPreview 
+          test={generatedTest} 
+          questions={generatedQuestions}
+          onBack={resetForm}
+          onDownload={handleDownload}
+        />
       )}
     </div>
   );

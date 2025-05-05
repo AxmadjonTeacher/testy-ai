@@ -3,6 +3,9 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Download, EditIcon } from './Icons';
+import type { Database } from "@/integrations/supabase/types";
+
+type Question = Database["public"]["Tables"]["questions"]["Row"];
 
 interface TestPreviewProps {
   test: {
@@ -14,18 +17,15 @@ interface TestPreviewProps {
     includesReading: boolean;
     dateGenerated: string;
   };
+  questions: Question[];
   onBack: () => void;
+  onDownload: () => void;
 }
 
-const TestPreview: React.FC<TestPreviewProps> = ({ test, onBack }) => {
+const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDownload }) => {
   const handleEdit = () => {
     // In a real implementation, this would open an editor
     console.log("Edit test", test.id);
-  };
-
-  const handleDownload = () => {
-    // In a real implementation, this would download the test as a DOCX or PDF
-    console.log("Download test", test.id);
   };
 
   return (
@@ -77,7 +77,7 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, onBack }) => {
             </Button>
             <Button 
               className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
-              onClick={handleDownload}
+              onClick={onDownload}
             >
               <Download size={18} />
               Download
@@ -90,7 +90,6 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, onBack }) => {
         <h4 className="text-lg font-medium mb-3">Test Content Preview</h4>
         <p className="text-neutral-dark/70 text-sm mb-4">This is a preview of how your test will look when downloaded.</p>
         
-        {/* Simulate test content */}
         <div className="space-y-4 p-4 border rounded-lg bg-neutral-light/30">
           <div className="border-b pb-2">
             <p className="font-bold">English Level {test.level} Test</p>
@@ -102,22 +101,21 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, onBack }) => {
           <div className="space-y-3">
             <p className="font-medium">Instructions: Answer all questions.</p>
             
-            <div>
-              <p className="font-medium">1. Choose the correct answer:</p>
-              <div className="pl-4">
-                <p>a) Option A</p>
-                <p>b) Option B</p>
-                <p>c) Option C</p>
+            {questions.slice(0, 3).map((question, index) => (
+              <div key={question.id} className="mb-4">
+                <p className="font-medium">{index + 1}. {question.question_text}</p>
+                <div className="pl-4 mt-1">
+                  <p>a) {question.option_a}</p>
+                  <p>b) {question.option_b}</p>
+                  <p>c) {question.option_c}</p>
+                  <p>d) {question.option_d}</p>
+                </div>
               </div>
-            </div>
+            ))}
             
-            <div>
-              <p className="font-medium">2. Fill in the blank:</p>
-              <p>John _____ to school every day.</p>
-            </div>
-            
-            {/* More sample questions would be here */}
-            <p className="text-neutral-dark/50 italic">... more questions would be displayed here ...</p>
+            {questions.length > 3 && (
+              <p className="text-neutral-dark/50 italic">... {questions.length - 3} more questions would be displayed here ...</p>
+            )}
           </div>
         </div>
       </div>
