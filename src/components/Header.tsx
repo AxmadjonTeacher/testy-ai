@@ -9,9 +9,11 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-white font-bold text-lg">T</span>
-            </div>
+            <img 
+              src="/lovable-uploads/a576410e-2a01-4dd1-838f-73373c96544b.png" 
+              alt="TestGen Logo" 
+              className="h-12 w-12"
+            />
             <h1 className="text-xl font-semibold text-primary">TestGen</h1>
           </Link>
         </div>
