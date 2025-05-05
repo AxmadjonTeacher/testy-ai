@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -10,8 +9,7 @@ export interface TestParams {
   teacherName?: string;
   grade?: string;
   numQuestions: number;
-  includeReading: boolean;
-  topics?: string[];
+  topics: string[];
 }
 
 /**
@@ -48,7 +46,7 @@ export const saveGeneratedTest = async (
   params: TestParams,
   questions: Question[]
 ): Promise<string> => {
-  const { level, teacherName, numQuestions, includeReading } = params;
+  const { level, teacherName, numQuestions } = params;
   
   const topics = Array.from(new Set(questions.map(q => q.topic)));
   
@@ -59,7 +57,7 @@ export const saveGeneratedTest = async (
       teacher_name: teacherName || null,
       level,
       topics,
-      include_answers: includeReading,
+      include_answers: true, // Default to true since we're removing the checkbox
       question_count: numQuestions,
       questions_json: questions
     })

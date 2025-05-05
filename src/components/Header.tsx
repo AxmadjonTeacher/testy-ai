@@ -10,7 +10,7 @@ const Header = () => {
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/a576410e-2a01-4dd1-838f-73373c96544b.png" 
+              src="/lovable-uploads/86990c82-4285-4b75-a8b6-372915c73199.png" 
               alt="TestGen Logo" 
               className="h-12 w-12"
             />

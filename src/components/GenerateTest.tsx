@@ -1,14 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from 'sonner';
 import TestPreview from './TestPreview';
 import { fetchQuestions, saveGeneratedTest, TestParams } from '@/services/testGenerationService';
 import { generateWordDocument, downloadDocument } from '@/services/documentExportService';
+import { topicsByLevel } from '@/utils/testTopics';
 import type { Database } from "@/integrations/supabase/types";
 
 type Question = Database["public"]["Tables"]["questions"]["Row"];
@@ -18,14 +18,30 @@ const GenerateTest: React.FC = () => {
   const [teacherName, setTeacherName] = useState("");
   const [grade, setGrade] = useState("");
   const [numQuestions, setNumQuestions] = useState("15");
-  const [includeReading, setIncludeReading] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedTest, setGeneratedTest] = useState<any>(null);
   const [generatedQuestions, setGeneratedQuestions] = useState<Question[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [availableTopics, setAvailableTopics] = useState<string[]>([]);
+  
+  // Update available topics when English level changes
+  useEffect(() => {
+    if (englishLevel) {
+      setAvailableTopics(topicsByLevel[englishLevel] || []);
+      setSelectedTopics([]);
+    } else {
+      setAvailableTopics([]);
+    }
+  }, [englishLevel]);
 
   const handleGenerate = async () => {
     if (!englishLevel) {
       toast.error("Please select an English level");
+      return;
+    }
+
+    if (selectedTopics.length === 0) {
+      toast.error("Please select at least one topic");
       return;
     }
 
@@ -38,7 +54,7 @@ const GenerateTest: React.FC = () => {
         teacherName: teacherName || undefined,
         grade: grade || undefined,
         numQuestions: parseInt(numQuestions),
-        includeReading: includeReading
+        topics: selectedTopics
       };
       
       // Fetch questions from Supabase
@@ -67,7 +83,7 @@ const GenerateTest: React.FC = () => {
         teacherName: teacherName || "Not specified",
         grade: grade || "Not specified",
         numQuestions: questions.length,
-        includesReading: includeReading,
+        topics: selectedTopics,
         dateGenerated: new Date().toLocaleDateString(),
       });
       
@@ -80,6 +96,16 @@ const GenerateTest: React.FC = () => {
     }
   };
 
+  const handleTopicChange = (topic: string) => {
+    setSelectedTopics(prev => {
+      if (prev.includes(topic)) {
+        return prev.filter(t => t !== topic);
+      } else {
+        return [...prev, topic];
+      }
+    });
+  };
+
   const handleDownload = async () => {
     try {
       if (!generatedTest) return;
@@ -90,7 +116,7 @@ const GenerateTest: React.FC = () => {
         level: englishLevel,
         grade: grade || undefined,
         questions: generatedQuestions,
-        includeAnswers: includeReading,
+        includeAnswers: true,
         dateGenerated: new Date().toLocaleDateString()
       };
       
@@ -181,18 +207,34 @@ const GenerateTest: React.FC = () => {
                 </div>
               </div>
               
-              <div className="flex items-center space-x-2">
-                <Checkbox 
-                  id="include-reading" 
-                  checked={includeReading} 
-                  onCheckedChange={(checked) => setIncludeReading(checked as boolean)} 
-                />
-                <Label htmlFor="include-reading">Include Reading</Label>
-              </div>
+              {availableTopics.length > 0 && (
+                <div className="space-y-3">
+                  <Label>Select Topics</Label>
+                  <div className="max-h-60 overflow-y-auto border rounded-md p-3 space-y-2">
+                    {availableTopics.map((topic) => (
+                      <div key={topic} className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id={`topic-${topic}`}
+                          checked={selectedTopics.includes(topic)}
+                          onChange={() => handleTopicChange(topic)}
+                          className="mr-2 h-4 w-4"
+                        />
+                        <label htmlFor={`topic-${topic}`} className="text-sm">{topic}</label>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedTopics.length > 0 && (
+                    <p className="text-sm text-neutral-dark/70">
+                      Selected {selectedTopics.length} {selectedTopics.length === 1 ? 'topic' : 'topics'}
+                    </p>
+                  )}
+                </div>
+              )}
               
               <Button 
                 className="w-full bg-primary hover:bg-primary/90 text-white"
-                disabled={isGenerating}
+                disabled={isGenerating || selectedTopics.length === 0}
                 onClick={handleGenerate}
               >
                 {isGenerating ? "Generating..." : "Generate a new test"}

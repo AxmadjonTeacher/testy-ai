@@ -14,7 +14,7 @@ interface TestPreviewProps {
     teacherName: string;
     grade: string;
     numQuestions: number;
-    includesReading: boolean;
+    topics?: string[];
     dateGenerated: string;
   };
   questions: Question[];
@@ -55,10 +55,12 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
                 <p className="text-sm text-neutral-dark/70">Questions:</p>
                 <p className="font-medium">{test.numQuestions}</p>
               </div>
-              <div>
-                <p className="text-sm text-neutral-dark/70">Includes Reading:</p>
-                <p className="font-medium">{test.includesReading ? "Yes" : "No"}</p>
-              </div>
+              {test.topics && test.topics.length > 0 && (
+                <div className="col-span-2">
+                  <p className="text-sm text-neutral-dark/70">Topics:</p>
+                  <p className="font-medium">{test.topics.join(", ")}</p>
+                </div>
+              )}
               <div>
                 <p className="text-sm text-neutral-dark/70">Date Generated:</p>
                 <p className="font-medium">{test.dateGenerated}</p>
@@ -96,6 +98,9 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
             <p>Teacher: {test.teacherName}</p>
             <p>Grade: {test.grade}</p>
             <p>Date: {test.dateGenerated}</p>
+            {test.topics && test.topics.length > 0 && (
+              <p>Topics: {test.topics.join(", ")}</p>
+            )}
           </div>
           
           <div className="space-y-3">

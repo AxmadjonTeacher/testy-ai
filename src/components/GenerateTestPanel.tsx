@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useNavigate } from 'react-router-dom';
+import { topicsByLevel } from '@/utils/testTopics';
 
 interface GenerateTestPanelProps {
   level: string;
@@ -18,27 +19,12 @@ const GenerateTestPanel: React.FC<GenerateTestPanelProps> = ({ level }) => {
   const [generating, setGenerating] = useState(false);
   const [teacherName, setTeacherName] = useState("");
   const [includeAnswers, setIncludeAnswers] = useState(true);
+  const [availableTopics, setAvailableTopics] = useState<string[]>([]);
   const navigate = useNavigate();
-
-  // Example topics based on level
-  const getTopics = (level: string) => {
-    switch(level) {
-      case "0":
-        return ["Present Simple", "Adjectives", "Basic Vocabulary"];
-      case "1":
-        return ["Present Continuous", "Past Simple", "Comparatives"];
-      case "2":
-        return ["Past Continuous", "Present Perfect", "Conditionals Type 1"];
-      case "3":
-        return ["Past Perfect", "Future Tenses", "Conditionals Type 2"];
-      case "4":
-        return ["Passive Voice", "Reported Speech", "Advanced Grammar"];
-      case "IELTS":
-        return ["Reading", "Writing Task 1", "Writing Task 2", "Speaking"];
-      default:
-        return ["Select a level first"];
-    }
-  };
+  
+  useEffect(() => {
+    setAvailableTopics(topicsByLevel[level] || []);
+  }, [level]);
 
   const handleGenerate = () => {
     if (!selectedTopic) {
@@ -70,7 +56,7 @@ const GenerateTestPanel: React.FC<GenerateTestPanelProps> = ({ level }) => {
                 <SelectValue placeholder="Select a topic" />
               </SelectTrigger>
               <SelectContent>
-                {getTopics(level).map((topic) => (
+                {availableTopics.map((topic) => (
                   <SelectItem key={topic} value={topic}>{topic}</SelectItem>
                 ))}
               </SelectContent>
