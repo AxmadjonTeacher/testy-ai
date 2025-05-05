@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import GeneratePage from "./pages/GeneratePage";
 import DashboardPage from "./pages/DashboardPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import AdminUploadPage from "./pages/AdminUploadPage";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/generate" element={<GeneratePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="/admin/upload" element={<AdminUploadPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
