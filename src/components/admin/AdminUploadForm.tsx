@@ -179,6 +179,13 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
   };
   
   const level = form.watch("level");
+
+  // Add a back button for edit mode to cancel editing
+  const handleCancelEdit = () => {
+    if (onEditComplete) {
+      onEditComplete();
+    }
+  };
   
   return (
     <Card>
@@ -239,10 +246,20 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
             )}
             
             {isEditMode && parsedData && parsedData.length > 0 ? (
-              <QuestionEditor 
-                questions={parsedData}
-                onSave={handleSaveQuestions}
-              />
+              <>
+                <QuestionEditor 
+                  questions={parsedData}
+                  onSave={handleSaveQuestions}
+                />
+                <div className="flex justify-end mt-4">
+                  <Button variant="outline" onClick={handleCancelEdit} className="mr-2">
+                    Back to History
+                  </Button>
+                  <Button onClick={form.handleSubmit(onSubmit)}>
+                    Save All Changes
+                  </Button>
+                </div>
+              </>
             ) : (
               <>
                 {parsedData && parsedData.length > 0 && (

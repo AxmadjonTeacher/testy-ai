@@ -5,12 +5,24 @@ import AdminUploadForm from './AdminUploadForm';
 import AdminUploadHistory from './AdminUploadHistory';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle 
+} from "@/components/ui/alert-dialog";
 
 const AdminUploadTabs = () => {
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState("upload");
   const [editItemId, setEditItemId] = useState<string | null>(null);
   const [editData, setEditData] = useState<any | null>(null);
+  const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -88,6 +100,40 @@ const AdminUploadTabs = () => {
     }
   };
 
+  const handleDeleteItem = (itemId: string) => {
+    setDeleteItemId(itemId);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteItemId) return;
+
+    try {
+      // Parse the composite id to get level, topic
+      const [level, topic, date] = deleteItemId.split('-');
+      
+      // Delete questions matching the level and topic
+      const { error } = await supabase
+        .from("questions")
+        .delete()
+        .eq("level", level)
+        .eq("topic", topic);
+        
+      if (error) throw error;
+      
+      toast.success("Questions deleted successfully");
+      
+      // Remove the item from the local state
+      setUploadedFiles(prev => prev.filter(item => item.id !== deleteItemId));
+      setDeleteItemId(null);
+    } catch (error) {
+      console.error("Error deleting questions:", error);
+      toast.error("Failed to delete questions");
+    } finally {
+      setIsDeleteDialogOpen(false);
+    }
+  };
+
   const addUploadToHistory = (newUpload: any) => {
     setUploadedFiles(prev => [newUpload, ...prev]);
   };
@@ -107,28 +153,46 @@ const AdminUploadTabs = () => {
   }, [activeTab]);
 
   return (
-    <Tabs value={activeTab} className="w-full" onValueChange={handleTabChange}>
-      <TabsList className="mb-4">
-        <TabsTrigger value="upload">{editItemId ? "Edit Questions" : "Upload Questions"}</TabsTrigger>
-        <TabsTrigger value="history">Upload History</TabsTrigger>
-      </TabsList>
-      
-      <TabsContent value="upload">
-        <AdminUploadForm 
-          addUploadToHistory={addUploadToHistory} 
-          isEditMode={!!editItemId}
-          editData={editData}
-          onEditComplete={handleEditComplete}
-        />
-      </TabsContent>
-      
-      <TabsContent value="history">
-        <AdminUploadHistory 
-          uploadedFiles={uploadedFiles} 
-          onEditItem={handleEditItem}
-        />
-      </TabsContent>
-    </Tabs>
+    <>
+      <Tabs value={activeTab} className="w-full" onValueChange={handleTabChange}>
+        <TabsList className="mb-4">
+          <TabsTrigger value="upload">{editItemId ? "Edit Questions" : "Upload Questions"}</TabsTrigger>
+          <TabsTrigger value="history">Upload History</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="upload">
+          <AdminUploadForm 
+            addUploadToHistory={addUploadToHistory} 
+            isEditMode={!!editItemId}
+            editData={editData}
+            onEditComplete={handleEditComplete}
+          />
+        </TabsContent>
+        
+        <TabsContent value="history">
+          <AdminUploadHistory 
+            uploadedFiles={uploadedFiles} 
+            onEditItem={handleEditItem}
+            onDeleteItem={handleDeleteItem}
+          />
+        </TabsContent>
+      </Tabs>
+
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete these questions?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the selected questions.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 
