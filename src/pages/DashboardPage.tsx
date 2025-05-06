@@ -8,7 +8,7 @@ const DashboardPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="flex-1">
+      <div className="flex-1 bg-gray-50">
         <Dashboard />
       </div>
       <Footer />
