@@ -1,4 +1,3 @@
-
 import { Document, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, BorderStyle, WidthType, HeadingLevel, PageNumber, Footer, Header, ImageRun, ExternalHyperlink } from 'docx';
 import { Packer } from "docx";
 import type { Database } from "@/integrations/supabase/types";
@@ -28,34 +27,24 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
       {
         properties: {},
         children: [
-          // Header with school logo
+          // School Logo - using an image (we'll use a URL method but this could be changed to load from file)
           new Paragraph({
             alignment: AlignmentType.CENTER,
             children: [
-              new TextRun({
-                text: "ENGLISH LANGUAGE SCHOOL",
-                bold: true,
-                size: 32,
-              }),
-            ],
-          }),
-          
-          // Test title
-          new Paragraph({
-            alignment: AlignmentType.CENTER,
-            children: [
-              new TextRun({
-                text: title,
-                bold: true,
-                size: 28,
+              new ImageRun({
+                data: await fetchImageData('/lovable-uploads/4c0b0f63-7ceb-4c2e-8a95-d86e02ca20f9.png'),
+                transformation: {
+                  width: 300,
+                  height: 100,
+                }
               }),
             ],
             spacing: {
-              after: 200,
+              after: 300,
             },
           }),
           
-          // Test information
+          // Test information combined in one line
           new Paragraph({
             children: [
               new TextRun({
@@ -63,50 +52,21 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
                 bold: true,
               }),
               new TextRun({
-                text: level,
+                text: level + " ",
               }),
-            ],
-          }),
-          
-          // Grade information (if provided)
-          ...(grade ? [
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: "Grade: ",
-                  bold: true,
-                }),
-                new TextRun({
-                  text: grade,
-                }),
-              ],
-            }),
-          ] : []),
-          
-          // Teacher information (if provided)
-          ...(teacher ? [
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: "Teacher: ",
-                  bold: true,
-                }),
-                new TextRun({
-                  text: teacher,
-                }),
-              ],
-            }),
-          ] : []),
-          
-          // Date information
-          new Paragraph({
-            children: [
               new TextRun({
-                text: "Date: ",
+                text: "Grade: ",
                 bold: true,
               }),
               new TextRun({
-                text: dateGenerated,
+                text: grade || "Not specified" + " ",
+              }),
+              new TextRun({
+                text: "Teacher: ",
+                bold: true,
+              }),
+              new TextRun({
+                text: teacher || "Not specified",
               }),
             ],
             spacing: {
@@ -147,7 +107,7 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
             },
           }),
           
-          // Questions
+          // Questions with horizontally aligned options
           ...questions.map((question, index) => [
             new Paragraph({
               children: [
@@ -160,47 +120,35 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
               },
             }),
             
+            // Options in a horizontally aligned format
             new Paragraph({
-              indent: {
-                left: 720, // 0.5 inch in twips
-              },
               children: [
                 new TextRun({
                   text: `A) ${question.option_a}`,
                 }),
-              ],
-            }),
-            
-            new Paragraph({
-              indent: {
-                left: 720,
-              },
-              children: [
                 new TextRun({
-                  text: `B) ${question.option_b}`,
+                  text: `\t\tB) ${question.option_b}`,
+                }),
+                new TextRun({
+                  text: `\t\tC) ${question.option_c}`,
+                }),
+                new TextRun({
+                  text: `\t\tD) ${question.option_d}`,
                 }),
               ],
-            }),
-            
-            new Paragraph({
-              indent: {
-                left: 720,
-              },
-              children: [
-                new TextRun({
-                  text: `C) ${question.option_c}`,
-                }),
-              ],
-            }),
-            
-            new Paragraph({
-              indent: {
-                left: 720,
-              },
-              children: [
-                new TextRun({
-                  text: `D) ${question.option_d}`,
-                }),
+              tabStops: [
+                {
+                  type: 'left',
+                  position: 1440, // 1 inch in twips
+                },
+                {
+                  type: 'left', 
+                  position: 2880, // 2 inches in twips
+                },
+                {
+                  type: 'left',
+                  position: 4320, // 3 inches in twips
+                },
               ],
               spacing: {
                 after: 240,
@@ -208,27 +156,29 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
             }),
           ]).flat(),
           
-          // Answer sheet if includeAnswers is true
+          // Answer sheet
+          new Paragraph({
+            pageBreakBefore: true,
+            children: [
+              new TextRun({
+                text: "Answer Sheet",
+                bold: true,
+                size: 28,
+              }),
+            ],
+            alignment: AlignmentType.CENTER,
+            spacing: {
+              after: 300,
+            },
+          }),
+          
+          createAnswerBox(),
+          
+          // Create circular answer sheet as shown in the image
+          createCircularAnswerSheet(questions.length),
+          
+          // Answer key if includeAnswers is true
           ...(includeAnswers ? [
-            new Paragraph({
-              pageBreakBefore: true,
-              children: [
-                new TextRun({
-                  text: "Answer Sheet",
-                  bold: true,
-                  size: 28,
-                }),
-              ],
-              alignment: AlignmentType.CENTER,
-              spacing: {
-                after: 300,
-              },
-            }),
-            
-            // Create answer table with 5 columns (question number and options A, B, C, D)
-            createAnswerTable(questions),
-            
-            // Answer key for teacher
             new Paragraph({
               pageBreakBefore: true,
               children: [
@@ -267,44 +217,137 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   return await Packer.toBlob(doc);
 };
 
-// Helper function to create the answer table
-function createAnswerTable(questions: Question[]): Table {
-  const rows: TableRow[] = [];
-  
-  // Header row
-  rows.push(
-    new TableRow({
-      children: [
-        createTableCell("Question", true),
-        createTableCell("A", true),
-        createTableCell("B", true),
-        createTableCell("C", true),
-        createTableCell("D", true),
-      ],
-    })
-  );
-  
-  // Create rows for each question
-  for (let i = 0; i < questions.length; i++) {
-    rows.push(
-      new TableRow({
-        children: [
-          createTableCell(`${i + 1}`, true),
-          createTableCell("", false),
-          createTableCell("", false),
-          createTableCell("", false),
-          createTableCell("", false),
-        ],
-      })
-    );
-  }
-  
+// Fetch the image data from a URL
+async function fetchImageData(url: string): Promise<Uint8Array> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Uint8Array(await blob.arrayBuffer());
+}
+
+// Create the name box for the answer sheet
+function createAnswerBox(): Paragraph {
+  return new Paragraph({
+    children: [
+      new TextRun({
+        text: "Ism va familiya (To'rtburchak tashqarisiga yozmang)",
+        bold: true,
+      }),
+    ],
+    alignment: AlignmentType.CENTER,
+    border: {
+      top: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+      bottom: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+      left: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+      right: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+    },
+    spacing: {
+      after: 300,
+    },
+  });
+}
+
+// Create the circular answer sheet as shown in the image
+function createCircularAnswerSheet(numQuestions: number): Table {
+  // Calculate how many questions to show in each column
+  const halfLength = Math.ceil(numQuestions / 2);
+  const firstColumn = Array.from({ length: Math.min(halfLength, numQuestions) }, (_, i) => i + 1);
+  const secondColumn = Array.from({ length: Math.max(0, numQuestions - halfLength) }, (_, i) => i + halfLength + 1);
+
   return new Table({
     width: {
       size: 100,
       type: WidthType.PERCENTAGE,
     },
-    rows: rows,
+    borders: {
+      top: { style: BorderStyle.NONE },
+      bottom: { style: BorderStyle.NONE },
+      left: { style: BorderStyle.NONE },
+      right: { style: BorderStyle.NONE },
+      insideHorizontal: { style: BorderStyle.NONE },
+      insideVertical: { style: BorderStyle.NONE },
+    },
+    rows: [
+      new TableRow({
+        children: [
+          new TableCell({
+            borders: {
+              top: { style: BorderStyle.NONE },
+              bottom: { style: BorderStyle.NONE },
+              left: { style: BorderStyle.NONE },
+              right: { style: BorderStyle.NONE },
+            },
+            children: firstColumn.map(num => createQuestionRowWithCircles(num)),
+          }),
+          ...(secondColumn.length > 0 ? [
+            new TableCell({
+              borders: {
+                top: { style: BorderStyle.NONE },
+                bottom: { style: BorderStyle.NONE },
+                left: { style: BorderStyle.NONE },
+                right: { style: BorderStyle.NONE },
+              },
+              children: [
+                ...secondColumn.map(num => createQuestionRowWithCircles(num)),
+                // Add the ID numbers box if there's a second column
+                createStudentIDBox(),
+              ],
+            }),
+          ] : []),
+        ],
+      }),
+    ],
+  });
+}
+
+// Create a row with the question number and circular options
+function createQuestionRowWithCircles(questionNum: number): Paragraph {
+  const options = ['A', 'B', 'C', 'D'];
+  
+  // Create a paragraph with the question number and options in circles
+  return new Paragraph({
+    children: [
+      new TextRun({
+        text: `${questionNum} `,
+        bold: true,
+      }),
+      ...options.map(option => [
+        new TextRun({
+          text: ` (`,
+        }),
+        new TextRun({
+          text: option,
+        }),
+        new TextRun({
+          text: `) `,
+        }),
+      ]).flat(),
+    ],
+    spacing: {
+      after: 120,
+    },
+  });
+}
+
+// Create the student ID box section
+function createStudentIDBox(): Paragraph {
+  return new Paragraph({
+    children: [
+      new TextRun({
+        text: "o'quvchi IDsi",
+        bold: true,
+      }),
+    ],
+    border: {
+      top: { style: BorderStyle.SINGLE, size: 1 },
+      bottom: { style: BorderStyle.SINGLE, size: 1 },
+      left: { style: BorderStyle.SINGLE, size: 1 },
+      right: { style: BorderStyle.SINGLE, size: 1 },
+    },
+    alignment: AlignmentType.CENTER,
+    spacing: {
+      before: 200,
+      after: 120,
+    },
   });
 }
 

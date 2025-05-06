@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -10,17 +10,46 @@ import { TestParams } from '@/services/testGenerationService';
 interface TestGenerationFormProps {
   onGenerate: (params: TestParams) => Promise<boolean>;
   isGenerating: boolean;
+  isEditMode?: boolean;
+  editTestId?: string | null;
 }
 
 const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
   onGenerate,
-  isGenerating
+  isGenerating,
+  isEditMode = false,
+  editTestId = null
 }) => {
   const [englishLevel, setEnglishLevel] = useState("");
   const [teacherName, setTeacherName] = useState("");
   const [grade, setGrade] = useState("");
   const [numQuestions, setNumQuestions] = useState("15");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+
+  // If in edit mode, we would load the test data here
+  useEffect(() => {
+    if (isEditMode && editTestId) {
+      // This would be an API call in a real implementation
+      // For now, let's just simulate with some mock data
+      console.log(`Loading test data for ID: ${editTestId}`);
+      
+      // Mock data - in a real app would come from an API
+      const mockData = {
+        level: "1",
+        teacherName: "Yodgorov Axmadjon",
+        grade: "5-6",
+        numQuestions: "15",
+        topics: ["Present Simple", "Past Simple"]
+      };
+      
+      // Set form values
+      setEnglishLevel(mockData.level);
+      setTeacherName(mockData.teacherName);
+      setGrade(mockData.grade);
+      setNumQuestions(mockData.numQuestions);
+      setSelectedTopics(mockData.topics);
+    }
+  }, [isEditMode, editTestId]);
 
   const handleGenerate = async () => {
     const params: TestParams = {
@@ -119,7 +148,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
             disabled={isGenerating || selectedTopics.length === 0}
             onClick={handleGenerate}
           >
-            {isGenerating ? "Generating..." : "Generate a new test"}
+            {isGenerating ? "Generating..." : isEditMode ? "Update test" : "Generate a new test"}
           </Button>
         </div>
       </div>
