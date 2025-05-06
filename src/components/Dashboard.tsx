@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
-import { Download } from "lucide-react";
+import { Download, Trash } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from 'sonner';
 import { generateWordDocument, downloadDocument, TestExportData } from '@/services/documentExportService';
@@ -40,21 +40,40 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleEditTest = (id: string) => {
-    navigate(`/generate?edit=${id}`);
+  const handleDeleteTest = async (id: string) => {
+    try {
+      toast.loading("Deleting test...");
+      const { error } = await supabase
+        .from("generated_tests")
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        throw error;
+      }
+
+      setTests(tests.filter(test => test.id !== id));
+      toast.dismiss();
+      toast.success("Test deleted successfully!");
+    } catch (err) {
+      toast.dismiss();
+      console.error("Error deleting test:", err);
+      toast.error("Failed to delete test");
+    }
   };
   
   const handleDownloadTest = async (test: GeneratedTest) => {
     try {
       toast.loading("Preparing your document for download...");
       
+      // Make sure questions_json is an array before proceeding
       const questions = Array.isArray(test.questions_json) 
         ? test.questions_json 
         : [];
       
       const docData: TestExportData = {
         title: test.name,
-        teacher: test.teacher_name,
+        teacher: test.teacher_name || "",
         level: test.level,
         grade: "",  // The grade information might be in the teacher_name, or we need to add it
         questions: questions,
@@ -118,14 +137,12 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className="flex flex-row space-x-3">
                   <Button
-                    variant="outline"
+                    variant="destructive"
                     className="flex items-center gap-2"
-                    onClick={() => handleEditTest(test.id)}
+                    onClick={() => handleDeleteTest(test.id)}
                   >
-                    <svg width="20" height="20" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.8536 1.14645C11.6583 0.951184 11.3417 0.951184 11.1465 1.14645L3.71455 8.57836C3.62459 8.66832 3.55263 8.77461 3.50251 8.89155L2.04044 12.303C1.9599 12.491 2.00189 12.709 2.14646 12.8536C2.29103 12.9981 2.50905 13.0401 2.69697 12.9596L6.10847 11.4975C6.2254 11.4474 6.3317 11.3754 6.42166 11.2855L13.8536 3.85355C14.0488 3.65829 14.0488 3.34171 13.8536 3.14645L11.8536 1.14645ZM4.42166 9.28547L11.5 2.20711L12.7929 3.5L5.71455 10.5784L4.21924 11.2192L3.78081 10.7808L4.42166 9.28547Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
-                    </svg>
-                    Edit
+                    <Trash className="h-4 w-4" />
+                    Delete
                   </Button>
                   <Button 
                     className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
