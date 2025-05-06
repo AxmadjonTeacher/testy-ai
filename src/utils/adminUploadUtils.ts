@@ -13,7 +13,39 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
-        resolve(json);
+        
+        // Transform the data to match our expected format
+        // This handles different possible column formats
+        const transformedData = json.map((row: any) => {
+          // Check if we have the Question, A, B, C, D format
+          if (row.Question && row.A !== undefined && row.B !== undefined) {
+            return {
+              Question: row.Question,
+              A: row.A,
+              B: row.B,
+              C: row.C,
+              D: row.D,
+              'Correct Answer': row['Correct Answer']
+            };
+          }
+          
+          // Check if we have the older format with Option A, Option B, etc.
+          else if (row.Question && row['Option A'] !== undefined) {
+            return {
+              Question: row.Question,
+              A: row['Option A'],
+              B: row['Option B'],
+              C: row['Option C'],
+              D: row['Option D'],
+              'Correct Answer': row['Correct Answer']
+            };
+          }
+          
+          // Return the row as-is if we can't determine the format
+          return row;
+        });
+        
+        resolve(transformedData);
       } catch (error) {
         reject(error);
       }

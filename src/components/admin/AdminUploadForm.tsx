@@ -69,16 +69,16 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({ addUploadToHistory })
       // Validate and format the data for Supabase
       const questions = parsedData.map((row: any) => {
         // Check for required fields
-        if (!row.Question || !row['Option A'] || !row['Option B'] || !row['Option C'] || !row['Option D'] || !row['Correct Answer']) {
+        if (!row.Question || !row.A || !row.B || !row.C || !row.D || !row['Correct Answer']) {
           throw new Error("Missing required fields in data");
         }
         
         return {
           question_text: row.Question,
-          option_a: row['Option A'],
-          option_b: row['Option B'],
-          option_c: row['Option C'],
-          option_d: row['Option D'],
+          option_a: row.A,
+          option_b: row.B,
+          option_c: row.C,
+          option_d: row.D,
           correct_answer: row['Correct Answer'],
           level,
           topic
@@ -190,12 +190,39 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({ addUploadToHistory })
           <div className="bg-neutral-light p-4 rounded-md border border-neutral-light/50">
             <h3 className="text-sm font-medium mb-2">Required File Format:</h3>
             <p className="text-xs text-neutral-dark mb-2">
-              Your file should contain these columns in order:
+              Your file should contain these columns:
             </p>
             <div className="overflow-x-auto">
-              <div className="text-xs text-neutral-dark font-mono bg-white p-2 rounded border">
-                ID | Question | Option A | Option B | Option C | Option D | Correct Answer
-              </div>
+              <table className="w-full text-xs border-collapse">
+                <thead className="bg-neutral-dark text-white">
+                  <tr>
+                    <th className="border border-neutral-light px-2 py-1 text-left">Question</th>
+                    <th className="border border-neutral-light px-2 py-1 text-center">A</th>
+                    <th className="border border-neutral-light px-2 py-1 text-center">B</th>
+                    <th className="border border-neutral-light px-2 py-1 text-center">C</th>
+                    <th className="border border-neutral-light px-2 py-1 text-center">D</th>
+                    <th className="border border-neutral-light px-2 py-1 text-center">Correct Answer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-neutral-light px-2 py-1">She ____ to school every day.</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">go</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">goes</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">going</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">gone</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">B</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-neutral-light px-2 py-1">This is ____ apple.</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">a</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">an</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">the</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">no</td>
+                    <td className="border border-neutral-light px-2 py-1 text-center">B</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           
