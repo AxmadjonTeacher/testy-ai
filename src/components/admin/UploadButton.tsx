@@ -1,27 +1,35 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
+import { Upload, Save } from "lucide-react";
 
 interface UploadButtonProps {
-  onClick: () => void;
   isUploading: boolean;
-  disabled: boolean;
+  isEditMode?: boolean;
 }
 
-const UploadButton: React.FC<UploadButtonProps> = ({ onClick, isUploading, disabled }) => {
+const UploadButton: React.FC<UploadButtonProps> = ({ isUploading, isEditMode = false }) => {
   return (
     <Button 
+      type="submit" 
       className="w-full bg-primary hover:bg-primary/90 text-white"
-      disabled={isUploading || disabled}
-      onClick={onClick}
+      disabled={isUploading}
     >
       {isUploading ? (
-        "Uploading..."
+        isEditMode ? "Saving..." : "Uploading..."
       ) : (
         <>
-          <Upload className="w-4 h-4 mr-2" /> 
-          Upload Questions
+          {isEditMode ? (
+            <>
+              <Save className="mr-2 h-4 w-4" />
+              Save Changes
+            </>
+          ) : (
+            <>
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Questions
+            </>
+          )}
         </>
       )}
     </Button>

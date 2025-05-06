@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText } from "lucide-react";
+import { FileText, Edit } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface UploadHistoryItem {
   id: string;
@@ -14,9 +15,10 @@ interface UploadHistoryItem {
 
 interface AdminUploadHistoryProps {
   uploadedFiles: UploadHistoryItem[];
+  onEditItem?: (itemId: string) => void;
 }
 
-const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ uploadedFiles }) => {
+const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ uploadedFiles, onEditItem }) => {
   return (
     <Card>
       <CardHeader>
@@ -39,7 +41,20 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ uploadedFiles }
                     </p>
                   </div>
                 </div>
-                <p className="text-sm text-neutral-dark">{upload.date}</p>
+                <div className="flex items-center gap-2">
+                  {onEditItem && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-1"
+                      onClick={() => onEditItem(upload.id)}
+                    >
+                      <Edit className="h-4 w-4" />
+                      Edit
+                    </Button>
+                  )}
+                  <p className="text-sm text-neutral-dark">{upload.date}</p>
+                </div>
               </div>
             ))}
           </div>
