@@ -41,6 +41,18 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
             };
           }
           
+          // Check for number format (1, 2, 3, 4)
+          else if (row.Question && row['1'] !== undefined) {
+            return {
+              Question: row.Question,
+              A: row['1'],
+              B: row['2'],
+              C: row['3'],
+              D: row['4'],
+              'Correct Answer': row['Correct Answer'] || row['Answer']
+            };
+          }
+          
           // Return the row as-is if we can't determine the format
           return row;
         });
@@ -56,4 +68,57 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
   });
 };
 
-// Add more utility functions as needed
+// Function to validate the parsed data
+export const validateQuestionData = (data: any[]): { valid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+  
+  if (!data || data.length === 0) {
+    errors.push("No data found in the file.");
+    return { valid: false, errors };
+  }
+  
+  // Check each row for required fields
+  data.forEach((row, index) => {
+    if (!row.Question) {
+      errors.push(`Row ${index + 1}: Missing question text.`);
+    }
+    
+    if (!row.A) {
+      errors.push(`Row ${index + 1}: Missing option A.`);
+    }
+    
+    if (!row.B) {
+      errors.push(`Row ${index + 1}: Missing option B.`);
+    }
+    
+    if (!row.C) {
+      errors.push(`Row ${index + 1}: Missing option C.`);
+    }
+    
+    if (!row.D) {
+      errors.push(`Row ${index + 1}: Missing option D.`);
+    }
+    
+    if (!row['Correct Answer']) {
+      errors.push(`Row ${index + 1}: Missing correct answer.`);
+    } else if (!['A', 'B', 'C', 'D'].includes(row['Correct Answer'])) {
+      errors.push(`Row ${index + 1}: Correct answer must be A, B, C, or D.`);
+    }
+  });
+  
+  return { valid: errors.length === 0, errors };
+};
+
+// Function to format question data for Supabase
+export const formatQuestionsForDatabase = (data: any[], level: string, topic: string) => {
+  return data.map(row => ({
+    question_text: row.Question,
+    option_a: row.A,
+    option_b: row.B,
+    option_c: row.C,
+    option_d: row.D,
+    correct_answer: row['Correct Answer'],
+    level,
+    topic
+  }));
+};

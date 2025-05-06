@@ -29,6 +29,7 @@ const GenerateTest: React.FC = () => {
         dateGenerated: new Date().toLocaleDateString()
       };
       
+      toast.info("Preparing your document for download...");
       const blob = await generateWordDocument(docData);
       downloadDocument(blob, `english_level_${generatedTest.level}_test.docx`);
       

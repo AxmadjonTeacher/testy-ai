@@ -9,7 +9,7 @@ import { Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { topicsByLevel } from '@/utils/testTopics';
-import { parseFileContent } from '@/utils/adminUploadUtils';
+import { parseFileContent, validateQuestionData, formatQuestionsForDatabase } from '@/utils/adminUploadUtils';
 
 interface AdminUploadFormProps {
   addUploadToHistory: (upload: any) => void;
@@ -60,30 +60,18 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({ addUploadToHistory })
       // Parse file content (CSV or Excel)
       const parsedData = await parseFileContent(file);
       
-      if (!parsedData || parsedData.length === 0) {
-        toast.error("No data found in the uploaded file");
+      // Validate the parsed data
+      const validation = validateQuestionData(parsedData);
+      
+      if (!validation.valid) {
+        toast.error(validation.errors[0]);
+        console.error("Validation errors:", validation.errors);
         setIsUploading(false);
         return;
       }
       
-      // Validate and format the data for Supabase
-      const questions = parsedData.map((row: any) => {
-        // Check for required fields
-        if (!row.Question || !row.A || !row.B || !row.C || !row.D || !row['Correct Answer']) {
-          throw new Error("Missing required fields in data");
-        }
-        
-        return {
-          question_text: row.Question,
-          option_a: row.A,
-          option_b: row.B,
-          option_c: row.C,
-          option_d: row.D,
-          correct_answer: row['Correct Answer'],
-          level,
-          topic
-        };
-      });
+      // Format the data for Supabase
+      const questions = formatQuestionsForDatabase(parsedData, level, topic);
       
       // Insert questions into Supabase
       const { data, error } = await supabase

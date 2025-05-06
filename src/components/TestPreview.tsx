@@ -93,27 +93,33 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
         <p className="text-neutral-dark/70 text-sm mb-4">This is a preview of how your test will look when downloaded.</p>
         
         <div className="space-y-4 p-4 border rounded-lg bg-neutral-light/30">
-          <div className="border-b pb-2">
-            <p className="font-bold">English Level {test.level} Test</p>
+          <div className="text-center mb-6">
+            <p className="text-xl font-bold">ENGLISH LANGUAGE SCHOOL</p>
+            <p className="text-lg font-bold">English Level {test.level} Test</p>
+          </div>
+          
+          <div className="border-b pb-4">
             <p>Teacher: {test.teacherName}</p>
             <p>Grade: {test.grade}</p>
             <p>Date: {test.dateGenerated}</p>
             {test.topics && test.topics.length > 0 && (
               <p>Topics: {test.topics.join(", ")}</p>
             )}
+            <p className="mt-2">Student's Name: _______________________________</p>
+            <p>Class: _______________________________</p>
           </div>
           
           <div className="space-y-3">
-            <p className="font-medium">Instructions: Answer all questions.</p>
+            <p className="font-medium">Instructions: Answer all questions by selecting the correct option.</p>
             
             {questions.slice(0, 3).map((question, index) => (
               <div key={question.id} className="mb-4">
                 <p className="font-medium">{index + 1}. {question.question_text}</p>
                 <div className="pl-4 mt-1">
-                  <p>a) {question.option_a}</p>
-                  <p>b) {question.option_b}</p>
-                  <p>c) {question.option_c}</p>
-                  <p>d) {question.option_d}</p>
+                  <p>A) {question.option_a}</p>
+                  <p>B) {question.option_b}</p>
+                  <p>C) {question.option_c}</p>
+                  <p>D) {question.option_d}</p>
                 </div>
               </div>
             ))}
@@ -121,6 +127,35 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
             {questions.length > 3 && (
               <p className="text-neutral-dark/50 italic">... {questions.length - 3} more questions would be displayed here ...</p>
             )}
+            
+            <div className="mt-6 pt-4 border-t">
+              <p className="font-bold">Answer Sheet Preview:</p>
+              <table className="w-full mt-2 border-collapse">
+                <thead>
+                  <tr>
+                    <th className="border border-gray-400 p-2">Question</th>
+                    <th className="border border-gray-400 p-2">A</th>
+                    <th className="border border-gray-400 p-2">B</th>
+                    <th className="border border-gray-400 p-2">C</th>
+                    <th className="border border-gray-400 p-2">D</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {questions.slice(0, 5).map((_, index) => (
+                    <tr key={index}>
+                      <td className="border border-gray-400 p-2 font-medium text-center">{index + 1}</td>
+                      <td className="border border-gray-400 p-2"></td>
+                      <td className="border border-gray-400 p-2"></td>
+                      <td className="border border-gray-400 p-2"></td>
+                      <td className="border border-gray-400 p-2"></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {questions.length > 5 && (
+                <p className="text-xs text-neutral-dark/50 italic mt-2">... and rows for all other questions ...</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
