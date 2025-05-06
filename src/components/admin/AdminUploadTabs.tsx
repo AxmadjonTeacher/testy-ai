@@ -63,6 +63,7 @@ const AdminUploadTabs = () => {
       setUploadedFiles(Object.values(groupedData));
     } catch (error) {
       console.error("Error fetching upload history:", error);
+      toast.error("Failed to load upload history");
     }
   };
 
@@ -102,7 +103,7 @@ const AdminUploadTabs = () => {
     }
   };
 
-  const handleDeleteItem = (itemId: string) => {
+  const handleDeleteItem = async (itemId: string) => {
     setDeleteItemId(itemId);
     setIsDeleteDialogOpen(true);
   };
@@ -111,8 +112,10 @@ const AdminUploadTabs = () => {
     if (!deleteItemId) return;
 
     try {
+      toast.loading("Deleting questions...");
+      
       // Parse the composite id to get level, topic
-      const [level, topic, date] = deleteItemId.split('-');
+      const [level, topic] = deleteItemId.split('-');
       
       // Delete questions matching the level and topic
       const { error } = await supabase
@@ -123,13 +126,19 @@ const AdminUploadTabs = () => {
         
       if (error) throw error;
       
-      toast.success("Questions deleted successfully");
-      
       // Remove the item from the local state
       setUploadedFiles(prev => prev.filter(item => item.id !== deleteItemId));
+      
+      toast.dismiss();
+      toast.success("Questions deleted successfully");
       setDeleteItemId(null);
+      
+      // Refetch the upload history to ensure UI is in sync with database
+      fetchUploadHistory();
+      
     } catch (error) {
       console.error("Error deleting questions:", error);
+      toast.dismiss();
       toast.error("Failed to delete questions");
     } finally {
       setIsDeleteDialogOpen(false);
