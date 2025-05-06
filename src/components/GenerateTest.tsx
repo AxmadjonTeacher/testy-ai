@@ -179,12 +179,19 @@ const GenerateTest: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="grade">Grade</Label>
-                  <Input
-                    id="grade"
-                    placeholder="e.g., 9-11, 5-6"
-                    value={grade}
-                    onChange={(e) => setGrade(e.target.value)}
-                  />
+                  <Select 
+                    value={grade} 
+                    onValueChange={setGrade}
+                  >
+                    <SelectTrigger id="grade">
+                      <SelectValue placeholder="Select grade range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5-6">Grades 5-6</SelectItem>
+                      <SelectItem value="7-8">Grades 7-8</SelectItem>
+                      <SelectItem value="9-11">Grades 9-11</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="space-y-2">

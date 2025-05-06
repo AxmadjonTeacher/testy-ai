@@ -18,6 +18,7 @@ const GenerateTestPanel: React.FC<GenerateTestPanelProps> = ({ level }) => {
   const [selectedTopic, setSelectedTopic] = useState("");
   const [generating, setGenerating] = useState(false);
   const [teacherName, setTeacherName] = useState("");
+  const [grade, setGrade] = useState("");
   const [includeAnswers, setIncludeAnswers] = useState(true);
   const [availableTopics, setAvailableTopics] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -71,6 +72,20 @@ const GenerateTestPanel: React.FC<GenerateTestPanelProps> = ({ level }) => {
               value={teacherName}
               onChange={(e) => setTeacherName(e.target.value)}
             />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="grade-select">Grade (optional)</Label>
+            <Select value={grade} onValueChange={setGrade}>
+              <SelectTrigger id="grade-select">
+                <SelectValue placeholder="Select grade range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5-6">Grades 5-6</SelectItem>
+                <SelectItem value="7-8">Grades 7-8</SelectItem>
+                <SelectItem value="9-11">Grades 9-11</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="flex items-center space-x-2">
