@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from 'sonner';
 import { generateWordDocument, downloadDocument, TestExportData } from '@/services/documentExportService';
 import type { Database } from "@/integrations/supabase/types";
+import type { Question } from '@/services/documentTypes';
 
 type GeneratedTest = Database["public"]["Tables"]["generated_tests"]["Row"];
 
@@ -66,9 +67,11 @@ const Dashboard: React.FC = () => {
     try {
       toast.loading("Preparing your document for download...");
       
-      // Make sure questions_json is an array before proceeding
-      const questions = Array.isArray(test.questions_json) 
-        ? test.questions_json 
+      // Parse the questions_json and ensure it's properly typed
+      // The data comes as Json type from database, so we need to cast it to Question[]
+      const questionsData = test.questions_json as unknown;
+      const questions = Array.isArray(questionsData) 
+        ? questionsData as Question[]
         : [];
       
       const docData: TestExportData = {
