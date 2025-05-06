@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminUploadForm from './AdminUploadForm';
@@ -112,10 +113,14 @@ const AdminUploadTabs = () => {
     if (!deleteItemId) return;
 
     try {
-      toast.loading("Deleting questions...");
+      const toastId = toast.loading("Deleting questions...");
       
       // Parse the composite id to get level, topic
-      const [level, topic] = deleteItemId.split('-');
+      const parts = deleteItemId.split('-');
+      const level = parts[0];
+      const topic = parts[1];
+      
+      console.log(`Deleting questions with level: ${level}, topic: ${topic}`);
       
       // Delete questions matching the level and topic
       const { error } = await supabase
@@ -129,7 +134,7 @@ const AdminUploadTabs = () => {
       // Remove the item from the local state
       setUploadedFiles(prev => prev.filter(item => item.id !== deleteItemId));
       
-      toast.dismiss();
+      toast.dismiss(toastId);
       toast.success("Questions deleted successfully");
       setDeleteItemId(null);
       
@@ -138,7 +143,6 @@ const AdminUploadTabs = () => {
       
     } catch (error) {
       console.error("Error deleting questions:", error);
-      toast.dismiss();
       toast.error("Failed to delete questions");
     } finally {
       setIsDeleteDialogOpen(false);
@@ -177,6 +181,10 @@ const AdminUploadTabs = () => {
             isEditMode={!!editItemId}
             editData={editData}
             onEditComplete={handleEditComplete}
+            onUploadComplete={() => {
+              fetchUploadHistory();  // Refresh history after successful upload
+              setActiveTab("history"); // Switch to history tab
+            }}
           />
         </TabsContent>
         

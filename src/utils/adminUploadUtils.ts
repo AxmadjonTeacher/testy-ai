@@ -111,14 +111,31 @@ export const validateQuestionData = (data: any[]): { valid: boolean; errors: str
 
 // Function to format question data for Supabase
 export const formatQuestionsForDatabase = (data: any[], level: string, topic: string) => {
-  return data.map(row => ({
-    question_text: row.Question,
-    option_a: row.A,
-    option_b: row.B,
-    option_c: row.C,
-    option_d: row.D,
-    correct_answer: row['Correct Answer'],
-    level,
-    topic
-  }));
+  return data.map(row => {
+    // Ensure we get the correct answer in the expected format
+    let correctAnswer = row['Correct Answer'];
+    
+    // If correctAnswer is undefined or null, try alternative fields
+    if (!correctAnswer) {
+      correctAnswer = row.correct_answer || row.Answer || row.answer || 'A';
+    }
+    
+    // Make sure correctAnswer is uppercase and a valid option
+    correctAnswer = String(correctAnswer).toUpperCase();
+    if (!['A', 'B', 'C', 'D'].includes(correctAnswer)) {
+      correctAnswer = 'A'; // Default to A if invalid
+      console.warn(`Invalid correct answer: ${correctAnswer}. Defaulting to 'A'.`);
+    }
+    
+    return {
+      question_text: row.Question || row.question_text,
+      option_a: row.A || row.option_a,
+      option_b: row.B || row.option_b,
+      option_c: row.C || row.option_c,
+      option_d: row.D || row.option_d,
+      correct_answer: correctAnswer,
+      level,
+      topic
+    };
+  });
 };

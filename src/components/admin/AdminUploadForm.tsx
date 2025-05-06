@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
@@ -19,13 +18,15 @@ interface AdminUploadFormProps {
   isEditMode?: boolean;
   editData?: any;
   onEditComplete?: () => void;
+  onUploadComplete?: () => void;
 }
 
 const AdminUploadForm: React.FC<AdminUploadFormProps> = ({ 
   addUploadToHistory, 
   isEditMode = false, 
   editData = null,
-  onEditComplete
+  onEditComplete,
+  onUploadComplete
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -59,6 +60,15 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
     if (file) {
       try {
         const data = await parseFileContent(file);
+        
+        // Validate the parsed data
+        const validation = validateQuestionData(data);
+        if (!validation.valid) {
+          toast.error(`File validation failed: ${validation.errors.join(', ')}`);
+          setParsedData(null);
+          return;
+        }
+        
         setParsedData(data);
         toast.success(`Successfully parsed ${data.length} questions`);
       } catch (error) {
@@ -115,9 +125,15 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
         const formattedQuestions = formatQuestionsForDatabase(parsedData || [], level, topic);
         
         if (formattedQuestions && formattedQuestions.length > 0) {
+          // Log the first question to check the data structure
+          console.log("Sample question to insert:", formattedQuestions[0]);
+          
           const { error } = await supabase.from("questions").insert(formattedQuestions);
           
-          if (error) throw error;
+          if (error) {
+            console.error("Error detail:", error);
+            throw error;
+          }
           
           addUploadToHistory({
             id: `${level}-${topic}-${new Date().toLocaleDateString()}`,
@@ -134,6 +150,11 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
           form.reset();
           setSelectedFile(null);
           setParsedData(null);
+          
+          // Call the onUploadComplete callback if provided
+          if (onUploadComplete) {
+            onUploadComplete();
+          }
         }
       }
     } catch (error) {
