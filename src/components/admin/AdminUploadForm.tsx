@@ -12,7 +12,7 @@ import UploadButton from './UploadButton';
 import QuestionEditor from './QuestionEditor';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { parseExcel } from '@/utils/adminUploadUtils';
+import { parseFileContent, validateQuestionData, formatQuestionsForDatabase } from '@/utils/adminUploadUtils';
 
 interface AdminUploadFormProps {
   addUploadToHistory: (newUpload: any) => void;
@@ -58,7 +58,7 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
     
     if (file) {
       try {
-        const data = await parseExcel(file);
+        const data = await parseFileContent(file);
         setParsedData(data);
         toast.success(`Successfully parsed ${data.length} questions`);
       } catch (error) {
@@ -112,19 +112,10 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
         }
       } else {
         // In create mode, insert new questions
-        const questions = parsedData?.map(q => ({
-          question_text: q.question_text,
-          option_a: q.option_a,
-          option_b: q.option_b,
-          option_c: q.option_c,
-          option_d: q.option_d,
-          correct_answer: q.correct_answer,
-          level,
-          topic
-        }));
+        const formattedQuestions = formatQuestionsForDatabase(parsedData || [], level, topic);
         
-        if (questions && questions.length > 0) {
-          const { error } = await supabase.from("questions").insert(questions);
+        if (formattedQuestions && formattedQuestions.length > 0) {
+          const { error } = await supabase.from("questions").insert(formattedQuestions);
           
           if (error) throw error;
           
@@ -133,11 +124,11 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
             level,
             topic,
             date: new Date().toLocaleDateString(),
-            questionCount: questions.length,
+            questionCount: formattedQuestions.length,
             filename: selectedFile?.name || `${topic}_questions.xlsx`
           });
           
-          toast.success(`Successfully uploaded ${questions.length} questions`);
+          toast.success(`Successfully uploaded ${formattedQuestions.length} questions`);
           
           // Reset form
           form.reset();
@@ -240,7 +231,11 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
             </div>
             
             {!isEditMode && (
-              <FileUploadInput onFileChange={onFileChange} />
+              <FileUploadInput onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  onFileChange(e.target.files[0]);
+                }
+              }} />
             )}
             
             {isEditMode && parsedData && parsedData.length > 0 ? (
@@ -258,15 +253,15 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
                     <div className="max-h-60 overflow-y-auto">
                       {parsedData.slice(0, 3).map((q, idx) => (
                         <div key={idx} className="mb-2 pb-2 border-b">
-                          <p><strong>Q{idx + 1}:</strong> {q.question_text}</p>
+                          <p><strong>Q{idx + 1}:</strong> {q.question_text || q.Question}</p>
                           <div className="grid grid-cols-2 gap-2 text-sm mt-1">
-                            <p>A: {q.option_a}</p>
-                            <p>B: {q.option_b}</p>
-                            <p>C: {q.option_c}</p>
-                            <p>D: {q.option_d}</p>
+                            <p>A: {q.option_a || q.A}</p>
+                            <p>B: {q.option_b || q.B}</p>
+                            <p>C: {q.option_c || q.C}</p>
+                            <p>D: {q.option_d || q.D}</p>
                           </div>
                           <p className="text-sm font-medium mt-1">
-                            Answer: {q.correct_answer}
+                            Answer: {q.correct_answer || q['Correct Answer']}
                           </p>
                         </div>
                       ))}
