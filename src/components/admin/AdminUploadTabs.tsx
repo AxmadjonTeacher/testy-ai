@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminUploadForm from './AdminUploadForm';
@@ -67,6 +66,9 @@ const AdminUploadTabs = () => {
     }
   };
 
+  // We're keeping the editItem functionality in the code even though
+  // we've removed the edit button from the UI. This allows for
+  // future reintroduction of the feature if needed.
   const handleEditItem = async (itemId: string) => {
     try {
       // Parse the composite id to get level, topic, and date
@@ -172,7 +174,6 @@ const AdminUploadTabs = () => {
         <TabsContent value="history">
           <AdminUploadHistory 
             uploadedFiles={uploadedFiles} 
-            onEditItem={handleEditItem}
             onDeleteItem={handleDeleteItem}
           />
         </TabsContent>
