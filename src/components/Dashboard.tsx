@@ -53,6 +53,7 @@ const Dashboard: React.FC = () => {
         throw error;
       }
 
+      // Update local state after successful deletion
       setTests(tests.filter(test => test.id !== id));
       toast.dismiss();
       toast.success("Test deleted successfully!");
