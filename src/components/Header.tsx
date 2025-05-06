@@ -19,7 +19,6 @@ const Header = () => {
         </div>
         <nav className="hidden md:flex items-center space-x-6">
           <Link to="/dashboard" className="text-neutral-dark hover:text-primary transition-colors">Dashboard</Link>
-          <Link to="/" className="text-neutral-dark hover:text-primary transition-colors">My Tests</Link>
           <Link to="/generate" className="text-neutral-dark hover:text-primary transition-colors">Generate</Link>
           <Link to="/privacy-policy#data-retention" className="text-neutral-dark hover:text-primary transition-colors">Help</Link>
         </nav>
