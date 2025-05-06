@@ -36,7 +36,8 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
                 transformation: {
                   width: 300,
                   height: 100,
-                }
+                },
+                type: 'png', // Add the required type property
               }),
             ],
             spacing: {
