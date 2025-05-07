@@ -1,3 +1,4 @@
+
 import { Paragraph, TextRun, AlignmentType } from 'docx';
 import { textStyles, spacingConfig } from '../documentConfig';
 import type { Question } from '../../documentTypes';
@@ -46,15 +47,15 @@ export function createQuestionParagraph(question: Question, index: number): Para
       tabStops: [
         {
           type: 'left',
-          position: 2880, // 2 inch
+          position: 3024, // 2.1 inch (1440 twips per inch)
         },
         {
           type: 'left', 
-          position: 5760, // 4 inch
+          position: 6048, // 4.2 inch (2.1 inches from previous tab)
         },
         {
           type: 'left',
-          position: 8640, // 6 inch
+          position: 9072, // 6.3 inch (2.1 inches from previous tab)
         },
       ],
       indent: {
