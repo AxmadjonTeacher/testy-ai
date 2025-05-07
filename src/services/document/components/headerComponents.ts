@@ -16,6 +16,7 @@ export async function createLogoHeader(): Promise<Paragraph> {
           width: logoConfig.width,
           height: logoConfig.height,
         },
+        type: "png",
       }),
     ],
     spacing: {
