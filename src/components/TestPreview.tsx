@@ -113,11 +113,11 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
             {questions.slice(0, 3).map((question, index) => (
               <div key={question.id} className="mb-4">
                 <p className="font-medium">{index + 1}. {question.question_text}</p>
-                <div className="flex gap-8 mt-1 ml-8">
-                  <p>a) {question.option_a}</p>
-                  <p>b) {question.option_b}</p>
-                  <p>c) {question.option_c}</p>
-                  <p>d) {question.option_d}</p>
+                <div className="flex flex-col ml-8">
+                  <p className="mb-1">a) {question.option_a}</p>
+                  <p className="mb-1">b) {question.option_b}</p>
+                  <p className="mb-1">c) {question.option_c}</p>
+                  <p className="mb-1">d) {question.option_d}</p>
                 </div>
               </div>
             ))}

@@ -1,3 +1,4 @@
+
 import { Paragraph, TextRun, AlignmentType } from 'docx';
 import { textStyles, spacingConfig } from '../documentConfig';
 import type { Question } from '../../documentTypes';
@@ -20,45 +21,68 @@ export function createQuestionParagraph(question: Question, index: number): Para
       },
     }),
     
-    // Options in a single line with proper spacing as in the example
+    // Changed from a single paragraph to multiple paragraphs, one for each option
+    // Option A
     new Paragraph({
       children: [
         new TextRun({
           text: `a) ${question.option_a}`,
           ...textStyles.normal,
         }),
-        new TextRun({ text: "\t" }),
+      ],
+      indent: {
+        left: 720, // 0.5 inch indentation
+      },
+      spacing: {
+        after: spacingConfig.betweenOptions,
+      },
+    }),
+    
+    // Option B
+    new Paragraph({
+      children: [
         new TextRun({
           text: `b) ${question.option_b}`,
           ...textStyles.normal,
         }),
-        new TextRun({ text: "\t" }),
+      ],
+      indent: {
+        left: 720, // 0.5 inch indentation
+      },
+      spacing: {
+        after: spacingConfig.betweenOptions,
+      },
+    }),
+    
+    // Option C
+    new Paragraph({
+      children: [
         new TextRun({
           text: `c) ${question.option_c}`,
           ...textStyles.normal,
         }),
-        new TextRun({ text: "\t" }),
+      ],
+      indent: {
+        left: 720, // 0.5 inch indentation
+      },
+      spacing: {
+        after: spacingConfig.betweenOptions,
+      },
+    }),
+    
+    // Option D
+    new Paragraph({
+      children: [
         new TextRun({
           text: `d) ${question.option_d}`,
           ...textStyles.normal,
         }),
       ],
-      tabStops: [
-        {
-          type: 'left',
-          position: 1440, // 1 inch (1440 twips per inch)
-        },
-        {
-          type: 'left', 
-          position: 2880, // 2 inch (1 inch from previous tab)
-        },
-        {
-          type: 'left',
-          position: 4320, // 3 inch (1 inch from previous tab)
-        },
-      ],
+      indent: {
+        left: 720, // 0.5 inch indentation
+      },
       spacing: {
-        after: spacingConfig.betweenQuestions,
+        after: spacingConfig.betweenQuestions, // More spacing after the last option
       },
     }),
   ];

@@ -57,5 +57,6 @@ export const spacingConfig = {
   afterStudentInfo: 480,
   afterInstructions: 360,
   afterQuestionText: 120,
+  betweenOptions: 120, // Added spacing between each option
   betweenQuestions: 360,
 };
