@@ -80,6 +80,8 @@ export type Database = {
           option_c: string
           option_d: string
           question_text: string
+          question_type: string
+          reading_passage: string | null
           topic: string
         }
         Insert: {
@@ -92,6 +94,8 @@ export type Database = {
           option_c: string
           option_d: string
           question_text: string
+          question_type?: string
+          reading_passage?: string | null
           topic: string
         }
         Update: {
@@ -104,6 +108,8 @@ export type Database = {
           option_c?: string
           option_d?: string
           question_text?: string
+          question_type?: string
+          reading_passage?: string | null
           topic?: string
         }
         Relationships: []

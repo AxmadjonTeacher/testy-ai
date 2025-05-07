@@ -1,62 +1,74 @@
 
-import { BorderStyle, WidthType, AlignmentType } from 'docx';
+import { HeadingLevel, StyleOptions, TableOfContentsOptions, convertInchesToTwip } from "docx";
 
-/**
- * Document styling configuration for test documents
- */
-export const documentStyles = {
-  paragraphStyles: [
-    {
-      id: 'Normal',
-      name: 'Normal',
-      run: {
-        size: 24, // 12pt (in half-points)
-      },
-    },
-  ],
-};
-
-/**
- * Page margin configuration
- */
 export const pageMargins = {
-  top: 720, // 0.5 inch in twips (1 inch = 1440 twips)
-  right: 720,
-  bottom: 720,
-  left: 720,
+  top: convertInchesToTwip(1),
+  right: convertInchesToTwip(1),
+  bottom: convertInchesToTwip(1),
+  left: convertInchesToTwip(1),
 };
 
-/**
- * Logo dimensions for the document
- */
-export const logoConfig = {
-  width: 492, // 5.12 inches in pixels (96 dpi)
-  height: 89, // 0.93 inches in pixels (96 dpi)
-  type: "png" as "png" | "jpg" | "gif" | "bmp", // Explicitly typed as one of the accepted image types
-  spacingAfter: 240, // spacing after the logo
+export const spacingConfig = {
+  afterTitle: 240, // 12 points
+  afterInstructions: 480, // 24 points
+  afterQuestionText: 160, // 8 points
+  betweenOptions: 160, // 8 points
+  betweenQuestions: 360, // 18 points
+  afterSection: 720, // 36 points
+  beforeSection: 480, // 24 points
+  afterReadingPassage: 480, // 24 points
 };
 
-/**
- * Text style configurations
- */
 export const textStyles = {
+  heading: {
+    bold: true,
+    size: 28, // 14pt
+  },
+  bold: {
+    bold: true,
+    size: 24, // 12pt
+  },
   normal: {
     size: 24, // 12pt
   },
-  bold: {
-    size: 24, // 12pt
-    bold: true,
+  small: {
+    size: 20, // 10pt
   },
 };
 
-/**
- * Spacing configurations
- */
-export const spacingConfig = {
-  afterTestInfo: 240,
-  afterStudentInfo: 480,
-  afterInstructions: 360,
-  afterQuestionText: 120,
-  betweenOptions: 120, // Added spacing between each option
-  betweenQuestions: 360,
+export const documentStyles: StyleOptions = {
+  paragraphStyles: [
+    {
+      id: "Title",
+      name: "Title",
+      basedOn: "Normal",
+      next: "Normal",
+      run: {
+        size: 36, // 18pt
+        bold: true,
+      },
+      paragraph: {
+        spacing: {
+          after: 240, // 12pt
+        },
+      },
+    },
+    {
+      id: "Heading1",
+      name: "Heading 1",
+      basedOn: "Normal",
+      next: "Normal",
+      quickFormat: true,
+      run: {
+        size: 32, // 16pt
+        bold: true,
+      },
+      paragraph: {
+        spacing: {
+          before: 240, // 12pt
+          after: 120, // 6pt
+        },
+      },
+    },
+  ],
 };

@@ -21,7 +21,8 @@ export const topicsByLevel: Record<string, string[]> = {
     "Special questions",
     "How much/how many",
     "Some/any",
-    "\"Ing\" form – To infinitive"
+    "\"Ing\" form – To infinitive",
+    "Reading" // Added reading topic
   ],
   "1": [
     "Plurals/Countable-Uncountable",
@@ -43,7 +44,8 @@ export const topicsByLevel: Record<string, string[]> = {
     "Questions (Subject/Object questions- Question Tags)",
     "Modal verbs (can/could/may/must/needn't/shall/will)",
     "Infinitive/Gerund/Too/Enough",
-    "Both/Neither/All/None"
+    "Both/Neither/All/None",
+    "Reading" // Added reading topic
   ],
   "2": [
     "Present Simple/ Continuous/Stative verb",
@@ -59,7 +61,8 @@ export const topicsByLevel: Record<string, string[]> = {
     "Pronouns and possessive determiners",
     "Relative clause",
     "Modals: ability, permission, advice",
-    "Modals: obligation, probability, possibility"
+    "Modals: obligation, probability, possibility",
+    "Reading" // Added reading topic
   ],
   "3": [
     "Modals 3: Modal perfect",
@@ -75,7 +78,8 @@ export const topicsByLevel: Record<string, string[]> = {
     "Ing and infinitive",
     "Both, either, neither, so nor",
     "Connectives",
-    "The causative"
+    "The causative",
+    "Reading" // Added reading topic
   ],
   "4": [
     "Past Perfect Continuous",
@@ -86,7 +90,8 @@ export const topicsByLevel: Record<string, string[]> = {
     "Reported Speech (Advanced)",
     "Inversion",
     "Advanced Modals",
-    "Participle Clauses"
+    "Participle Clauses",
+    "Reading" // Added reading topic
   ],
   "IELTS": [
     "Reading",

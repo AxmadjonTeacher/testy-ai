@@ -8,9 +8,10 @@ import {
   createStudentInfoParagraph,
   createInstructionsParagraph,
   createQuestionParagraph,
+  createReadingPassageParagraph,
   createAnswerKeySection
 } from './documentComponents';
-import type { TestExportData } from '../documentTypes';
+import type { TestExportData, ReadingPassageGroup } from '../documentTypes';
 
 /**
  * Generates the Word document content for the test
@@ -33,10 +34,45 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   // Add instructions
   documentChildren.push(createInstructionsParagraph());
   
-  // Add questions
-  questions.forEach((question, index) => {
-    const questionParagraphs = createQuestionParagraph(question, index);
+  // Group reading questions by passage
+  const readingPassages: Record<string, Question[]> = {};
+  const regularQuestions: Question[] = [];
+  
+  questions.forEach(question => {
+    if (question.question_type === 'reading' && question.reading_passage) {
+      if (!readingPassages[question.reading_passage]) {
+        readingPassages[question.reading_passage] = [];
+      }
+      readingPassages[question.reading_passage].push(question);
+    } else {
+      regularQuestions.push(question);
+    }
+  });
+  
+  // Track question counter for numbering
+  let questionCounter = 0;
+  
+  // Add reading passages and their questions first
+  Object.entries(readingPassages).forEach(([passage, passageQuestions]) => {
+    // Add the reading passage
+    if (passage && passage.trim()) {
+      const passageParagraphs = createReadingPassageParagraph(passage);
+      documentChildren.push(...passageParagraphs);
+      
+      // Add questions for this passage
+      passageQuestions.forEach(question => {
+        const questionParagraphs = createQuestionParagraph(question, questionCounter);
+        documentChildren.push(...questionParagraphs);
+        questionCounter++;
+      });
+    }
+  });
+  
+  // Add regular questions
+  regularQuestions.forEach(question => {
+    const questionParagraphs = createQuestionParagraph(question, questionCounter);
     documentChildren.push(...questionParagraphs);
+    questionCounter++;
   });
   
   // Add answer key if requested
