@@ -41,7 +41,7 @@ export const textStyles = {
 export const logoConfig = {
   width: 180,
   height: 60,
-  type: "png", // Changed from "image/png" to "png"
+  type: "png" as "png" | "jpg" | "gif" | "bmp" | "svg", // Using type assertion to match expected types
   spacingAfter: 240, // 12pt
 };
 
