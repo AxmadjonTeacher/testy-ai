@@ -2,7 +2,6 @@
 import { Document, Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, BorderStyle, WidthType, HeadingLevel, PageNumber, Footer, Header, ImageRun, ExternalHyperlink } from 'docx';
 import { Packer } from "docx";
 import { createAnswerBox } from './documentUtils';
-import { createCircularAnswerSheet } from './answerSheetGenerator';
 import { fetchImageData } from './documentUtils';
 import type { TestExportData } from '../documentTypes';
 
@@ -14,75 +13,106 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   
   // Create document
   const doc = new Document({
+    styles: {
+      paragraphStyles: [
+        {
+          id: 'Normal',
+          name: 'Normal',
+          run: {
+            size: 24, // 12pt (in half-points)
+          },
+        },
+      ],
+    },
     sections: [
       {
-        properties: {},
+        properties: {
+          page: {
+            margin: {
+              top: 720, // 0.5 inch in twips (1 inch = 1440 twips)
+              right: 720,
+              bottom: 720,
+              left: 720,
+            },
+          },
+        },
         children: [
-          // School Logo - using an image (we'll use a URL method but this could be changed to load from file)
+          // School Logo - with dimensions from the example (5.12in x 0.93in)
           new Paragraph({
             alignment: AlignmentType.CENTER,
             children: [
               new ImageRun({
                 data: await fetchImageData('/lovable-uploads/4c0b0f63-7ceb-4c2e-8a95-d86e02ca20f9.png'),
                 transformation: {
-                  width: 300,
-                  height: 100,
+                  width: 492, // 5.12 inches in pixels (96 dpi)
+                  height: 89, // 0.93 inches in pixels (96 dpi)
                 },
                 type: 'png', // Required type property
               }),
             ],
             spacing: {
-              after: 300,
+              after: 240, // spacing after the logo
             },
           }),
           
-          // Test information combined in one line
+          // Test information with hash symbols like in the example
           new Paragraph({
             children: [
               new TextRun({
-                text: "Level: ",
+                text: "#Level: ",
                 bold: true,
+                size: 24, // 12pt
               }),
               new TextRun({
                 text: level + " ",
+                size: 24, // 12pt
               }),
               new TextRun({
-                text: "Grade: ",
+                text: "#Grade: ",
                 bold: true,
+                size: 24, // 12pt
               }),
               new TextRun({
                 text: grade || "Not specified" + " ",
+                size: 24, // 12pt
               }),
               new TextRun({
-                text: "Teacher: ",
+                text: "#Teacher: ",
                 bold: true,
+                size: 24, // 12pt
               }),
               new TextRun({
                 text: teacher || "Not specified",
+                size: 24, // 12pt
               }),
             ],
             spacing: {
-              after: 200,
+              after: 240, // extra spacing after the test information
             },
           }),
           
-          // Student information fields
+          // Student information fields with horizontal layout
           new Paragraph({
             children: [
               new TextRun({
-                text: "Student's Name: _______________________________",
+                text: "Student's name ",
+                size: 24, // 12pt
               }),
-            ],
-          }),
-          
-          new Paragraph({
-            children: [
               new TextRun({
-                text: "Class: _______________________________",
+                text: "_".repeat(50),
+                size: 24, // 12pt
+              }),
+              new TextRun({
+                text: "  Class ",
+                size: 24, // 12pt
+              }),
+              new TextRun({
+                text: "_".repeat(10),
+                size: 24, // 12pt
               }),
             ],
             spacing: {
-              after: 400,
+              after: 480, // more spacing after student info
             },
           }),
           
@@ -92,40 +122,57 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
               new TextRun({
                 text: "Instructions: Answer all questions by selecting the correct option.",
                 bold: true,
+                size: 24, // 12pt
               }),
             ],
             spacing: {
-              after: 300,
+              after: 360, // spacing after instructions
             },
           }),
           
-          // Questions with horizontally aligned options
+          // Questions with horizontally aligned options in lowercase letters
           ...questions.map((question, index) => [
+            // Question text (bold)
             new Paragraph({
               children: [
                 new TextRun({
                   text: `${index + 1}. ${question.question_text}`,
+                  bold: true,
+                  size: 24, // 12pt
                 }),
               ],
               spacing: {
-                after: 120,
+                after: 120, // space after question text
               },
             }),
             
-            // Options in a horizontally aligned format
+            // Options on the same line with lowercase letters (not bold)
             new Paragraph({
               children: [
                 new TextRun({
-                  text: `A) ${question.option_a}`,
+                  text: `a) ${question.option_a}`,
+                  size: 24, // 12pt
                 }),
                 new TextRun({
-                  text: `\t\tB) ${question.option_b}`,
+                  text: "\t",
                 }),
                 new TextRun({
-                  text: `\t\tC) ${question.option_c}`,
+                  text: `b) ${question.option_b}`,
+                  size: 24, // 12pt
                 }),
                 new TextRun({
-                  text: `\t\tD) ${question.option_d}`,
+                  text: "\t",
+                }),
+                new TextRun({
+                  text: `c) ${question.option_c}`,
+                  size: 24, // 12pt
+                }),
+                new TextRun({
+                  text: "\t",
+                }),
+                new TextRun({
+                  text: `d) ${question.option_d}`,
+                  size: 24, // 12pt
                 }),
               ],
               tabStops: [
@@ -143,33 +190,12 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
                 },
               ],
               spacing: {
-                after: 240,
+                after: 360, // more space between questions
               },
             }),
           ]).flat(),
           
-          // Answer sheet
-          new Paragraph({
-            pageBreakBefore: true,
-            children: [
-              new TextRun({
-                text: "Answer Sheet",
-                bold: true,
-                size: 28,
-              }),
-            ],
-            alignment: AlignmentType.CENTER,
-            spacing: {
-              after: 300,
-            },
-          }),
-          
-          createAnswerBox(),
-          
-          // Create circular answer sheet as shown in the image
-          createCircularAnswerSheet(questions.length),
-          
-          // Answer key if includeAnswers is true
+          // Answer key if includeAnswers is true (with page break)
           ...(includeAnswers ? [
             new Paragraph({
               pageBreakBefore: true,
@@ -177,12 +203,12 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
                 new TextRun({
                   text: "Answer Key",
                   bold: true,
-                  size: 28,
+                  size: 28, // 14pt
                 }),
               ],
               alignment: AlignmentType.CENTER,
               spacing: {
-                after: 300,
+                after: 360,
               },
             }),
             
@@ -192,9 +218,11 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
                   new TextRun({
                     text: `${index + 1}. `,
                     bold: true,
+                    size: 24, // 12pt
                   }),
                   new TextRun({
                     text: question.correct_answer,
+                    size: 24, // 12pt
                   }),
                 ],
               });
