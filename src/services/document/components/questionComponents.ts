@@ -21,7 +21,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
       },
     }),
     
-    // Options on the same line with lowercase letters (not bold)
+    // Options with consistent spacing using fixed width approach
     new Paragraph({
       children: [
         new TextRun({
@@ -29,21 +29,21 @@ export function createQuestionParagraph(question: Question, index: number): Para
           ...textStyles.normal,
         }),
         new TextRun({
-          text: "\t\t", // Use double tabs for more spacing
+          text: "\t\t\t", // Triple tabs for even more spacing
         }),
         new TextRun({
           text: `b) ${question.option_b}`,
           ...textStyles.normal,
         }),
         new TextRun({
-          text: "\t\t", // Use double tabs for more spacing
+          text: "\t\t\t", // Triple tabs for even more spacing
         }),
         new TextRun({
           text: `c) ${question.option_c}`,
           ...textStyles.normal,
         }),
         new TextRun({
-          text: "\t\t", // Use double tabs for more spacing
+          text: "\t\t\t", // Triple tabs for even more spacing
         }),
         new TextRun({
           text: `d) ${question.option_d}`,
@@ -53,15 +53,15 @@ export function createQuestionParagraph(question: Question, index: number): Para
       tabStops: [
         {
           type: 'left',
-          position: 2000, // Increased from 1440
+          position: 2500, // Increased from 2000
         },
         {
           type: 'left', 
-          position: 4000, // Increased from 2880
+          position: 5000, // Increased from 4000
         },
         {
           type: 'left',
-          position: 6000, // Increased from 4320
+          position: 7500, // Increased from 6000
         },
       ],
       spacing: {
