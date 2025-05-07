@@ -16,10 +16,16 @@ const LandingPage: React.FC = () => {
             Information about the website and how it helps generate unique tests for all English proficiency levels
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-md" onClick={() => navigate('/generate')}>
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-md" 
+              onClick={() => navigate('/generate')}
+            >
               Get Started
             </Button>
-            <Button className="bg-accent hover:bg-accent/90 text-white px-8 py-3 text-lg rounded-md" onClick={() => navigate('/admin/upload')}>
+            <Button 
+              className="bg-accent hover:bg-accent/90 text-white px-8 py-3 text-lg rounded-md" 
+              onClick={() => navigate('/admin/upload')}
+            >
               Admin Upload
             </Button>
           </div>
@@ -60,15 +66,15 @@ const LandingPage: React.FC = () => {
             <p className="text-xl font-medium text-neutral-dark mb-6">
               Ready to try?
             </p>
-            <Button className="bg-primary hover:bg-primary/90 text-white" onClick={() => navigate('/generate')}>
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-white" 
+              onClick={() => navigate('/generate')}
+            >
               Generate
             </Button>
           </div>
         </div>
-      </section>
-
-      {/* Footer - Deep green as shown in wireframe */}
-      
+      </section>      
     </div>;
 };
 export default LandingPage;

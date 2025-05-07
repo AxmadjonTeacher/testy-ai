@@ -1,9 +1,15 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/generate');
+  };
+
   return (
     <header className="w-full bg-white border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -24,7 +30,7 @@ const Header = () => {
         </nav>
         <div className="flex items-center space-x-2">
           <Button variant="ghost" className="text-neutral-dark">Sign In</Button>
-          <Button className="bg-primary hover:bg-primary/90 text-white">Get Started</Button>
+          <Button className="bg-primary hover:bg-primary/90 text-white" onClick={handleGetStarted}>Get Started</Button>
         </div>
       </div>
     </header>
