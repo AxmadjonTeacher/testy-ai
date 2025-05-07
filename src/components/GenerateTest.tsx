@@ -55,10 +55,14 @@ const GenerateTest: React.FC = () => {
       
       toast.info("Preparing your document for download...");
       const blob = await generateWordDocument(docData);
-      downloadDocument(blob, `english_level_${generatedTest.level}_test.docx`);
+      
+      // Add a timestamp to the filename to ensure uniqueness
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      downloadDocument(blob, `english_level_${generatedTest.level}_test_${timestamp}.docx`);
+      
+      toast.success("Test downloaded successfully!");
       
       // Navigate back to dashboard after successful download
-      toast.success("Test downloaded successfully!");
       setTimeout(() => {
         navigate('/dashboard');
       }, 1000);

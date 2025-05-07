@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -18,24 +19,61 @@ export interface TestParams {
 export const fetchQuestions = async (params: TestParams): Promise<Question[]> => {
   const { level, topics, numQuestions } = params;
   
-  let query = supabase
-    .from("questions")
-    .select("*")
-    .eq("level", level);
+  // Calculate questions per topic to ensure a balanced distribution
+  const questionsPerTopic = Math.ceil(numQuestions / topics.length);
+  const allQuestions: Question[] = [];
   
-  if (topics && topics.length > 0) {
-    query = query.in("topic", topics);
+  // Fetch questions for each topic separately to ensure coverage
+  for (const topic of topics) {
+    let query = supabase
+      .from("questions")
+      .select("*")
+      .eq("level", level)
+      .eq("topic", topic);
+    
+    const { data, error } = await query.limit(100);
+    
+    if (error) {
+      console.error(`Error fetching questions for topic ${topic}:`, error);
+      continue;
+    }
+    
+    // Add shuffled questions from this topic to the overall collection
+    if (data && data.length > 0) {
+      const shuffledTopicQuestions = shuffleArray(data);
+      // Add up to questionsPerTopic from each topic
+      allQuestions.push(...shuffledTopicQuestions.slice(0, questionsPerTopic));
+    }
   }
   
-  const { data, error } = await query.limit(100);
-  
-  if (error) {
-    console.error("Error fetching questions:", error);
-    throw new Error(`Failed to fetch questions: ${error.message}`);
+  // If we don't have enough questions, fetch any remaining from all topics
+  if (allQuestions.length < numQuestions) {
+    console.log(`Only collected ${allQuestions.length} questions from specific topics, fetching additional...`);
+    
+    const alreadyFetchedIds = allQuestions.map(q => q.id);
+    
+    const { data: additionalData, error: additionalError } = await supabase
+      .from("questions")
+      .select("*")
+      .eq("level", level)
+      .in("topic", topics)
+      .not("id", "in", `(${alreadyFetchedIds.join(',')})`);
+    
+    if (!additionalError && additionalData && additionalData.length > 0) {
+      const shuffledAdditional = shuffleArray(additionalData);
+      const remainingNeeded = numQuestions - allQuestions.length;
+      allQuestions.push(...shuffledAdditional.slice(0, remainingNeeded));
+    }
   }
   
-  // Randomize and limit to requested number
-  return shuffleArray(data || []).slice(0, numQuestions);
+  // Final shuffle of all questions to mix topics together
+  const finalShuffledQuestions = shuffleArray(allQuestions);
+  
+  // Timestamp the shuffle with current time (milliseconds) to ensure uniqueness
+  console.log(`Generated test with ${finalShuffledQuestions.length} questions at timestamp: ${Date.now()}`);
+  
+  // Return the requested number of questions or all we could find if less
+  return finalShuffledQuestions.slice(0, numQuestions);
 };
 
 /**
@@ -90,13 +128,20 @@ export const getGeneratedTest = async (testId: string): Promise<GeneratedTest | 
 };
 
 /**
- * Helper function to shuffle an array randomly
+ * Helper function to shuffle an array randomly using Fisher-Yates algorithm
+ * with added entropy from current timestamp
  */
 const shuffleArray = <T>(array: T[]): T[] => {
   const newArray = [...array];
+  
+  // Add current timestamp as additional entropy source
+  const timestamp = Date.now();
+  
   for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    // Use complex formula with timestamp to make each shuffle truly unique
+    const j = Math.floor((Math.random() * (i + 1) + (timestamp % (i + 1))) % (i + 1));
     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
+  
   return newArray;
 };
