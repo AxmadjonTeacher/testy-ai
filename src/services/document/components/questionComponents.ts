@@ -98,7 +98,7 @@ export function createAnswerKeySection(questions: Question[]): Paragraph[] {
         new TextRun({
           text: "Answer Key",
           bold: true,
-          size: 28, // 14pt
+          size: 24, // 12pt
         }),
       ],
       alignment: AlignmentType.CENTER,

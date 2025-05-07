@@ -24,7 +24,7 @@ export const spacingConfig = {
 export const textStyles = {
   heading: {
     bold: true,
-    size: 28, // 14pt
+    size: 24, // 12pt
   },
   bold: {
     bold: true,
@@ -38,11 +38,11 @@ export const textStyles = {
   },
 };
 
-// Updated logo configuration for a more professional look
+// Updated logo configuration with exact dimensions in inches
 export const logoConfig = {
-  width: 250, // Increased width for better visibility
-  height: 90, // Adjusted height to maintain aspect ratio
-  spacingAfter: 360, // Increased spacing after logo
+  width: convertInchesToTwip(5.12), // 5.12 inches
+  height: convertInchesToTwip(0.93), // 0.93 inches
+  spacingAfter: 360, // Spacing after logo
 };
 
 export const documentStyles: IStylesOptions = {
@@ -53,7 +53,7 @@ export const documentStyles: IStylesOptions = {
       basedOn: "Normal",
       next: "Normal",
       run: {
-        size: 36, // 18pt
+        size: 24, // Updated to 12pt (24 half-points)
         bold: true,
       },
       paragraph: {
@@ -69,7 +69,7 @@ export const documentStyles: IStylesOptions = {
       next: "Normal",
       quickFormat: true,
       run: {
-        size: 32, // 16pt
+        size: 24, // Updated to 12pt (24 half-points)
         bold: true,
       },
       paragraph: {
