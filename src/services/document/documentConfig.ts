@@ -1,4 +1,3 @@
-
 import { HeadingLevel, IStylesOptions, ITableOfContentsOptions, convertInchesToTwip } from "docx";
 
 export const pageMargins = {
@@ -41,8 +40,6 @@ export const textStyles = {
 export const logoConfig = {
   width: 180,
   height: 60,
-  // Using "png" type since the logo is a PNG file, this simplifies the type handling
-  type: "png" as "png", 
   spacingAfter: 240, // 12pt
 };
 
