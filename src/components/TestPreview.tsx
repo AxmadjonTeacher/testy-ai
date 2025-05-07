@@ -93,12 +93,12 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
         <p className="text-neutral-dark/70 text-sm mb-4">This is a preview of how your test will look when downloaded.</p>
         
         <div className="space-y-4 p-4 border rounded-lg bg-neutral-light/30">
-          {/* School Logo */}
-          <div className="text-center mb-6">
+          {/* Enhanced School Logo */}
+          <div className="text-center mb-8 border-b pb-4">
             <img 
               src="/lovable-uploads/4c0b0f63-7ceb-4c2e-8a95-d86e02ca20f9.png"
               alt="AL-XORAZMIY SCHOOL" 
-              className="h-16 mx-auto mb-2"
+              className="h-24 mx-auto mb-4"
             />
           </div>
           

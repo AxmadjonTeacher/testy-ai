@@ -3,7 +3,7 @@ import { Document, Paragraph } from 'docx';
 import { Packer } from 'docx';
 import { documentStyles, pageMargins } from './documentConfig';
 import { 
-  createLogoHeader,
+  createEnhancedHeader,
   createTestInfoParagraph,
   createStudentInfoParagraph,
   createInstructionsParagraph,
@@ -21,8 +21,9 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   // Create document sections
   const documentChildren: Paragraph[] = [];
   
-  // Add logo
-  documentChildren.push(await createLogoHeader());
+  // Add enhanced header with logo
+  const headerParagraphs = await createEnhancedHeader();
+  documentChildren.push(...headerParagraphs);
   
   // Add test information
   documentChildren.push(createTestInfoParagraph(level, grade || null, teacher || null));
@@ -49,7 +50,7 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
     documentChildren.push(...answerKeyParagraphs);
   }
   
-  // Create document
+  // Create document with enhanced styling
   const doc = new Document({
     styles: documentStyles,
     sections: [

@@ -1,3 +1,4 @@
+
 import { HeadingLevel, IStylesOptions, ITableOfContentsOptions, convertInchesToTwip } from "docx";
 
 export const pageMargins = {
@@ -37,10 +38,11 @@ export const textStyles = {
   },
 };
 
+// Updated logo configuration for a more professional look
 export const logoConfig = {
-  width: 180,
-  height: 60,
-  spacingAfter: 240, // 12pt
+  width: 250, // Increased width for better visibility
+  height: 90, // Adjusted height to maintain aspect ratio
+  spacingAfter: 360, // Increased spacing after logo
 };
 
 export const documentStyles: IStylesOptions = {
