@@ -32,7 +32,7 @@ export const pageMargins = {
 export const logoConfig = {
   width: 492, // 5.12 inches in pixels (96 dpi)
   height: 89, // 0.93 inches in pixels (96 dpi)
-  type: 'png', // Required type property
+  type: "png" as "png" | "jpg" | "gif" | "bmp", // Explicitly typed as one of the accepted image types
   spacingAfter: 240, // spacing after the logo
 };
 
