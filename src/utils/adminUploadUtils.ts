@@ -109,10 +109,13 @@ export const validateQuestionData = (data: any[]): { valid: boolean; errors: str
       errors.push(`Row ${index + 1}: Missing option D.`);
     }
     
-    if (!row['Correct Answer']) {
+    // Thoroughly check for correct answer in all possible formats
+    const correctAnswer = row['Correct Answer'] || row.correct_answer || row.Answer || row.answer;
+    
+    if (!correctAnswer) {
       errors.push(`Row ${index + 1}: Missing correct answer.`);
-    } else if (!['A', 'B', 'C', 'D'].includes(String(row['Correct Answer']).toUpperCase())) {
-      errors.push(`Row ${index + 1}: Correct answer must be A, B, C, or D.`);
+    } else if (!['A', 'B', 'C', 'D'].includes(String(correctAnswer).toUpperCase())) {
+      errors.push(`Row ${index + 1}: Correct answer must be A, B, C, or D. Found: ${correctAnswer}`);
     }
   });
   
@@ -131,8 +134,15 @@ export const formatQuestionsForDatabase = (data: any[], level: string, topic: st
     
     // If correctAnswer is undefined or null, try alternative fields
     if (!correctAnswer) {
-      correctAnswer = row.correct_answer || row.Answer || row.answer || 'A';
-      console.log(`Used fallback for correct answer: ${correctAnswer}`);
+      correctAnswer = row.correct_answer || row.Answer || row.answer;
+      
+      // If still no value, default to 'A'
+      if (!correctAnswer) {
+        console.warn(`No correct answer found for question, defaulting to 'A'`);
+        correctAnswer = 'A';
+      } else {
+        console.log(`Used fallback for correct answer: ${correctAnswer}`);
+      }
     }
     
     // Make sure correctAnswer is uppercase and a valid option
