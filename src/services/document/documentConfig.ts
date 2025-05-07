@@ -1,5 +1,5 @@
 
-import { HeadingLevel, StyleOptions, TableOfContentsOptions, convertInchesToTwip } from "docx";
+import { HeadingLevel, IStylesOptions, ITableOfContentsOptions, convertInchesToTwip } from "docx";
 
 export const pageMargins = {
   top: convertInchesToTwip(1),
@@ -17,6 +17,8 @@ export const spacingConfig = {
   afterSection: 720, // 36 points
   beforeSection: 480, // 24 points
   afterReadingPassage: 480, // 24 points
+  afterTestInfo: 360, // 18 points
+  afterStudentInfo: 480, // 24 points
 };
 
 export const textStyles = {
@@ -36,7 +38,14 @@ export const textStyles = {
   },
 };
 
-export const documentStyles: StyleOptions = {
+export const logoConfig = {
+  width: 180,
+  height: 60,
+  type: "image/png" as const,
+  spacingAfter: 240, // 12pt
+};
+
+export const documentStyles: IStylesOptions = {
   paragraphStyles: [
     {
       id: "Title",

@@ -11,7 +11,7 @@ import {
   createReadingPassageParagraph,
   createAnswerKeySection
 } from './documentComponents';
-import type { TestExportData, ReadingPassageGroup } from '../documentTypes';
+import type { TestExportData, ReadingPassageGroup, Question } from '../documentTypes';
 
 /**
  * Generates the Word document content for the test
