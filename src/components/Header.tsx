@@ -87,28 +87,33 @@ const Header = () => {
             </motion.h1>
           </Link>
         </motion.div>
+        
+        {/* Updated navigation section with even spacing */}
         <motion.nav 
-          className="hidden md:flex items-center space-x-6"
+          className="hidden md:flex items-center justify-center flex-1 mx-4"
           variants={navVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={itemVariants}>
-            <Link to="/dashboard" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
-              Dashboard
-            </Link>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <Link to="/generate" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
-              Generate
-            </Link>
-          </motion.div>
-          <motion.div variants={itemVariants}>
-            <Link to="/privacy-policy#data-retention" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
-              Help
-            </Link>
-          </motion.div>
+          <div className="flex space-x-12 justify-center">
+            <motion.div variants={itemVariants}>
+              <Link to="/dashboard" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
+                Dashboard
+              </Link>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <Link to="/generate" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
+                Generate
+              </Link>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <Link to="/privacy-policy#data-retention" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
+                Help
+              </Link>
+            </motion.div>
+          </div>
         </motion.nav>
+        
         <motion.div 
           className="flex items-center space-x-2"
           initial={{ opacity: 0 }}
