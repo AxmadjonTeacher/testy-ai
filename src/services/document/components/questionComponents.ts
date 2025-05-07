@@ -21,49 +21,63 @@ export function createQuestionParagraph(question: Question, index: number): Para
       },
     }),
     
-    // Options with consistent spacing using fixed width approach
+    // Options split into individual paragraphs for consistent spacing
     new Paragraph({
       children: [
         new TextRun({
           text: `a) ${question.option_a}`,
           ...textStyles.normal,
         }),
-        new TextRun({
-          text: "\t\t\t", // Triple tabs for even more spacing
-        }),
+      ],
+      tabStops: [],
+      indent: {
+        firstLine: 720, // 0.5 inch indent
+      },
+      spacing: {
+        after: 0,
+      },
+    }),
+    new Paragraph({
+      children: [
         new TextRun({
           text: `b) ${question.option_b}`,
           ...textStyles.normal,
         }),
-        new TextRun({
-          text: "\t\t\t", // Triple tabs for even more spacing
-        }),
+      ],
+      tabStops: [],
+      indent: {
+        firstLine: 2880, // 2 inch indent
+      },
+      spacing: {
+        after: 0,
+      },
+    }),
+    new Paragraph({
+      children: [
         new TextRun({
           text: `c) ${question.option_c}`,
           ...textStyles.normal,
         }),
-        new TextRun({
-          text: "\t\t\t", // Triple tabs for even more spacing
-        }),
+      ],
+      tabStops: [],
+      indent: {
+        firstLine: 5040, // 3.5 inch indent
+      },
+      spacing: {
+        after: 0,
+      },
+    }),
+    new Paragraph({
+      children: [
         new TextRun({
           text: `d) ${question.option_d}`,
           ...textStyles.normal,
         }),
       ],
-      tabStops: [
-        {
-          type: 'left',
-          position: 2500, // Increased from 2000
-        },
-        {
-          type: 'left', 
-          position: 5000, // Increased from 4000
-        },
-        {
-          type: 'left',
-          position: 7500, // Increased from 6000
-        },
-      ],
+      tabStops: [],
+      indent: {
+        firstLine: 7200, // 5 inch indent
+      },
       spacing: {
         after: spacingConfig.betweenQuestions,
       },
