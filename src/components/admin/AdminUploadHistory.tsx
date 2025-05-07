@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Trash2, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UploadHistoryItem {
   id: string;
@@ -24,6 +25,76 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
   onDeleteItem,
   onEditItem
 }) => {
+  // Group files by level
+  const filesByLevel = React.useMemo(() => {
+    return uploadedFiles.reduce((acc: {[key: string]: UploadHistoryItem[]}, file) => {
+      if (!acc[file.level]) {
+        acc[file.level] = [];
+      }
+      acc[file.level].push(file);
+      return acc;
+    }, {});
+  }, [uploadedFiles]);
+
+  // Get unique levels sorted
+  const levels = React.useMemo(() => {
+    return Object.keys(filesByLevel).sort((a, b) => {
+      // Try to sort numerically if possible
+      const numA = Number(a);
+      const numB = Number(b);
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      }
+      return a.localeCompare(b);
+    });
+  }, [filesByLevel]);
+
+  // Function to render files for a specific level
+  const renderLevelFiles = (level: string, files: UploadHistoryItem[]) => {
+    return (
+      <div className="space-y-4">
+        {files.map((upload) => (
+          <div key={upload.id} className="flex items-center justify-between p-4 bg-white rounded-md border">
+            <div className="flex items-center gap-3">
+              <FileText className="w-5 h-5 text-primary" />
+              <div>
+                <p className="font-medium">{upload.filename}</p>
+                <p className="text-sm text-neutral-dark">
+                  Topic: {upload.topic} | Questions: {upload.questionCount}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {onEditItem && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-1"
+                  onClick={() => onEditItem(upload.id)}
+                >
+                  <Edit className="h-4 w-4" />
+                  Edit
+                </Button>
+              )}
+              {onDeleteItem && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  className="flex items-center gap-1"
+                  onClick={() => onDeleteItem(upload.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </Button>
+              )}
+              <p className="text-sm text-neutral-dark ml-2">{upload.date}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -34,46 +105,21 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
       </CardHeader>
       <CardContent>
         {uploadedFiles.length > 0 ? (
-          <div className="space-y-4">
-            {uploadedFiles.map((upload) => (
-              <div key={upload.id} className="flex items-center justify-between p-4 bg-white rounded-md border">
-                <div className="flex items-center gap-3">
-                  <FileText className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-medium">{upload.filename}</p>
-                    <p className="text-sm text-neutral-dark">
-                      Level: {upload.level} | Topic: {upload.topic} | Questions: {upload.questionCount}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  {onEditItem && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex items-center gap-1"
-                      onClick={() => onEditItem(upload.id)}
-                    >
-                      <Edit className="h-4 w-4" />
-                      Edit
-                    </Button>
-                  )}
-                  {onDeleteItem && (
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="flex items-center gap-1"
-                      onClick={() => onDeleteItem(upload.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      Delete
-                    </Button>
-                  )}
-                  <p className="text-sm text-neutral-dark ml-2">{upload.date}</p>
-                </div>
-              </div>
+          <Tabs defaultValue={levels.length > 0 ? levels[0] : undefined}>
+            <TabsList className="mb-4">
+              {levels.map(level => (
+                <TabsTrigger key={level} value={level}>
+                  Level {level}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            
+            {levels.map(level => (
+              <TabsContent key={level} value={level}>
+                {renderLevelFiles(level, filesByLevel[level])}
+              </TabsContent>
             ))}
-          </div>
+          </Tabs>
         ) : (
           <div className="text-center py-8 text-neutral-dark">
             <p>No files have been uploaded yet.</p>
