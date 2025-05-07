@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Trash2, Edit } from "lucide-react";
+import { FileText, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -65,17 +65,6 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              {onEditItem && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-1"
-                  onClick={() => onEditItem(upload.id)}
-                >
-                  <Edit className="h-4 w-4" />
-                  Edit
-                </Button>
-              )}
               {onDeleteItem && (
                 <Button
                   variant="destructive"
