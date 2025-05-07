@@ -16,7 +16,18 @@ export async function createLogoHeader(): Promise<Paragraph> {
           width: logoConfig.width,
           height: logoConfig.height,
         },
-        type: logoConfig.type,
+        // The type is determined based on the file extension to avoid TypeScript errors
+        type: logoConfig.type === "svg" 
+          ? { 
+              type: logoConfig.type as "svg", 
+              fallback: {
+                type: "png",
+                data: await fetchImageData('/lovable-uploads/4c0b0f63-7ceb-4c2e-8a95-d86e02ca20f9.png')
+              }
+            }
+          : { 
+              type: logoConfig.type as "png" | "jpg" | "gif" | "bmp" 
+            }
       }),
     ],
     spacing: {
