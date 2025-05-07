@@ -13,8 +13,3 @@ export interface TestExportData {
   includeAnswers: boolean;
   dateGenerated: string;
 }
-
-export interface ReadingPassageGroup {
-  passage: string;
-  questions: Question[];
-}

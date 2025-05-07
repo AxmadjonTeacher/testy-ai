@@ -28,21 +28,6 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
     console.log("Edit test", test.id);
   };
 
-  // Group reading questions by passage
-  const readingPassages: Record<string, Question[]> = {};
-  const regularQuestions: Question[] = [];
-  
-  questions.forEach(question => {
-    if (question.question_type === 'reading' && question.reading_passage) {
-      if (!readingPassages[question.reading_passage]) {
-        readingPassages[question.reading_passage] = [];
-      }
-      readingPassages[question.reading_passage].push(question);
-    } else {
-      regularQuestions.push(question);
-    }
-  });
-
   return (
     <div className="max-w-4xl mx-auto">
       <Button variant="outline" onClick={onBack} className="mb-4">
@@ -125,37 +110,10 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
           <div className="space-y-4">
             <p className="font-medium">Instructions: Answer all questions by selecting the correct option.</p>
             
-            {/* Display reading passages with their questions */}
-            {Object.entries(readingPassages).map(([passage, passageQuestions], passageIndex) => (
-              <div key={`passage-${passageIndex}`} className="mb-8 border-b pb-4">
-                <div className="mb-4">
-                  <h5 className="font-semibold mb-2">Reading Passage</h5>
-                  <p className="italic text-sm mb-2">Read the passage below and answer the questions that follow.</p>
-                  <div className="p-3 bg-white rounded border mb-4">{passage}</div>
-                </div>
-                
-                {passageQuestions.slice(0, Math.min(3, passageQuestions.length)).map((question, qIndex) => (
-                  <div key={question.id} className="mb-4">
-                    <p className="font-medium">{qIndex + 1}. {question.question_text}</p>
-                    <div className="flex flex-col ml-8">
-                      <p className="mb-1">a) {question.option_a}</p>
-                      <p className="mb-1">b) {question.option_b}</p>
-                      <p className="mb-1">c) {question.option_c}</p>
-                      <p className="mb-1">d) {question.option_d}</p>
-                    </div>
-                  </div>
-                ))}
-                
-                {passageQuestions.length > 3 && (
-                  <p className="text-neutral-dark/50 italic">... {passageQuestions.length - 3} more questions for this passage ...</p>
-                )}
-              </div>
-            ))}
-            
-            {/* Display regular questions */}
-            {regularQuestions.slice(0, 3).map((question, index) => (
+            {/* Display questions */}
+            {questions.slice(0, Math.min(5, questions.length)).map((question, index) => (
               <div key={question.id} className="mb-4">
-                <p className="font-medium">{index + Object.values(readingPassages).flat().length + 1}. {question.question_text}</p>
+                <p className="font-medium">{index + 1}. {question.question_text}</p>
                 <div className="flex flex-col ml-8">
                   <p className="mb-1">a) {question.option_a}</p>
                   <p className="mb-1">b) {question.option_b}</p>
@@ -165,8 +123,8 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
               </div>
             ))}
             
-            {regularQuestions.length > 3 && (
-              <p className="text-neutral-dark/50 italic">... {regularQuestions.length - 3} more questions would be displayed here ...</p>
+            {questions.length > 5 && (
+              <p className="text-neutral-dark/50 italic">... {questions.length - 5} more questions would be displayed here ...</p>
             )}
           </div>
         </div>
