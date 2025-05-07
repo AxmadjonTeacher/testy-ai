@@ -1,4 +1,5 @@
 
+// Update the QuestionForm.tsx file to include level and topic properties
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -20,6 +21,8 @@ export interface QuestionFormData {
   option_c: string;
   option_d: string;
   correct_answer: string;
+  level?: string;  // Add level property
+  topic?: string;  // Add topic property
 }
 
 const QuestionForm: React.FC<QuestionFormProps> = ({ 

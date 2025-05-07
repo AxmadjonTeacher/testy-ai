@@ -79,8 +79,18 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
     }
   };
 
+  // This function now ensures we have the correct level and topic available
   const handleSaveQuestions = async (questions: QuestionFormData[]) => {
-    const { level, topic } = questions[0] || { level: "", topic: "" };
+    if (!questions || questions.length === 0) {
+      toast.error("No questions to save");
+      return;
+    }
+
+    // We need to extract level and topic from the form
+    // Let's assume questions come with level and topic properties
+    // which will be set in the QuestionFormSection component
+    const level = questions[0]?.level;
+    const topic = questions[0]?.topic;
     
     if (!level || !topic) {
       toast.error("Please select both level and topic");
