@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
               <div className="h-8 w-8 rounded-full bg-white flex items-center justify-center">
                 <span className="text-accent font-bold text-lg">T</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">TestGen</h3>
+              <h3 className="text-xl font-semibold text-white">Testy</h3>
             </div>
             <p className="text-sm text-white/80">
               AI-powered test generator for English language teachers.
@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/60">
-          <p>&copy; {new Date().getFullYear()} TestGen. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Testy. All rights reserved.</p>
         </div>
       </div>
     </footer>

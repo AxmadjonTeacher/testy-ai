@@ -47,16 +47,15 @@ const Header = () => {
           <Link to="/" className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/86990c82-4285-4b75-a8b6-372915c73199.png" 
-              alt="TestGen Logo" 
+              alt="Testy Logo" 
               className="h-12 w-12"
             />
-            <h1 className="text-xl font-semibold text-primary">TestGen</h1>
+            <h1 className="text-xl font-semibold text-primary">Testy</h1>
           </Link>
         </div>
         <nav className="hidden md:flex items-center space-x-6">
           <Link to="/dashboard" className="text-neutral-dark hover:text-primary transition-colors">Dashboard</Link>
           <Link to="/generate" className="text-neutral-dark hover:text-primary transition-colors">Generate</Link>
-          <Link to="/admin/upload" className="text-neutral-dark hover:text-primary transition-colors">Admin Upload</Link>
           <Link to="/privacy-policy#data-retention" className="text-neutral-dark hover:text-primary transition-colors">Help</Link>
         </nav>
         <div className="flex items-center space-x-2">
