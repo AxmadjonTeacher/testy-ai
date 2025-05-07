@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
@@ -7,13 +8,14 @@ import LevelSelector from './LevelSelector';
 import TopicSelector from './TopicSelector';
 import FileUploadInput from './FileUploadInput';
 import FileFormatGuide from './FileFormatGuide';
-import UploadButton from './UploadButton';
-import QuestionEditor from './QuestionEditor';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { parseFileContent, validateQuestionData, formatQuestionsForDatabase } from '@/utils/adminUploadUtils';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import QuestionBatchManager from './QuestionBatchManager';
+import { QuestionFormData } from './QuestionForm';
 
-interface AdminUploadFormProps {
+interface EnhancedAdminUploadFormProps {
   addUploadToHistory: (newUpload: any) => void;
   isEditMode?: boolean;
   editData?: any;
@@ -21,7 +23,7 @@ interface AdminUploadFormProps {
   onUploadComplete?: () => void;
 }
 
-const AdminUploadForm: React.FC<AdminUploadFormProps> = ({ 
+const EnhancedAdminUploadForm: React.FC<EnhancedAdminUploadFormProps> = ({ 
   addUploadToHistory, 
   isEditMode = false, 
   editData = null,
@@ -31,6 +33,7 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [parsedData, setParsedData] = useState<any[] | null>(null);
+  const [currentTab, setCurrentTab] = useState<string>("manual-entry");
   
   const form = useForm({
     defaultValues: {
@@ -82,7 +85,14 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
   };
   
   const onSubmit = async (data: { level: string; topic: string }) => {
-    if ((!parsedData || parsedData.length === 0) && !isEditMode) {
+    const { level, topic } = data;
+    
+    if (!level || !topic) {
+      toast.error("Please select both level and topic");
+      return;
+    }
+    
+    if ((!parsedData || parsedData.length === 0) && currentTab === "file-upload") {
       toast.error("Please upload and parse a file first");
       return;
     }
@@ -90,44 +100,16 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
     setIsUploading(true);
     
     try {
-      const { level, topic } = data;
-      
       if (isEditMode && editData) {
-        // In edit mode, update existing questions
-        const updatedQuestions = parsedData || [];
-        
-        // For each question, update it in the database
-        for (const question of updatedQuestions) {
-          const { id, question_text, option_a, option_b, option_c, option_d, correct_answer } = question;
-          
-          const { error } = await supabase
-            .from("questions")
-            .update({
-              question_text,
-              option_a,
-              option_b,
-              option_c,
-              option_d,
-              correct_answer
-            })
-            .eq("id", id);
-          
-          if (error) throw error;
-        }
-        
-        toast.success(`Updated ${updatedQuestions.length} questions`);
-        
+        // Edit mode logic - already handled in the batch manager
         if (onEditComplete) {
           onEditComplete();
         }
-      } else {
-        // In create mode, insert new questions
-        const formattedQuestions = formatQuestionsForDatabase(parsedData || [], level, topic);
+      } else if (currentTab === "file-upload" && parsedData) {
+        // File upload logic
+        const formattedQuestions = formatQuestionsForDatabase(parsedData, level, topic);
         
         if (formattedQuestions && formattedQuestions.length > 0) {
-          // Log the first question to check the data structure
-          console.log("Sample question to insert:", formattedQuestions[0]);
-          
           const { error } = await supabase.from("questions").insert(formattedQuestions);
           
           if (error) {
@@ -150,12 +132,12 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
           form.reset();
           setSelectedFile(null);
           setParsedData(null);
-          
-          // Call the onUploadComplete callback if provided
-          if (onUploadComplete) {
-            onUploadComplete();
-          }
         }
+      }
+      
+      // Call the onUploadComplete callback if provided
+      if (onUploadComplete) {
+        onUploadComplete();
       }
     } catch (error) {
       console.error("Error uploading questions:", error);
@@ -164,36 +146,49 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
       setIsUploading(false);
     }
   };
-  
-  const handleSaveQuestions = async (updatedQuestions: any[]) => {
+
+  const handleSaveQuestions = async (questions: QuestionFormData[]) => {
+    const { level, topic } = form.getValues();
+    
+    if (!level || !topic) {
+      toast.error("Please select both level and topic");
+      return;
+    }
+    
     setIsUploading(true);
     
     try {
-      // For each question, update it in the database
-      for (const question of updatedQuestions) {
-        const { id, question_text, option_a, option_b, option_c, option_d, correct_answer } = question;
-        
-        const { error } = await supabase
-          .from("questions")
-          .update({
-            question_text,
-            option_a,
-            option_b,
-            option_c,
-            option_d,
-            correct_answer
-          })
-          .eq("id", id);
-        
-        if (error) throw error;
+      // Format the questions for the database
+      const formattedQuestions = questions.map(q => ({
+        ...q,
+        level,
+        topic
+      }));
+      
+      // Insert the questions into the database
+      const { error } = await supabase.from("questions").insert(formattedQuestions);
+      
+      if (error) {
+        throw error;
       }
       
-      toast.success(`Updated ${updatedQuestions.length} questions`);
-      setParsedData(updatedQuestions);
+      addUploadToHistory({
+        id: `${level}-${topic}-${new Date().toLocaleDateString()}`,
+        level,
+        topic,
+        date: new Date().toLocaleDateString(),
+        questionCount: formattedQuestions.length,
+        filename: `${topic}_manual_entry.xlsx` // A placeholder filename for tracking
+      });
       
+      toast.success(`Successfully saved ${formattedQuestions.length} questions`);
+      
+      if (onUploadComplete) {
+        onUploadComplete();
+      }
     } catch (error) {
-      console.error("Error updating questions:", error);
-      toast.error("Failed to update questions. Please try again.");
+      console.error("Error saving questions:", error);
+      toast.error("Failed to save questions. Please try again.");
     } finally {
       setIsUploading(false);
     }
@@ -201,13 +196,6 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
   
   const level = form.watch("level");
 
-  // Add a back button for edit mode to cancel editing
-  const handleCancelEdit = () => {
-    if (onEditComplete) {
-      onEditComplete();
-    }
-  };
-  
   return (
     <Card>
       <CardHeader>
@@ -215,7 +203,7 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
         <CardDescription>
           {isEditMode 
             ? "Edit existing questions for the selected level and topic" 
-            : "Upload new questions from an Excel file"}
+            : "Add new questions using our user-friendly interface or upload from a file"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -259,74 +247,82 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
             </div>
             
             {!isEditMode && (
-              <FileUploadInput onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  onFileChange(e.target.files[0]);
-                }
-              }} />
-            )}
-            
-            {isEditMode && parsedData && parsedData.length > 0 ? (
-              <>
-                <QuestionEditor 
-                  questions={parsedData}
-                  onSave={handleSaveQuestions}
-                />
-                <div className="flex justify-end mt-4">
-                  <Button variant="outline" onClick={handleCancelEdit} className="mr-2">
-                    Back to History
-                  </Button>
-                  <Button onClick={form.handleSubmit(onSubmit)}>
-                    Save All Changes
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                {parsedData && parsedData.length > 0 && (
-                  <div className="border p-4 rounded-md">
-                    <h3 className="font-medium mb-2">
-                      {parsedData.length} questions parsed from file
-                    </h3>
-                    <div className="max-h-60 overflow-y-auto">
-                      {parsedData.slice(0, 3).map((q, idx) => (
-                        <div key={idx} className="mb-2 pb-2 border-b">
-                          <p><strong>Q{idx + 1}:</strong> {q.question_text || q.Question}</p>
-                          <div className="grid grid-cols-2 gap-2 text-sm mt-1">
-                            <p>A: {q.option_a || q.A}</p>
-                            <p>B: {q.option_b || q.B}</p>
-                            <p>C: {q.option_c || q.C}</p>
-                            <p>D: {q.option_d || q.D}</p>
-                          </div>
-                          <p className="text-sm font-medium mt-1">
-                            Answer: {q.correct_answer || q['Correct Answer']}
-                          </p>
-                        </div>
-                      ))}
-                      
-                      {parsedData.length > 3 && (
-                        <p className="text-center text-neutral-dark">
-                          ... and {parsedData.length - 3} more questions
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
+              <Tabs value={currentTab} onValueChange={setCurrentTab}>
+                <TabsList className="grid grid-cols-2">
+                  <TabsTrigger value="manual-entry">Manual Entry</TabsTrigger>
+                  <TabsTrigger value="file-upload">File Upload</TabsTrigger>
+                </TabsList>
                 
-                {!isEditMode && !parsedData && (
-                  <FileFormatGuide />
-                )}
-                
-                {!isEditMode && (
-                  <UploadButton 
-                    isUploading={isUploading}
-                    isEditMode={isEditMode}
+                <TabsContent value="manual-entry" className="pt-4">
+                  <QuestionBatchManager
+                    level={level}
+                    topic={form.getValues().topic}
+                    onSave={handleSaveQuestions}
+                    isSubmitting={isUploading}
                   />
-                )}
-              </>
+                </TabsContent>
+                
+                <TabsContent value="file-upload" className="pt-4">
+                  <FileUploadInput onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      onFileChange(e.target.files[0]);
+                    }
+                  }} />
+                  
+                  {parsedData && parsedData.length > 0 ? (
+                    <div className="border p-4 rounded-md mt-4">
+                      <h3 className="font-medium mb-2">
+                        {parsedData.length} questions parsed from file
+                      </h3>
+                      <div className="max-h-60 overflow-y-auto">
+                        {parsedData.slice(0, 3).map((q, idx) => (
+                          <div key={idx} className="mb-2 pb-2 border-b">
+                            <p><strong>Q{idx + 1}:</strong> {q.question_text || q.Question}</p>
+                            <div className="grid grid-cols-2 gap-2 text-sm mt-1">
+                              <p>A: {q.option_a || q.A}</p>
+                              <p>B: {q.option_b || q.B}</p>
+                              <p>C: {q.option_c || q.C}</p>
+                              <p>D: {q.option_d || q.D}</p>
+                            </div>
+                            <p className="text-sm font-medium mt-1">
+                              Answer: {q.correct_answer || q['Correct Answer']}
+                            </p>
+                          </div>
+                        ))}
+                        
+                        {parsedData.length > 3 && (
+                          <p className="text-center text-neutral-dark">
+                            ... and {parsedData.length - 3} more questions
+                          </p>
+                        )}
+                      </div>
+                      
+                      <Button 
+                        type="submit" 
+                        className="w-full mt-4"
+                        disabled={isUploading}
+                      >
+                        {isUploading ? "Uploading..." : `Upload ${parsedData.length} Questions`}
+                      </Button>
+                    </div>
+                  ) : (
+                    <FileFormatGuide />
+                  )}
+                </TabsContent>
+              </Tabs>
             )}
             
-            {isEditMode && !parsedData && (
+            {isEditMode && editData && editData.questions && editData.questions.length > 0 && (
+              <QuestionBatchManager
+                initialQuestions={editData.questions}
+                level={editData.level}
+                topic={editData.topic}
+                onSave={handleSaveQuestions}
+                isSubmitting={isUploading}
+              />
+            )}
+            
+            {isEditMode && (!editData || !editData.questions || editData.questions.length === 0) && (
               <div className="text-center py-8 border rounded-md">
                 <p className="text-neutral-dark">No questions loaded for editing.</p>
                 {onEditComplete && (
@@ -347,4 +343,4 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
   );
 };
 
-export default AdminUploadForm;
+export default EnhancedAdminUploadForm;

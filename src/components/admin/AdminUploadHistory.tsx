@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Trash } from "lucide-react";
+import { FileText, Trash2, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface UploadHistoryItem {
@@ -16,9 +16,14 @@ interface UploadHistoryItem {
 interface AdminUploadHistoryProps {
   uploadedFiles: UploadHistoryItem[];
   onDeleteItem?: (itemId: string) => void;
+  onEditItem?: (itemId: string) => void;
 }
 
-const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ uploadedFiles, onDeleteItem }) => {
+const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ 
+  uploadedFiles, 
+  onDeleteItem,
+  onEditItem
+}) => {
   return (
     <Card>
       <CardHeader>
@@ -42,6 +47,17 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ uploadedFiles, 
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  {onEditItem && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-1"
+                      onClick={() => onEditItem(upload.id)}
+                    >
+                      <Edit className="h-4 w-4" />
+                      Edit
+                    </Button>
+                  )}
                   {onDeleteItem && (
                     <Button
                       variant="destructive"
@@ -49,11 +65,11 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ uploadedFiles, 
                       className="flex items-center gap-1"
                       onClick={() => onDeleteItem(upload.id)}
                     >
-                      <Trash className="h-4 w-4" />
+                      <Trash2 className="h-4 w-4" />
                       Delete
                     </Button>
                   )}
-                  <p className="text-sm text-neutral-dark">{upload.date}</p>
+                  <p className="text-sm text-neutral-dark ml-2">{upload.date}</p>
                 </div>
               </div>
             ))}

@@ -2,11 +2,12 @@
 import { useState } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { QuestionFormData } from '@/components/admin/QuestionForm';
 
 interface EditData {
   level: string;
   topic: string;
-  questions: any[];
+  questions: QuestionFormData[];
 }
 
 export function useQuestionEdit() {
@@ -21,17 +22,28 @@ export function useQuestionEdit() {
       // Fetch questions for editing
       const { data, error } = await supabase
         .from("questions")
-        .select("*")
+        .select("id, question_text, option_a, option_b, option_c, option_d, correct_answer")
         .eq("level", level)
         .eq("topic", topic);
         
       if (error) throw error;
       
       if (data && data.length > 0) {
+        // Map the database fields to the form fields
+        const formattedQuestions = data.map(q => ({
+          id: q.id,
+          question_text: q.question_text,
+          option_a: q.option_a,
+          option_b: q.option_b,
+          option_c: q.option_c,
+          option_d: q.option_d,
+          correct_answer: q.correct_answer
+        }));
+        
         setEditData({
           level,
           topic,
-          questions: data
+          questions: formattedQuestions
         });
         
         setEditItemId(itemId);

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AdminUploadForm from './AdminUploadForm';
+import EnhancedAdminUploadForm from './EnhancedAdminUploadForm';
 import AdminUploadHistory from './AdminUploadHistory';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { useUploadHistory } from '@/hooks/useUploadHistory';
@@ -65,7 +65,7 @@ const AdminUploadTabs = () => {
         </TabsList>
         
         <TabsContent value="upload">
-          <AdminUploadForm 
+          <EnhancedAdminUploadForm 
             addUploadToHistory={addUploadToHistory} 
             isEditMode={!!editItemId}
             editData={editData}
@@ -78,6 +78,7 @@ const AdminUploadTabs = () => {
           <AdminUploadHistory 
             uploadedFiles={uploadedFiles} 
             onDeleteItem={handleDeleteItem}
+            onEditItem={handleEditItem}
           />
         </TabsContent>
       </Tabs>
