@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
+import { motion } from 'framer-motion';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -40,35 +41,92 @@ const Header = () => {
     return user.email.substring(0, 1).toUpperCase();
   };
 
+  const navVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <header className="w-full bg-white border-b border-gray-200 shadow-sm">
+    <motion.header 
+      className="w-full bg-white border-b border-gray-200 shadow-sm"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+    >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center">
+        <motion.div 
+          className="flex items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <Link to="/" className="flex items-center gap-2">
-            <img 
+            <motion.img 
               src="/lovable-uploads/86990c82-4285-4b75-a8b6-372915c73199.png" 
               alt="Testy Logo" 
               className="h-12 w-12"
+              whileHover={{ rotate: 10, scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             />
-            <h1 className="text-xl font-semibold text-primary">Testy</h1>
+            <motion.h1 
+              className="text-xl font-semibold text-primary"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Testy
+            </motion.h1>
           </Link>
-        </div>
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/dashboard" className="text-neutral-dark hover:text-primary transition-colors">Dashboard</Link>
-          <Link to="/generate" className="text-neutral-dark hover:text-primary transition-colors">Generate</Link>
-          <Link to="/privacy-policy#data-retention" className="text-neutral-dark hover:text-primary transition-colors">Help</Link>
-        </nav>
-        <div className="flex items-center space-x-2">
+        </motion.div>
+        <motion.nav 
+          className="hidden md:flex items-center space-x-6"
+          variants={navVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={itemVariants}>
+            <Link to="/dashboard" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
+              Dashboard
+            </Link>
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <Link to="/generate" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
+              Generate
+            </Link>
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <Link to="/privacy-policy#data-retention" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
+              Help
+            </Link>
+          </motion.div>
+        </motion.nav>
+        <motion.div 
+          className="flex items-center space-x-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           {user ? (
             <DropdownMenu open={isMenuOpen} onOpenChange={handleUserMenuToggle}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative rounded-full h-8 w-8 p-0">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-primary text-white">
-                      {getUserInitials()}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
+                <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+                  <Button variant="ghost" className="relative rounded-full h-8 w-8 p-0">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="bg-primary text-white">
+                        {getUserInitials()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </motion.div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <div className="flex items-center justify-start gap-2 p-2">
@@ -90,13 +148,17 @@ const Header = () => {
             </DropdownMenu>
           ) : (
             <>
-              <Button variant="ghost" className="text-neutral-dark" onClick={handleSignIn}>Sign In</Button>
-              <Button className="bg-primary hover:bg-primary/90 text-white" onClick={handleGetStarted}>Get Started</Button>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+                <Button variant="ghost" className="text-neutral-dark" onClick={handleSignIn}>Sign In</Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+                <Button className="bg-primary hover:bg-primary/90 text-white" onClick={handleGetStarted}>Get Started</Button>
+              </motion.div>
             </>
           )}
-        </div>
+        </motion.div>
       </div>
-    </header>
+    </motion.header>
   );
 };
 
