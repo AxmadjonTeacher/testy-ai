@@ -22,6 +22,7 @@ export async function createLogoHeader(): Promise<Paragraph> {
     spacing: {
       after: logoConfig.spacingAfter,
       line: 360, // Adding line spacing for better separation
+      before: 240, // Add spacing before instead of margin top
     },
     border: {
       bottom: {
@@ -30,10 +31,6 @@ export async function createLogoHeader(): Promise<Paragraph> {
         style: "single",
         size: 6,
       },
-    },
-    margins: {
-      top: 240, // Add margin at top
-      bottom: 240, // Add margin at bottom
     },
   });
 }
