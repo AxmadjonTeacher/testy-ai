@@ -101,9 +101,7 @@ const LandingPage: React.FC = () => {
                 {index === 3 && <p className="text-neutral-dark">
                     And then AI will generate a test for you
                   </p>}
-                {index === 4 && <p className="text-neutral-dark">
-                    You can edit the document before downloading it
-                  </p>}
+                {index === 4 && <p className="text-neutral-dark">You can download the test in docx format</p>}
               </motion.div>)}
           </motion.div>
 
