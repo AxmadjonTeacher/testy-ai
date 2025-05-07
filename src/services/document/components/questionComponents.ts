@@ -1,4 +1,3 @@
-
 import { Paragraph, TextRun, AlignmentType } from 'docx';
 import { textStyles, spacingConfig } from '../documentConfig';
 import type { Question } from '../../documentTypes';
@@ -21,62 +20,45 @@ export function createQuestionParagraph(question: Question, index: number): Para
       },
     }),
     
-    // Options split into individual paragraphs for consistent spacing
+    // Options in a single line with proper tab stops
     new Paragraph({
       children: [
         new TextRun({
           text: `a) ${question.option_a}`,
           ...textStyles.normal,
         }),
-      ],
-      tabStops: [],
-      indent: {
-        firstLine: 720, // 0.5 inch indent
-      },
-      spacing: {
-        after: 0,
-      },
-    }),
-    new Paragraph({
-      children: [
+        new TextRun({ text: "\t" }),
         new TextRun({
           text: `b) ${question.option_b}`,
           ...textStyles.normal,
         }),
-      ],
-      tabStops: [],
-      indent: {
-        firstLine: 2880, // 2 inch indent
-      },
-      spacing: {
-        after: 0,
-      },
-    }),
-    new Paragraph({
-      children: [
+        new TextRun({ text: "\t" }),
         new TextRun({
           text: `c) ${question.option_c}`,
           ...textStyles.normal,
         }),
-      ],
-      tabStops: [],
-      indent: {
-        firstLine: 5040, // 3.5 inch indent
-      },
-      spacing: {
-        after: 0,
-      },
-    }),
-    new Paragraph({
-      children: [
+        new TextRun({ text: "\t" }),
         new TextRun({
           text: `d) ${question.option_d}`,
           ...textStyles.normal,
         }),
       ],
-      tabStops: [],
+      tabStops: [
+        {
+          type: 'left',
+          position: 2880, // 2 inch
+        },
+        {
+          type: 'left', 
+          position: 5760, // 4 inch
+        },
+        {
+          type: 'left',
+          position: 8640, // 6 inch
+        },
+      ],
       indent: {
-        firstLine: 7200, // 5 inch indent
+        left: 720, // 0.5 inch general indent for all options
       },
       spacing: {
         after: spacingConfig.betweenQuestions,
