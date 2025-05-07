@@ -17,13 +17,11 @@ interface UploadHistoryItem {
 interface AdminUploadHistoryProps {
   uploadedFiles: UploadHistoryItem[];
   onDeleteItem?: (itemId: string) => void;
-  onEditItem?: (itemId: string) => void;
 }
 
 const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ 
   uploadedFiles, 
-  onDeleteItem,
-  onEditItem
+  onDeleteItem
 }) => {
   // Group files by level
   const filesByLevel = React.useMemo(() => {
@@ -70,7 +68,10 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
                   variant="destructive"
                   size="sm"
                   className="flex items-center gap-1"
-                  onClick={() => onDeleteItem(upload.id)}
+                  onClick={() => {
+                    console.log("Delete button clicked for:", upload.id);
+                    onDeleteItem(upload.id);
+                  }}
                 >
                   <Trash2 className="h-4 w-4" />
                   Delete

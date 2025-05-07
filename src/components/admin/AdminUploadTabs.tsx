@@ -40,13 +40,17 @@ const AdminUploadTabs = () => {
     }
   };
 
-  const handleDeleteConfirm = () => {
-    confirmDelete(fetchUploadHistory);
+  // Updated to ensure proper refresh after delete
+  const handleDeleteConfirm = async () => {
+    await confirmDelete(() => {
+      console.log("Delete confirmed, refreshing history");
+      fetchUploadHistory();
+    });
   };
 
   const handleUploadComplete = () => {
-    fetchUploadHistory();  // Refresh history after successful upload
-    setActiveTab("history"); // Switch to history tab
+    fetchUploadHistory();
+    setActiveTab("history");
   };
 
   // Initial load of history data
@@ -78,7 +82,6 @@ const AdminUploadTabs = () => {
           <AdminUploadHistory 
             uploadedFiles={uploadedFiles} 
             onDeleteItem={handleDeleteItem}
-            onEditItem={handleEditItem}
           />
         </TabsContent>
       </Tabs>

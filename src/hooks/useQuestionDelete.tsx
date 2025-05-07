@@ -21,29 +21,34 @@ export function useQuestionDelete() {
       setIsDeleting(true);
       const toastId = toast.loading("Deleting questions...");
       
-      // Parse the composite id to get level, topic
+      // Parse the composite id to get level, topic, and date
       const parts = deleteItemId.split('-');
+      if (parts.length < 2) {
+        throw new Error("Invalid item ID format");
+      }
+      
       const level = parts[0];
       const topic = parts[1];
       
       console.log(`Deleting questions with level: ${level}, topic: ${topic}`);
       
       // Delete questions matching the level and topic
-      const { error } = await supabase
+      const { error, count } = await supabase
         .from("questions")
         .delete()
         .eq("level", level)
-        .eq("topic", topic);
+        .eq("topic", topic)
+        .select("count");
         
       if (error) {
         console.error("Deletion error:", error);
         throw error;
       }
       
-      console.log("Delete operation completed, updating UI");
+      console.log(`Delete operation completed. Deleted ${count} items. Updating UI...`);
       
       toast.dismiss(toastId);
-      toast.success("Questions deleted successfully");
+      toast.success(`Questions deleted successfully`);
       
       // Call the onDeleteSuccess callback
       onDeleteSuccess();
