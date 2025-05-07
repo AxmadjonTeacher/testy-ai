@@ -23,6 +23,7 @@ const AdminUploadTabs = () => {
   const [editData, setEditData] = useState<any | null>(null);
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -34,12 +35,15 @@ const AdminUploadTabs = () => {
   // Load upload history
   const fetchUploadHistory = async () => {
     try {
+      console.log("Fetching upload history");
       const { data, error } = await supabase
         .from("questions")
         .select("level, topic, created_at")
         .order('created_at', { ascending: false });
       
       if (error) throw error;
+      
+      console.log("Raw data from Supabase:", data);
       
       // Group by level, topic and date (same day)
       const groupedData = data.reduce((acc: any, item) => {
@@ -61,7 +65,9 @@ const AdminUploadTabs = () => {
         return acc;
       }, {});
       
-      setUploadedFiles(Object.values(groupedData));
+      const result = Object.values(groupedData);
+      console.log("Processed upload history:", result);
+      setUploadedFiles(result);
     } catch (error) {
       console.error("Error fetching upload history:", error);
       toast.error("Failed to load upload history");
@@ -105,6 +111,7 @@ const AdminUploadTabs = () => {
   };
 
   const handleDeleteItem = async (itemId: string) => {
+    console.log("Delete requested for item with ID:", itemId);
     setDeleteItemId(itemId);
     setIsDeleteDialogOpen(true);
   };
@@ -113,6 +120,7 @@ const AdminUploadTabs = () => {
     if (!deleteItemId) return;
 
     try {
+      setIsDeleting(true);
       const toastId = toast.loading("Deleting questions...");
       
       // Parse the composite id to get level, topic
@@ -129,22 +137,28 @@ const AdminUploadTabs = () => {
         .eq("level", level)
         .eq("topic", topic);
         
-      if (error) throw error;
+      if (error) {
+        console.error("Deletion error:", error);
+        throw error;
+      }
+      
+      console.log("Delete operation completed, updating UI");
       
       // Remove the item from the local state
       setUploadedFiles(prev => prev.filter(item => item.id !== deleteItemId));
       
       toast.dismiss(toastId);
       toast.success("Questions deleted successfully");
-      setDeleteItemId(null);
       
-      // Refetch the upload history to ensure UI is in sync with database
-      fetchUploadHistory();
+      // Always refetch to ensure UI is in sync with database
+      await fetchUploadHistory();
       
-    } catch (error) {
-      console.error("Error deleting questions:", error);
-      toast.error("Failed to delete questions");
+    } catch (error: any) {
+      console.error("Error during deletion:", error);
+      toast.error(`Failed to delete questions: ${error.message || "Unknown error"}`);
     } finally {
+      setIsDeleting(false);
+      setDeleteItemId(null);
       setIsDeleteDialogOpen(false);
     }
   };
@@ -205,8 +219,10 @@ const AdminUploadTabs = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete}>Delete</AlertDialogAction>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} disabled={isDeleting}>
+              {isDeleting ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

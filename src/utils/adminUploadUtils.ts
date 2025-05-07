@@ -14,6 +14,8 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
         
+        console.log("Raw Excel data:", json);
+        
         // Transform the data to match our expected format
         // This handles different possible column formats
         const transformedData = json.map((row: any) => {
@@ -23,8 +25,8 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
               Question: row.Question,
               A: row.A,
               B: row.B,
-              C: row.C,
-              D: row.D,
+              C: row.C || "No option C provided",
+              D: row.D || "No option D provided",
               'Correct Answer': row['Correct Answer']
             };
           }
@@ -35,8 +37,8 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
               Question: row.Question,
               A: row['Option A'],
               B: row['Option B'],
-              C: row['Option C'],
-              D: row['Option D'],
+              C: row['Option C'] || "No option C provided",
+              D: row['Option D'] || "No option D provided",
               'Correct Answer': row['Correct Answer']
             };
           }
@@ -47,8 +49,8 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
               Question: row.Question,
               A: row['1'],
               B: row['2'],
-              C: row['3'],
-              D: row['4'],
+              C: row['3'] || "No option C provided",
+              D: row['4'] || "No option D provided",
               'Correct Answer': row['Correct Answer'] || row['Answer']
             };
           }
@@ -57,13 +59,19 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
           return row;
         });
         
+        console.log("Transformed data:", transformedData);
         resolve(transformedData);
       } catch (error) {
+        console.error("Error parsing Excel file:", error);
         reject(error);
       }
     };
     
-    reader.onerror = (error) => reject(error);
+    reader.onerror = (error) => {
+      console.error("FileReader error:", error);
+      reject(error);
+    };
+    
     reader.readAsBinaryString(file);
   });
 };
@@ -76,6 +84,8 @@ export const validateQuestionData = (data: any[]): { valid: boolean; errors: str
     errors.push("No data found in the file.");
     return { valid: false, errors };
   }
+  
+  console.log("Validating question data, count:", data.length);
   
   // Check each row for required fields
   data.forEach((row, index) => {
@@ -101,16 +111,20 @@ export const validateQuestionData = (data: any[]): { valid: boolean; errors: str
     
     if (!row['Correct Answer']) {
       errors.push(`Row ${index + 1}: Missing correct answer.`);
-    } else if (!['A', 'B', 'C', 'D'].includes(row['Correct Answer'])) {
+    } else if (!['A', 'B', 'C', 'D'].includes(String(row['Correct Answer']).toUpperCase())) {
       errors.push(`Row ${index + 1}: Correct answer must be A, B, C, or D.`);
     }
   });
   
-  return { valid: errors.length === 0, errors };
+  const result = { valid: errors.length === 0, errors };
+  console.log("Validation result:", result);
+  return result;
 };
 
 // Function to format question data for Supabase
 export const formatQuestionsForDatabase = (data: any[], level: string, topic: string) => {
+  console.log(`Formatting ${data.length} questions for database with level: ${level}, topic: ${topic}`);
+  
   return data.map(row => {
     // Ensure we get the correct answer in the expected format
     let correctAnswer = row['Correct Answer'];
@@ -118,24 +132,28 @@ export const formatQuestionsForDatabase = (data: any[], level: string, topic: st
     // If correctAnswer is undefined or null, try alternative fields
     if (!correctAnswer) {
       correctAnswer = row.correct_answer || row.Answer || row.answer || 'A';
+      console.log(`Used fallback for correct answer: ${correctAnswer}`);
     }
     
     // Make sure correctAnswer is uppercase and a valid option
     correctAnswer = String(correctAnswer).toUpperCase();
     if (!['A', 'B', 'C', 'D'].includes(correctAnswer)) {
-      correctAnswer = 'A'; // Default to A if invalid
       console.warn(`Invalid correct answer: ${correctAnswer}. Defaulting to 'A'.`);
+      correctAnswer = 'A'; // Default to A if invalid
     }
     
-    return {
+    const formattedQuestion = {
       question_text: row.Question || row.question_text,
       option_a: row.A || row.option_a,
       option_b: row.B || row.option_b,
-      option_c: row.C || row.option_c,
-      option_d: row.D || row.option_d,
+      option_c: row.C || row.option_c || "No option C provided",
+      option_d: row.D || row.option_d || "No option D provided",
       correct_answer: correctAnswer,
       level,
       topic
     };
+    
+    console.log("Formatted question:", formattedQuestion);
+    return formattedQuestion;
   });
 };
