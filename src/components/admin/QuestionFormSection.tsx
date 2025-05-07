@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import LevelSelector from './LevelSelector';
 import TopicSelector from './TopicSelector';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import QuestionBatchManager from './QuestionBatchManager';
 import FileQuestionUpload from './FileQuestionUpload';
 import { QuestionFormData } from './QuestionForm';
 
@@ -32,8 +30,6 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
   onFileUpload,
   onQuestionsLoaded
 }) => {
-  const [currentTab, setCurrentTab] = React.useState<string>("manual-entry");
-  
   const form = useForm({
     defaultValues: {
       level: editData?.level || "",
@@ -94,39 +90,28 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
         </div>
         
         {!isEditMode && (
-          <Tabs value={currentTab} onValueChange={setCurrentTab}>
-            <TabsList className="grid grid-cols-2">
-              <TabsTrigger value="manual-entry">Manual Entry</TabsTrigger>
-              <TabsTrigger value="file-upload">File Upload</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="manual-entry" className="pt-4">
-              <QuestionBatchManager
-                level={level}
-                topic={form.getValues().topic}
-                onSave={handleSaveQuestions}
-                isSubmitting={isUploading}
-              />
-            </TabsContent>
-            
-            <TabsContent value="file-upload" className="pt-4">
-              <FileQuestionUpload 
-                onQuestionsLoaded={onQuestionsLoaded}
-                onUpload={onFileUpload}
-                isUploading={isUploading}
-              />
-            </TabsContent>
-          </Tabs>
+          <div className="pt-4">
+            <FileQuestionUpload 
+              onQuestionsLoaded={onQuestionsLoaded}
+              onUpload={onFileUpload}
+              isUploading={isUploading}
+            />
+          </div>
         )}
         
         {isEditMode && editData && editData.questions && editData.questions.length > 0 && (
-          <QuestionBatchManager
-            initialQuestions={editData.questions}
-            level={editData.level}
-            topic={editData.topic}
-            onSave={handleSaveQuestions}
-            isSubmitting={isUploading}
-          />
+          <div className="pt-4">
+            <p className="mb-4 text-sm text-neutral-dark">
+              Editing {editData.questions.length} questions for {editData.level} - {editData.topic}
+            </p>
+            <Button 
+              type="submit"
+              disabled={isUploading}
+              className="w-full"
+            >
+              {isUploading ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
         )}
         
         {isEditMode && (!editData || !editData.questions || editData.questions.length === 0) && (

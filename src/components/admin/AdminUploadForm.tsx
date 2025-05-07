@@ -79,18 +79,14 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
     }
   };
 
-  // This function now ensures we have the correct level and topic available
   const handleSaveQuestions = async (questions: QuestionFormData[]) => {
     if (!questions || questions.length === 0) {
       toast.error("No questions to save");
       return;
     }
 
-    // We need to extract level and topic from the form
-    // Let's assume questions come with level and topic properties
-    // which will be set in the QuestionFormSection component
-    const level = questions[0]?.level;
-    const topic = questions[0]?.topic;
+    // Extract level and topic
+    const { level, topic } = editData || {};
     
     if (!level || !topic) {
       toast.error("Please select both level and topic");
@@ -120,7 +116,7 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
         topic,
         date: new Date().toLocaleDateString(),
         questionCount: formattedQuestions.length,
-        filename: `${topic}_manual_entry.xlsx` // A placeholder filename for tracking
+        filename: `${topic}_file_upload.xlsx` // Updated filename
       });
       
       toast.success(`Successfully saved ${formattedQuestions.length} questions`);
@@ -160,7 +156,7 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
         <CardDescription>
           {isEditMode 
             ? "Edit existing questions for the selected level and topic" 
-            : "Add new questions using our user-friendly interface or upload from a file"}
+            : "Upload questions from a file for the selected level and topic"}
         </CardDescription>
       </CardHeader>
       <CardContent>
