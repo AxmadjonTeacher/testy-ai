@@ -28,27 +28,43 @@ export function useQuestionDelete() {
       }
       
       const level = parts[0];
-      const topic = parts[1];
+      // Fix the issue with topic parsing - it might contain hyphens
+      // Get the topic part (everything between the first hyphen and the last hyphen)
+      const lastHyphenIndex = deleteItemId.lastIndexOf('-');
+      const topic = deleteItemId.substring(deleteItemId.indexOf('-') + 1, lastHyphenIndex);
       
-      console.log(`Deleting questions with level: ${level}, topic: ${topic}`);
+      console.log(`Attempting to delete questions with level: ${level}, topic: ${topic}`);
       
-      // Delete questions matching the level and topic
-      const { error, count } = await supabase
+      // First, get a count of how many questions will be deleted
+      const { data: countData, error: countError } = await supabase
+        .from("questions")
+        .select("id", { count: 'exact' })
+        .eq("level", level)
+        .eq("topic", topic);
+
+      if (countError) {
+        console.error("Error counting questions:", countError);
+        throw countError;
+      }
+      
+      const count = countData ? countData.length : 0;
+      
+      // Now perform the delete operation without returning the count
+      const { error } = await supabase
         .from("questions")
         .delete()
         .eq("level", level)
-        .eq("topic", topic)
-        .select("count");
+        .eq("topic", topic);
         
       if (error) {
         console.error("Deletion error:", error);
         throw error;
       }
       
-      console.log(`Delete operation completed. Deleted ${count} items. Updating UI...`);
+      console.log(`Delete operation completed. Deleted ${count} questions. Updating UI...`);
       
       toast.dismiss(toastId);
-      toast.success(`Questions deleted successfully`);
+      toast.success(`${count} questions deleted successfully`);
       
       // Call the onDeleteSuccess callback
       onDeleteSuccess();
