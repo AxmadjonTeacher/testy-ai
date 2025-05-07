@@ -88,6 +88,10 @@ export const saveGeneratedTest = async (
   
   const topics = Array.from(new Set(questions.map(q => q.topic)));
   
+  // Get current user's ID if authenticated
+  const { data: { session } } = await supabase.auth.getSession();
+  const userId = session?.user?.id;
+  
   const { data, error } = await supabase
     .from("generated_tests")
     .insert({
@@ -97,7 +101,8 @@ export const saveGeneratedTest = async (
       topics,
       include_answers: true, // Default to true since we're removing the checkbox
       question_count: numQuestions,
-      questions_json: questions
+      questions_json: questions,
+      user_id: userId // Associate test with current user
     })
     .select();
   

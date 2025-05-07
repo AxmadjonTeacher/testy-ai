@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
-import { Download, Trash } from "lucide-react";
+import { Download, Trash, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 import { generateWordDocument, downloadDocument, TestExportData } from '@/services/documentExportService';
 import type { Database } from "@/integrations/supabase/types";
 import type { Question } from '@/services/documentTypes';
@@ -13,12 +14,17 @@ type GeneratedTest = Database["public"]["Tables"]["generated_tests"]["Row"];
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [tests, setTests] = useState<GeneratedTest[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchTests();
-  }, []);
+    if (user) {
+      fetchTests();
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
   const fetchTests = async () => {
     try {
@@ -26,6 +32,7 @@ const Dashboard: React.FC = () => {
       const { data, error } = await supabase
         .from("generated_tests")
         .select("*")
+        .eq('user_id', user?.id)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -95,6 +102,27 @@ const Dashboard: React.FC = () => {
       toast.error("Failed to download test");
     }
   };
+
+  // Show login prompt if user is not authenticated
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200 max-w-lg mx-auto">
+          <h2 className="text-2xl font-bold text-neutral-dark mb-4">Sign In Required</h2>
+          <p className="text-neutral-dark/70 mb-6">
+            Please sign in to view your saved tests and generate new ones.
+          </p>
+          <Button 
+            className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
+            onClick={() => navigate('/auth')}
+          >
+            <LogIn className="h-4 w-4" />
+            Sign In
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
