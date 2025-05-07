@@ -29,21 +29,21 @@ export function createQuestionParagraph(question: Question, index: number): Para
           ...textStyles.normal,
         }),
         new TextRun({
-          text: "\t",
+          text: "\t\t", // Use double tabs for more spacing
         }),
         new TextRun({
           text: `b) ${question.option_b}`,
           ...textStyles.normal,
         }),
         new TextRun({
-          text: "\t",
+          text: "\t\t", // Use double tabs for more spacing
         }),
         new TextRun({
           text: `c) ${question.option_c}`,
           ...textStyles.normal,
         }),
         new TextRun({
-          text: "\t",
+          text: "\t\t", // Use double tabs for more spacing
         }),
         new TextRun({
           text: `d) ${question.option_d}`,
@@ -53,15 +53,15 @@ export function createQuestionParagraph(question: Question, index: number): Para
       tabStops: [
         {
           type: 'left',
-          position: 1440, // 1 inch in twips
+          position: 2000, // Increased from 1440
         },
         {
           type: 'left', 
-          position: 2880, // 2 inches in twips
+          position: 4000, // Increased from 2880
         },
         {
           type: 'left',
-          position: 4320, // 3 inches in twips
+          position: 6000, // Increased from 4320
         },
       ],
       spacing: {
