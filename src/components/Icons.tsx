@@ -7,7 +7,8 @@ import {
   FolderIcon, 
   CheckSquareIcon,
   FileTextIcon,
-  Edit
+  Edit,
+  Telegram
 } from 'lucide-react';
 
 // Custom Mix icon since it's not in lucide-react core
@@ -39,3 +40,4 @@ export const Check = CheckSquareIcon;
 export const Download = LucideDownloadIcon;
 export const FileText = FileTextIcon;
 export const EditIcon = Edit;
+export const TelegramIcon = Telegram;

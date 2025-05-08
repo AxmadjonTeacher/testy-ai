@@ -69,12 +69,6 @@ const Footer: React.FC = () => {
               <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                 <Link to="/privacy-policy#contact" className="text-white/80 hover:text-white">Contact Us</Link>
               </motion.li>
-              <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/privacy-policy" className="text-white/80 hover:text-white">Privacy Policy</Link>
-              </motion.li>
-              <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/privacy-policy#user-rights" className="text-white/80 hover:text-white">Terms of Service</Link>
-              </motion.li>
             </ul>
           </motion.div>
         </motion.div>
