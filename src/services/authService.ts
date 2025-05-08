@@ -2,8 +2,8 @@
 import { toast } from 'sonner';
 
 export const verifyAdminPassword = (password: string): boolean => {
-  // Always return true as we're removing admin restrictions
-  return true;
+  // Hard-coded admin password for demonstration purposes
+  return password === 'testoradmintesty';
 };
 
 export const handleAdminVerification = (
@@ -11,8 +11,13 @@ export const handleAdminVerification = (
   setIsAdmin: (isAdmin: boolean) => void,
   setSelectedRole: (role: 'user' | 'admin') => void
 ): void => {
-  // No verification needed anymore
-  setIsAdmin(true);
+  if (verifyAdminPassword(password)) {
+    setIsAdmin(true);
+    setSelectedRole('admin');
+    toast.success('Admin verification successful');
+  } else {
+    toast.error('Invalid admin password');
+  }
 };
 
 export const handleRoleChange = (
@@ -22,7 +27,10 @@ export const handleRoleChange = (
 ): void => {
   const role = value as 'user' | 'admin';
   setSelectedRole(role);
-  // No password dialog needed
+
+  if (role === 'admin') {
+    setAdminPasswordDialogOpen(true);
+  }
 };
 
 export const cancelAdminRole = (

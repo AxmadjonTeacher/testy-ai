@@ -7,9 +7,17 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { useUploadHistory } from '@/hooks/useUploadHistory';
 import { useQuestionDelete } from '@/hooks/useQuestionDelete';
 import { useQuestionEdit } from '@/hooks/useQuestionEdit';
+import { useAdminCheck } from '@/hooks/useAdminCheck';
+import { Shield } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import AdminVerificationDialog from './AdminVerificationDialog';
+import { toast } from 'sonner';
+import { verifyAdminPassword } from '@/services/authService';
 
 const AdminUploadTabs = () => {
   const [activeTab, setActiveTab] = useState("upload");
+  const [isAdminVerificationOpen, setIsAdminVerificationOpen] = useState(false);
+  const { isAdmin, setIsAdmin } = useAdminCheck();
   
   const { 
     uploadedFiles, 
@@ -53,6 +61,16 @@ const AdminUploadTabs = () => {
     setActiveTab("history");
   };
 
+  const handleAdminVerification = (password: string) => {
+    if (verifyAdminPassword(password)) {
+      setIsAdmin(true);
+      toast.success("Admin privileges granted");
+      setIsAdminVerificationOpen(false);
+    } else {
+      toast.error("Invalid admin password");
+    }
+  };
+
   // Initial load of history data
   useEffect(() => {
     if (activeTab === 'history') {
@@ -62,35 +80,53 @@ const AdminUploadTabs = () => {
 
   return (
     <>
-      <Tabs value={activeTab} className="w-full" onValueChange={handleTabChange}>
-        <TabsList className="mb-4">
-          <TabsTrigger value="upload">{editItemId ? "Edit Questions" : "Upload Questions"}</TabsTrigger>
-          <TabsTrigger value="history">Upload History</TabsTrigger>
-        </TabsList>
+      <div className="flex items-center justify-between mb-4">
+        <Tabs value={activeTab} className="w-full" onValueChange={handleTabChange}>
+          <TabsList>
+            <TabsTrigger value="upload">{editItemId ? "Edit Questions" : "Upload Questions"}</TabsTrigger>
+            <TabsTrigger value="history">Upload History</TabsTrigger>
+          </TabsList>
+        </Tabs>
         
-        <TabsContent value="upload">
-          <AdminUploadForm 
-            addUploadToHistory={addUploadToHistory} 
-            isEditMode={!!editItemId}
-            editData={editData}
-            onEditComplete={handleEditComplete}
-            onUploadComplete={handleUploadComplete}
-          />
-        </TabsContent>
-        
-        <TabsContent value="history">
-          <AdminUploadHistory 
-            uploadedFiles={uploadedFiles} 
-            onDeleteItem={handleDeleteItem}
-          />
-        </TabsContent>
-      </Tabs>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="ml-2 flex items-center gap-1"
+          onClick={() => setIsAdminVerificationOpen(true)}
+        >
+          <Shield className="h-4 w-4" />
+          {isAdmin ? "Admin" : "Admin Access"}
+        </Button>
+      </div>
+      
+      <TabsContent value="upload">
+        <AdminUploadForm 
+          addUploadToHistory={addUploadToHistory} 
+          isEditMode={!!editItemId}
+          editData={editData}
+          onEditComplete={handleEditComplete}
+          onUploadComplete={handleUploadComplete}
+        />
+      </TabsContent>
+      
+      <TabsContent value="history">
+        <AdminUploadHistory 
+          uploadedFiles={uploadedFiles} 
+          onDeleteItem={handleDeleteItem}
+        />
+      </TabsContent>
 
       <DeleteConfirmationDialog 
         open={isDeleteDialogOpen} 
         onOpenChange={setIsDeleteDialogOpen}
         onConfirm={handleDeleteConfirm}
         isDeleting={isDeleting}
+      />
+
+      <AdminVerificationDialog
+        open={isAdminVerificationOpen}
+        onOpenChange={setIsAdminVerificationOpen}
+        onVerify={handleAdminVerification}
       />
     </>
   );
