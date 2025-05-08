@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Trash2 } from "lucide-react";
+import { FileText, Trash2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 
 interface UploadHistoryItem {
   id: string;
@@ -23,16 +24,35 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
   uploadedFiles, 
   onDeleteItem
 }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredFiles, setFilteredFiles] = useState<UploadHistoryItem[]>(uploadedFiles);
+
+  // Filter files when search term or uploaded files change
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredFiles(uploadedFiles);
+      return;
+    }
+
+    const lowerCaseSearch = searchTerm.toLowerCase();
+    const results = uploadedFiles.filter(file => 
+      file.filename.toLowerCase().includes(lowerCaseSearch) ||
+      file.topic.toLowerCase().includes(lowerCaseSearch)
+    );
+    
+    setFilteredFiles(results);
+  }, [searchTerm, uploadedFiles]);
+
   // Group files by level
   const filesByLevel = React.useMemo(() => {
-    return uploadedFiles.reduce((acc: {[key: string]: UploadHistoryItem[]}, file) => {
+    return filteredFiles.reduce((acc: {[key: string]: UploadHistoryItem[]}, file) => {
       if (!acc[file.level]) {
         acc[file.level] = [];
       }
       acc[file.level].push(file);
       return acc;
     }, {});
-  }, [uploadedFiles]);
+  }, [filteredFiles]);
 
   // Get unique levels sorted
   const levels = React.useMemo(() => {
@@ -46,6 +66,10 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
       return a.localeCompare(b);
     });
   }, [filesByLevel]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
   // Function to render files for a specific level
   const renderLevelFiles = (level: string, files: UploadHistoryItem[]) => {
@@ -92,9 +116,19 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
         <CardDescription>
           View all previously uploaded question files.
         </CardDescription>
+        <div className="relative mt-4">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search by filename or topic..."
+            className="pl-8"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
       </CardHeader>
       <CardContent>
-        {uploadedFiles.length > 0 ? (
+        {filteredFiles.length > 0 ? (
           <Tabs defaultValue={levels.length > 0 ? levels[0] : undefined}>
             <TabsList className="mb-4">
               {levels.map(level => (
@@ -112,7 +146,12 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
           </Tabs>
         ) : (
           <div className="text-center py-8 text-neutral-dark">
-            <p>No files have been uploaded yet.</p>
+            <p>
+              {uploadedFiles.length > 0 
+                ? "No matching files found. Try a different search term." 
+                : "No files have been uploaded yet."
+              }
+            </p>
           </div>
         )}
       </CardContent>

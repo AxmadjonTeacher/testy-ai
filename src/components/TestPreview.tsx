@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Download, EditIcon } from './Icons';
+import { Download } from './Icons';
 import type { Database } from "@/integrations/supabase/types";
 
 type Question = Database["public"]["Tables"]["questions"]["Row"];
@@ -23,11 +23,6 @@ interface TestPreviewProps {
 }
 
 const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDownload }) => {
-  const handleEdit = () => {
-    // In a real implementation, this would open an editor
-    console.log("Edit test", test.id);
-  };
-
   return (
     <div className="max-w-4xl mx-auto">
       <Button variant="outline" onClick={onBack} className="mb-4">
@@ -68,15 +63,7 @@ const TestPreview: React.FC<TestPreviewProps> = ({ test, questions, onBack, onDo
             </div>
           </div>
           
-          <div className="flex space-x-3">
-            <Button 
-              className="flex items-center gap-2"
-              variant="outline"
-              onClick={handleEdit}
-            >
-              <EditIcon size={18} />
-              Edit
-            </Button>
+          <div>
             <Button 
               className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white"
               onClick={onDownload}
