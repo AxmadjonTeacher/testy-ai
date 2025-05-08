@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Mail, User, Telegram } from 'lucide-react';
+import { Mail, User, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const PrivacyPolicyPage = () => {
@@ -81,7 +81,7 @@ const PrivacyPolicyPage = () => {
 
                 <div className="bg-white border border-gray-100 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                    <Telegram className="text-primary h-6 w-6" />
+                    <MessageCircle className="text-primary h-6 w-6" />
                   </div>
                   <h3 className="font-semibold text-neutral-dark mb-2">Telegram</h3>
                   <a 
