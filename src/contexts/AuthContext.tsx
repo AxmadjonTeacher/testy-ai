@@ -73,11 +73,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
+      // First check if we have a user before trying to sign out
+      if (!user) {
+        setSession(null);
+        setUser(null);
+        toast.success('Signed out successfully!');
+        return;
+      }
+      
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        // If sign out fails but it's because the session is missing,
+        // we should still clear the local state
+        if (error.message.includes('session') || error.message.includes('Session')) {
+          console.warn("Session already expired, clearing local auth state");
+          setSession(null);
+          setUser(null);
+          toast.success('Signed out successfully!');
+          return;
+        }
+        throw error;
+      }
       toast.success('Signed out successfully!');
     } catch (error: any) {
+      console.error(`Error signing out:`, error);
       toast.error(`Error signing out: ${error.message}`);
+      
+      // Even if there's an error, we should reset the local state
+      // This ensures the user is logged out in the UI even if the server call failed
+      setSession(null);
+      setUser(null);
     }
   };
 
