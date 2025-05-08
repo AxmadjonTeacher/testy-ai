@@ -3,20 +3,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from 'sonner';
 import { makeUserAdmin } from '@/utils/adminUtils';
-import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import AdminPasswordDialog from './AdminPasswordDialog';
+import AuthFormInputs from './AuthFormInputs';
 
 const AuthForm: React.FC = () => {
   const [mode, setMode] = useState<'signIn' | 'signUp'>('signIn');
@@ -117,51 +108,16 @@ const AuthForm: React.FC = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium">Email</label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium">Password</label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-            </div>
-
-            {/* Show role selection only when signing up */}
-            {mode === 'signUp' && (
-              <div className="space-y-2">
-                <label className="block text-sm font-medium">Role</label>
-                <RadioGroup value={selectedRole} onValueChange={handleRoleChange} className="flex flex-col space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="user" id="role-user" />
-                    <Label htmlFor="role-user">User</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="admin" id="role-admin" />
-                    <Label htmlFor="role-admin">Admin</Label>
-                  </div>
-                </RadioGroup>
-                {isAdmin && (
-                  <p className="text-xs text-green-600 mt-1">
-                    Admin role verified
-                  </p>
-                )}
-              </div>
-            )}
+            <AuthFormInputs 
+              mode={mode}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              selectedRole={selectedRole}
+              handleRoleChange={handleRoleChange}
+              isAdmin={isAdmin}
+            />
 
             <Button
               type="submit"
@@ -187,35 +143,14 @@ const AuthForm: React.FC = () => {
         </CardFooter>
       </Card>
 
-      {/* Admin password verification dialog */}
-      <Dialog open={adminPasswordDialogOpen} onOpenChange={setAdminPasswordDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Admin Verification</DialogTitle>
-            <DialogDescription>
-              Please enter the admin password to continue.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <Input
-              id="admin-password"
-              type="password"
-              placeholder="Enter admin password"
-              value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
-              className="w-full"
-            />
-          </div>
-          <DialogFooter className="flex space-x-2 justify-end">
-            <Button variant="outline" onClick={cancelAdminRole}>
-              Cancel
-            </Button>
-            <Button onClick={verifyAdminPassword}>
-              Verify
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <AdminPasswordDialog
+        open={adminPasswordDialogOpen}
+        onOpenChange={setAdminPasswordDialogOpen}
+        adminPassword={adminPassword}
+        setAdminPassword={setAdminPassword}
+        onVerify={verifyAdminPassword}
+        onCancel={cancelAdminRole}
+      />
     </>
   );
 };
