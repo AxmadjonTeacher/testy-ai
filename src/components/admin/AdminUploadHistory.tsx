@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Trash2, Search } from "lucide-react";
+import { FileText, Trash2, Search, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { useAdminCheck } from '@/hooks/useAdminCheck';
+import { toast } from 'sonner';
 
 interface UploadHistoryItem {
   id: string;
@@ -24,6 +26,7 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
   uploadedFiles, 
   onDeleteItem
 }) => {
+  const { isAdmin } = useAdminCheck();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredFiles, setFilteredFiles] = useState<UploadHistoryItem[]>(uploadedFiles);
 
@@ -71,6 +74,17 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
     setSearchTerm(e.target.value);
   };
 
+  const handleDeleteAttempt = (itemId: string) => {
+    if (!isAdmin) {
+      toast.error("You don't have permission to delete files");
+      return;
+    }
+    
+    if (onDeleteItem) {
+      onDeleteItem(itemId);
+    }
+  };
+
   // Function to render files for a specific level
   const renderLevelFiles = (level: string, files: UploadHistoryItem[]) => {
     return (
@@ -92,10 +106,9 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
                   variant="destructive"
                   size="sm"
                   className="flex items-center gap-1"
-                  onClick={() => {
-                    console.log("Delete button clicked for:", upload.id);
-                    onDeleteItem(upload.id);
-                  }}
+                  onClick={() => handleDeleteAttempt(upload.id)}
+                  disabled={!isAdmin}
+                  title={!isAdmin ? "Admin permission required" : "Delete file"}
                 >
                   <Trash2 className="h-4 w-4" />
                   Delete
@@ -115,6 +128,12 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
         <CardTitle>Upload History</CardTitle>
         <CardDescription>
           View all previously uploaded question files.
+          {!isAdmin && (
+            <div className="mt-2 flex items-center text-amber-500 text-sm">
+              <ShieldAlert className="h-4 w-4 mr-1" />
+              You need admin permissions to delete files
+            </div>
+          )}
         </CardDescription>
         <div className="relative mt-4">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

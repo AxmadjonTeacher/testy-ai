@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,12 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, ShieldCheck } from "lucide-react";
 import { motion } from 'framer-motion';
+import { useAdminCheck } from '@/hooks/useAdminCheck';
 
 const Header = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const { isAdmin } = useAdminCheck();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleGetStarted = () => {
@@ -88,7 +89,6 @@ const Header = () => {
           </Link>
         </motion.div>
         
-        {/* Updated navigation section with even spacing */}
         <motion.nav 
           className="hidden md:flex items-center justify-center flex-1 mx-4"
           variants={navVariants}
@@ -106,6 +106,14 @@ const Header = () => {
                 Generate
               </Link>
             </motion.div>
+            {isAdmin && (
+              <motion.div variants={itemVariants}>
+                <Link to="/admin/upload" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300 flex items-center">
+                  <ShieldCheck className="h-4 w-4 mr-1" />
+                  Admin
+                </Link>
+              </motion.div>
+            )}
             <motion.div variants={itemVariants}>
               <Link to="/privacy-policy#data-retention" className="text-neutral-dark hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-0.5 after:bg-primary after:transition-all after:duration-300">
                 Help
@@ -137,6 +145,12 @@ const Header = () => {
                 <div className="flex items-center justify-start gap-2 p-2">
                   <div className="flex flex-col space-y-1 leading-none">
                     <p className="font-medium">{user.email}</p>
+                    {isAdmin && (
+                      <span className="text-xs text-neutral-dark flex items-center">
+                        <ShieldCheck className="h-3 w-3 mr-1 text-primary" />
+                        Admin
+                      </span>
+                    )}
                   </div>
                 </div>
                 <DropdownMenuSeparator />
@@ -144,6 +158,12 @@ const Header = () => {
                   <User className="mr-2 h-4 w-4" />
                   <span>My Tests</span>
                 </DropdownMenuItem>
+                {isAdmin && (
+                  <DropdownMenuItem onClick={() => navigate('/admin/upload')}>
+                    <ShieldCheck className="mr-2 h-4 w-4" />
+                    <span>Admin Panel</span>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>
                   <LogOut className="mr-2 h-4 w-4" />
