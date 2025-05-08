@@ -82,25 +82,29 @@ export const topicsByLevel: Record<string, string[]> = {
     "Reading" // Added reading topic
   ],
   "4": [
-    "Past Perfect Continuous",
-    "Future Perfect",
-    "Future Continuous",
-    "Conditionals Type 3",
-    "Mixed Conditionals",
-    "Reported Speech (Advanced)",
-    "Inversion",
-    "Advanced Modals",
-    "Participle Clauses",
-    "Reading" // Added reading topic
+    "First week",
+    "Second week",
+    "Third week",
+    "Fourth week",
+    "Fifth week",
+    "Sixth week",
+    "Seventh week",
+    "Eighth week",
+    "Ninth week",
+    "Tenth week",
+    "Eleventh week"
   ],
   "IELTS": [
-    "Reading",
-    "Listening",
-    "Writing Task 1",
-    "Writing Task 2",
-    "Speaking Part 1",
-    "Speaking Part 2",
-    "Speaking Part 3",
-    "Academic Vocabulary"
+    "First week",
+    "Second week",
+    "Third week",
+    "Fourth week",
+    "Fifth week",
+    "Sixth week",
+    "Seventh week",
+    "Eighth week",
+    "Ninth week",
+    "Tenth week",
+    "Eleventh week"
   ]
 };
