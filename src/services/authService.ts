@@ -1,10 +1,9 @@
 
-import { makeUserAdmin } from '@/utils/adminUtils';
 import { toast } from 'sonner';
 
 export const verifyAdminPassword = (password: string): boolean => {
-  const correctPassword = "testoradmintesty";
-  return password === correctPassword;
+  // Always return true as we're removing admin restrictions
+  return true;
 };
 
 export const handleAdminVerification = (
@@ -12,14 +11,8 @@ export const handleAdminVerification = (
   setIsAdmin: (isAdmin: boolean) => void,
   setSelectedRole: (role: 'user' | 'admin') => void
 ): void => {
-  if (verifyAdminPassword(password)) {
-    setIsAdmin(true);
-    toast.success("Admin role verified");
-  } else {
-    setIsAdmin(false);
-    setSelectedRole('user');
-    toast.error("Incorrect admin password");
-  }
+  // No verification needed anymore
+  setIsAdmin(true);
 };
 
 export const handleRoleChange = (
@@ -29,10 +22,7 @@ export const handleRoleChange = (
 ): void => {
   const role = value as 'user' | 'admin';
   setSelectedRole(role);
-  
-  if (role === 'admin') {
-    setAdminPasswordDialogOpen(true);
-  }
+  // No password dialog needed
 };
 
 export const cancelAdminRole = (

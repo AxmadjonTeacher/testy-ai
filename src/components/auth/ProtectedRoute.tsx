@@ -1,81 +1,22 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from 'sonner';
-import AccessDenied from './AccessDenied';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'admin' | 'user';
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
-  requiredRole = 'user' 
-}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user, loading } = useAuth();
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [checkingPermission, setCheckingPermission] = useState(true);
 
-  useEffect(() => {
-    const checkUserRole = async () => {
-      // First ensure the user is authenticated
-      if (!user) {
-        setHasPermission(false);
-        setCheckingPermission(false);
-        return;
-      }
-
-      // For regular user routes, being logged in is sufficient
-      if (requiredRole === 'user') {
-        setHasPermission(true);
-        setCheckingPermission(false);
-        return;
-      }
-
-      try {
-        console.log("Checking user role for:", user.id);
-        
-        // Use the has_role RPC function to check admin status
-        const { data, error } = await supabase.rpc('has_role', {
-          _role: requiredRole
-        });
-
-        if (error) {
-          console.error("Error checking role:", error);
-          setHasPermission(false);
-          toast.error(`Error verifying permissions: ${error.message}`);
-        } else {
-          console.log("User has admin permission:", data);
-          setHasPermission(data === true);
-          
-          if (!data) {
-            toast.error("You don't have permission to access this page");
-          }
-        }
-      } catch (error) {
-        console.error("Error checking permissions:", error);
-        toast.error("Error verifying permissions");
-        setHasPermission(false);
-      } finally {
-        setCheckingPermission(false);
-      }
-    };
-
-    if (!loading) {
-      checkUserRole();
-    }
-  }, [user, loading, requiredRole]);
-
-  // Show loading while checking authentication or permissions
-  if (loading || checkingPermission) {
+  // Show loading while checking authentication
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-neutral-dark">Verifying permissions...</p>
+          <p className="mt-4 text-neutral-dark">Loading...</p>
         </div>
       </div>
     );
@@ -85,13 +26,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (!user) {
     return <Navigate to="/auth" replace />;
   }
-  
-  // If authenticated but doesn't have the required role, show Access Denied
-  if (!hasPermission) {
-    return <AccessDenied />;
-  }
 
-  // If all checks pass, render the protected content
+  // If authenticated, render the children
   return <>{children}</>;
 };
 
