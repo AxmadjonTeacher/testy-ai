@@ -38,29 +38,22 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       try {
         console.log("Checking user role for:", user.id);
         
-        // Check if user has the required admin role
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('role', requiredRole)
-          .single();
+        // Use the has_role RPC function to check admin status
+        const { data, error } = await supabase.rpc('has_role', {
+          _role: requiredRole
+        });
 
         if (error) {
           console.error("Error checking role:", error);
-          if (error.code === 'PGRST116') { // No rows returned
-            setHasPermission(false);
-            console.log("User does not have admin role");
-          } else {
-            throw error;
-          }
+          setHasPermission(false);
+          toast.error(`Error verifying permissions: ${error.message}`);
         } else {
-          setHasPermission(true);
           console.log("User has admin permission:", data);
-        }
-        
-        if (!data) {
-          toast.error("You don't have permission to access this page");
+          setHasPermission(data === true);
+          
+          if (!data) {
+            toast.error("You don't have permission to access this page");
+          }
         }
       } catch (error) {
         console.error("Error checking permissions:", error);

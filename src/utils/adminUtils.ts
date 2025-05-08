@@ -56,7 +56,6 @@ export async function makeUserAdmin(userId: string) {
 }
 
 // Add utility function to make the current user an admin
-// This function is useful for development and testing
 export async function makeSelfAdmin() {
   try {
     const { data: { user } } = await supabase.auth.getUser();

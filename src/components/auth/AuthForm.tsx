@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from 'sonner';
-import { makeUserAdmin } from '@/utils/adminUtils';
+import { makeUserAdmin, makeSelfAdmin } from '@/utils/adminUtils';
 import AdminPasswordDialog from './AdminPasswordDialog';
 import AuthFormInputs from './AuthFormInputs';
 import { handleAdminVerification, handleRoleChange, cancelAdminRole } from '@/services/authService';
@@ -34,12 +34,12 @@ const AuthForm: React.FC = () => {
         // Sign up new user
         await signUp(email, password);
         
-        // Once signed up, sign in automatically
+        // Sign in automatically after signup
         await signIn(email, password);
         
-        // After successful sign in, make user admin if that role was selected and verified
+        // If admin role was selected and verified, apply it after sign in
         if (isAdmin) {
-          await makeUserAdmin(user?.id || '');
+          await makeSelfAdmin();
           toast.success("Admin role has been applied to your account");
         }
         
