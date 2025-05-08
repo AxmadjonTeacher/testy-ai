@@ -5,7 +5,6 @@ import { FileText, Trash2, Search, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { useAdminCheck } from '@/hooks/useAdminCheck';
 import { toast } from 'sonner';
 
 interface UploadHistoryItem {
@@ -20,13 +19,14 @@ interface UploadHistoryItem {
 interface AdminUploadHistoryProps {
   uploadedFiles: UploadHistoryItem[];
   onDeleteItem?: (itemId: string) => void;
+  isAdmin?: boolean;
 }
 
 const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({ 
   uploadedFiles, 
-  onDeleteItem
+  onDeleteItem,
+  isAdmin = false
 }) => {
-  const { isAdmin } = useAdminCheck();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredFiles, setFilteredFiles] = useState<UploadHistoryItem[]>(uploadedFiles);
 
@@ -125,7 +125,6 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Upload History</CardTitle>
         <CardDescription>
           View all previously uploaded question files.
           {!isAdmin && (

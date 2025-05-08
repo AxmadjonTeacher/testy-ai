@@ -98,22 +98,25 @@ const AdminUploadTabs = () => {
           </TabsContent>
           
           <TabsContent value="history">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium">Upload History</h3>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center gap-1"
+                onClick={() => setIsAdminVerificationOpen(true)}
+              >
+                <Shield className="h-4 w-4" />
+                {isAdmin ? "Admin" : "Admin Access"}
+              </Button>
+            </div>
             <AdminUploadHistory 
               uploadedFiles={uploadedFiles} 
               onDeleteItem={handleDeleteItem}
+              isAdmin={isAdmin}
             />
           </TabsContent>
         </Tabs>
-        
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="ml-2 flex items-center gap-1"
-          onClick={() => setIsAdminVerificationOpen(true)}
-        >
-          <Shield className="h-4 w-4" />
-          {isAdmin ? "Admin" : "Admin Access"}
-        </Button>
       </div>
 
       <DeleteConfirmationDialog 
