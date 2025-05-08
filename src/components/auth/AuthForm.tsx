@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { makeUserAdmin } from '@/utils/adminUtils';
 import AdminPasswordDialog from './AdminPasswordDialog';
 import AuthFormInputs from './AuthFormInputs';
+import { handleAdminVerification, handleRoleChange, cancelAdminRole } from '@/services/authService';
 
 const AuthForm: React.FC = () => {
   const [mode, setMode] = useState<'signIn' | 'signUp'>('signIn');
@@ -32,12 +33,14 @@ const AuthForm: React.FC = () => {
       } else {
         // Sign up new user
         await signUp(email, password);
+        
         // Once signed up, sign in automatically
         await signIn(email, password);
         
-        // Make the user admin if they selected the admin role and the password was verified
-        if (isAdmin && user?.id) {
-          await makeUserAdmin(user.id);
+        // After successful sign in, make user admin if that role was selected and verified
+        if (isAdmin) {
+          await makeUserAdmin(user?.id || '');
+          toast.success("Admin role has been applied to your account");
         }
         
         navigate('/dashboard');
@@ -59,38 +62,18 @@ const AuthForm: React.FC = () => {
     setAdminPassword('');
   };
 
-  const handleRoleChange = (value: string) => {
-    const role = value as 'user' | 'admin';
-    setSelectedRole(role);
-    
-    if (role === 'admin') {
-      setAdminPasswordDialogOpen(true);
-    } else {
-      setIsAdmin(false);
-    }
-  };
-
-  const verifyAdminPassword = () => {
-    const correctPassword = "testoradmintesty";
-    
-    if (adminPassword === correctPassword) {
-      setIsAdmin(true);
-      toast.success("Admin role verified");
-    } else {
-      setIsAdmin(false);
-      setSelectedRole('user');
-      toast.error("Incorrect admin password");
-    }
-    
+  const handleAdminPasswordVerify = () => {
+    handleAdminVerification(adminPassword, setIsAdmin, setSelectedRole);
     setAdminPasswordDialogOpen(false);
     setAdminPassword('');
   };
 
-  const cancelAdminRole = () => {
-    setSelectedRole('user');
-    setIsAdmin(false);
-    setAdminPasswordDialogOpen(false);
-    setAdminPassword('');
+  const handleAdminRoleChange = (value: string) => {
+    handleRoleChange(value, setSelectedRole, setAdminPasswordDialogOpen);
+  };
+
+  const handleCancelAdminRole = () => {
+    cancelAdminRole(setSelectedRole, setIsAdmin, setAdminPasswordDialogOpen, setAdminPassword);
   };
 
   return (
@@ -115,7 +98,7 @@ const AuthForm: React.FC = () => {
               password={password}
               setPassword={setPassword}
               selectedRole={selectedRole}
-              handleRoleChange={handleRoleChange}
+              handleRoleChange={handleAdminRoleChange}
               isAdmin={isAdmin}
             />
 
@@ -148,8 +131,8 @@ const AuthForm: React.FC = () => {
         onOpenChange={setAdminPasswordDialogOpen}
         adminPassword={adminPassword}
         setAdminPassword={setAdminPassword}
-        onVerify={verifyAdminPassword}
-        onCancel={cancelAdminRole}
+        onVerify={handleAdminPasswordVerify}
+        onCancel={handleCancelAdminRole}
       />
     </>
   );

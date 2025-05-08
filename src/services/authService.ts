@@ -32,8 +32,6 @@ export const handleRoleChange = (
   
   if (role === 'admin') {
     setAdminPasswordDialogOpen(true);
-  } else {
-    setIsAdmin(false);
   }
 };
 

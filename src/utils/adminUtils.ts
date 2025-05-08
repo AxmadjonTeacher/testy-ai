@@ -4,6 +4,14 @@ import { toast } from "sonner";
 
 export async function makeUserAdmin(userId: string) {
   try {
+    if (!userId) {
+      console.error("No user ID provided for makeUserAdmin");
+      toast.error("Failed to grant admin role: No user ID");
+      return false;
+    }
+    
+    console.log("Attempting to make user admin:", userId);
+    
     // Check if the role already exists for this user
     const { data: existingRole, error: checkError } = await supabase
       .from('user_roles')
@@ -14,12 +22,14 @@ export async function makeUserAdmin(userId: string) {
     
     if (checkError && checkError.code !== 'PGRST116') {
       // Error other than "no rows returned"
+      console.error("Error checking existing role:", checkError);
       throw checkError;
     }
     
     if (existingRole) {
+      console.log("User is already an admin");
       toast.info("User is already an admin");
-      return;
+      return true;
     }
     
     // Insert the admin role for this user
@@ -30,8 +40,12 @@ export async function makeUserAdmin(userId: string) {
         role: 'admin'
       });
     
-    if (error) throw error;
+    if (error) {
+      console.error("Error inserting admin role:", error);
+      throw error;
+    }
     
+    console.log("Admin role granted successfully");
     toast.success("Admin role granted successfully");
     return true;
   } catch (error) {
