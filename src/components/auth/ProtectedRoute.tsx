@@ -1,9 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from 'sonner';
+import AccessDenied from './AccessDenied';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -17,7 +18,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { user, loading } = useAuth();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [checkingPermission, setCheckingPermission] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -60,7 +60,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     if (!loading) {
       checkUserRole();
     }
-  }, [user, loading, requiredRole, navigate]);
+  }, [user, loading, requiredRole]);
 
   // Show loading while checking authentication or permissions
   if (loading || checkingPermission) {
@@ -74,9 +74,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     );
   }
 
-  // If not authenticated or doesn't have permission, redirect to login
-  if (!hasPermission) {
+  // If not authenticated, redirect to login
+  if (!user) {
     return <Navigate to="/auth" replace />;
+  }
+  
+  // If authenticated but doesn't have the required role, show Access Denied
+  if (!hasPermission) {
+    return <AccessDenied />;
   }
 
   // If all checks pass, render the protected content
