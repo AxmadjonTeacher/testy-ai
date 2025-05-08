@@ -86,6 +86,23 @@ const AdminUploadTabs = () => {
             <TabsTrigger value="upload">{editItemId ? "Edit Questions" : "Upload Questions"}</TabsTrigger>
             <TabsTrigger value="history">Upload History</TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="upload">
+            <AdminUploadForm 
+              addUploadToHistory={addUploadToHistory} 
+              isEditMode={!!editItemId}
+              editData={editData}
+              onEditComplete={handleEditComplete}
+              onUploadComplete={handleUploadComplete}
+            />
+          </TabsContent>
+          
+          <TabsContent value="history">
+            <AdminUploadHistory 
+              uploadedFiles={uploadedFiles} 
+              onDeleteItem={handleDeleteItem}
+            />
+          </TabsContent>
         </Tabs>
         
         <Button 
@@ -98,23 +115,6 @@ const AdminUploadTabs = () => {
           {isAdmin ? "Admin" : "Admin Access"}
         </Button>
       </div>
-      
-      <TabsContent value="upload">
-        <AdminUploadForm 
-          addUploadToHistory={addUploadToHistory} 
-          isEditMode={!!editItemId}
-          editData={editData}
-          onEditComplete={handleEditComplete}
-          onUploadComplete={handleUploadComplete}
-        />
-      </TabsContent>
-      
-      <TabsContent value="history">
-        <AdminUploadHistory 
-          uploadedFiles={uploadedFiles} 
-          onDeleteItem={handleDeleteItem}
-        />
-      </TabsContent>
 
       <DeleteConfirmationDialog 
         open={isDeleteDialogOpen} 

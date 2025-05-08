@@ -38,5 +38,5 @@ export function useAdminCheck() {
     checkAdminStatus();
   }, [user]);
 
-  return { isAdmin, checkingAdmin };
+  return { isAdmin, setIsAdmin, checkingAdmin };
 }
