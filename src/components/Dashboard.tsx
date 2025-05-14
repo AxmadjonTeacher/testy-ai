@@ -82,16 +82,21 @@ const Dashboard: React.FC = () => {
         ? questionsData as Question[]
         : [];
       
+      // Create the document data with proper grade handling
+      // Since 'grade' is not in the GeneratedTest type, we check if it exists in topics
+      const gradeFromTopics = test.topics?.find(topic => topic.startsWith('Grade'))?.replace('Grade ', '') || '';
+      
       const docData: TestExportData = {
         title: test.name,
         teacher: test.teacher_name || "",
         level: test.level,
-        grade: test.grade || "",  // Make sure grade is properly handled
+        grade: gradeFromTopics,  // Use the extracted grade or empty string
         questions: questions,
         includeAnswers: test.include_answers || true,
         dateGenerated: new Date(test.created_at).toLocaleDateString()
       };
       
+      console.log("Generating document with", questions.length, "questions");
       const blob = await generateWordDocument(docData);
       downloadDocument(blob, `${test.name.toLowerCase().replace(/\s+/g, '_')}.docx`);
       toast.dismiss();
