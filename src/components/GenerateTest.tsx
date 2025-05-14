@@ -55,13 +55,6 @@ const GenerateTest: React.FC = () => {
       
       console.log(`Generating document with ${generatedQuestions.length} questions`);
       
-      // Log if an answer sheet will be added based on question count
-      if ([10, 15, 20, 30].includes(generatedQuestions.length)) {
-        console.log(`Answer sheet will be added for ${generatedQuestions.length} questions`);
-      } else {
-        console.log(`No answer sheet template available for ${generatedQuestions.length} questions`);
-      }
-      
       toast.info("Preparing your document for download...");
       const blob = await generateWordDocument(docData);
       

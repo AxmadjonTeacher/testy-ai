@@ -99,13 +99,6 @@ const Dashboard: React.FC = () => {
       
       console.log(`Generating document with ${questions.length} questions`);
       
-      // Log if an answer sheet will be added based on question count
-      if ([10, 15, 20, 30].includes(questions.length)) {
-        console.log(`Answer sheet will be added for ${questions.length} questions`);
-      } else {
-        console.log(`No answer sheet template available for ${questions.length} questions`);
-      }
-      
       const blob = await generateWordDocument(docData);
       downloadDocument(blob, `${test.name.toLowerCase().replace(/\s+/g, '_')}.docx`);
       toast.dismiss();
