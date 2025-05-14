@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -76,14 +75,12 @@ const Dashboard: React.FC = () => {
       toast.loading("Preparing your document for download...");
       
       // Parse the questions_json and ensure it's properly typed
-      // The data comes as Json type from database, so we need to cast it to Question[]
       const questionsData = test.questions_json as unknown;
       const questions = Array.isArray(questionsData) 
         ? questionsData as Question[]
         : [];
       
-      // Create the document data with proper grade handling
-      // Since 'grade' is not in the GeneratedTest type, we check if it exists in topics
+      // Extract grade from topics array if it exists
       const gradeFromTopics = test.topics?.find(topic => topic.startsWith('Grade'))?.replace('Grade ', '') || '';
       
       const docData: TestExportData = {
@@ -96,7 +93,15 @@ const Dashboard: React.FC = () => {
         dateGenerated: new Date(test.created_at).toLocaleDateString()
       };
       
-      console.log("Generating document with", questions.length, "questions");
+      console.log(`Generating document with ${questions.length} questions`);
+      
+      // Log if an answer sheet will be added based on question count
+      if ([10, 15, 20, 30].includes(questions.length)) {
+        console.log(`Answer sheet will be added for ${questions.length} questions`);
+      } else {
+        console.log(`No answer sheet template available for ${questions.length} questions`);
+      }
+      
       const blob = await generateWordDocument(docData);
       downloadDocument(blob, `${test.name.toLowerCase().replace(/\s+/g, '_')}.docx`);
       toast.dismiss();

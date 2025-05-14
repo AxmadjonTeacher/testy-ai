@@ -45,10 +45,15 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
     questionCounter++;
   });
   
+  console.log(`Creating document with ${questions.length} questions`);
+  
   // Add answer sheet if the number of questions matches one of our templates
   if ([10, 15, 20, 30].includes(questions.length)) {
+    console.log(`Adding answer sheet for ${questions.length} questions`);
     const answerSheetParagraphs = createAnswerSheetSection(questions.length);
     documentChildren.push(...answerSheetParagraphs);
+  } else {
+    console.log(`No answer sheet template available for ${questions.length} questions`);
   }
   
   // Add answer key if requested

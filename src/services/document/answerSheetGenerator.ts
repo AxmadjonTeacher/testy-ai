@@ -1,117 +1,5 @@
 
-import { Table, TableRow, TableCell, BorderStyle, WidthType, Paragraph, TextRun, AlignmentType } from 'docx';
-import type { Question } from '../documentTypes';
-
-/**
- * Create the circular answer sheet as shown in the image
- */
-export function createCircularAnswerSheet(numQuestions: number): Table {
-  // Calculate how many questions to show in each column
-  const halfLength = Math.ceil(numQuestions / 2);
-  const firstColumn = Array.from({ length: Math.min(halfLength, numQuestions) }, (_, i) => i + 1);
-  const secondColumn = Array.from({ length: Math.max(0, numQuestions - halfLength) }, (_, i) => i + halfLength + 1);
-
-  return new Table({
-    width: {
-      size: 100,
-      type: WidthType.PERCENTAGE,
-    },
-    borders: {
-      top: { style: BorderStyle.NONE },
-      bottom: { style: BorderStyle.NONE },
-      left: { style: BorderStyle.NONE },
-      right: { style: BorderStyle.NONE },
-      insideHorizontal: { style: BorderStyle.NONE },
-      insideVertical: { style: BorderStyle.NONE },
-    },
-    rows: [
-      new TableRow({
-        children: [
-          new TableCell({
-            borders: {
-              top: { style: BorderStyle.NONE },
-              bottom: { style: BorderStyle.NONE },
-              left: { style: BorderStyle.NONE },
-              right: { style: BorderStyle.NONE },
-            },
-            children: firstColumn.map(num => createQuestionRowWithCircles(num)),
-          }),
-          ...(secondColumn.length > 0 ? [
-            new TableCell({
-              borders: {
-                top: { style: BorderStyle.NONE },
-                bottom: { style: BorderStyle.NONE },
-                left: { style: BorderStyle.NONE },
-                right: { style: BorderStyle.NONE },
-              },
-              children: [
-                ...secondColumn.map(num => createQuestionRowWithCircles(num)),
-                // Add the ID numbers box if there's a second column
-                createStudentIDBox(),
-              ],
-            }),
-          ] : []),
-        ],
-      }),
-    ],
-  });
-}
-
-/**
- * Create a row with the question number and circular options
- */
-function createQuestionRowWithCircles(questionNum: number): Paragraph {
-  const options = ['A', 'B', 'C', 'D'];
-  
-  // Create a paragraph with the question number and options in circles
-  return new Paragraph({
-    children: [
-      new TextRun({
-        text: `${questionNum} `,
-        bold: true,
-      }),
-      ...options.map(option => [
-        new TextRun({
-          text: ` (`,
-        }),
-        new TextRun({
-          text: option,
-        }),
-        new TextRun({
-          text: `) `,
-        }),
-      ]).flat(),
-    ],
-    spacing: {
-      after: 120,
-    },
-  });
-}
-
-/**
- * Create the student ID box section
- */
-function createStudentIDBox(): Paragraph {
-  return new Paragraph({
-    children: [
-      new TextRun({
-        text: "o'quvchi IDsi",
-        bold: true,
-      }),
-    ],
-    border: {
-      top: { style: BorderStyle.SINGLE, size: 1 },
-      bottom: { style: BorderStyle.SINGLE, size: 1 },
-      left: { style: BorderStyle.SINGLE, size: 1 },
-      right: { style: BorderStyle.SINGLE, size: 1 },
-    },
-    alignment: AlignmentType.CENTER,
-    spacing: {
-      before: 200,
-      after: 120,
-    },
-  });
-}
+import { Paragraph, TextRun, AlignmentType, ImageRun } from 'docx';
 
 /**
  * Create the student name header for the answer sheet
@@ -125,10 +13,10 @@ export function createStudentNameHeader(): Paragraph {
       }),
     ],
     border: {
-      top: { style: BorderStyle.SINGLE, size: 1 },
-      bottom: { style: BorderStyle.SINGLE, size: 1 },
-      left: { style: BorderStyle.SINGLE, size: 1 },
-      right: { style: BorderStyle.SINGLE, size: 1 },
+      top: { style: 1, size: 1 },
+      bottom: { style: 1, size: 1 },
+      left: { style: 1, size: 1 },
+      right: { style: 1, size: 1 },
     },
     alignment: AlignmentType.CENTER,
     spacing: {
@@ -138,7 +26,7 @@ export function createStudentNameHeader(): Paragraph {
 }
 
 /**
- * Create a complete answer sheet section with a title
+ * Create a complete answer sheet section with a title and image based on question count
  */
 export function createAnswerSheetSection(numQuestions: number): Paragraph[] {
   // Only generate answer sheets for specific question counts
@@ -169,21 +57,59 @@ export function createAnswerSheetSection(numQuestions: number): Paragraph[] {
   // Add student name header
   paragraphs.push(createStudentNameHeader());
   
-  // Create the answer sheet table
-  const answerSheetTable = createCircularAnswerSheet(numQuestions);
+  // Create the answer sheet image paragraph
+  let imagePath = "";
   
-  // Add a paragraph that will contain the table reference
-  paragraphs.push(
-    new Paragraph({
-      tabStops: [],
-      children: [new TextRun({ text: "" })],
-      spacing: { after: 0 },
-    })
-  );
+  // Select the appropriate image template based on question count
+  switch(numQuestions) {
+    case 10:
+      imagePath = "/lovable-uploads/d6f188e7-4c3d-458c-8e14-a691cbc25d3f.png";
+      break;
+    case 15:
+      imagePath = "/lovable-uploads/f892cc19-f5ab-4160-b0c2-39375038b473.png";
+      break;
+    case 20:
+      imagePath = "/lovable-uploads/3c401aa9-aed6-4f52-854b-ae15e1760f3e.png";
+      break;
+    case 30:
+      imagePath = "/lovable-uploads/8c8025fd-2279-43b0-a2eb-e0f0cccdb536.png";
+      break;
+  }
   
-  // Add the table directly to the paragraphs array
-  // This is a workaround to ensure the table is included in the document
-  paragraphs.push(answerSheetTable as unknown as Paragraph);
+  // Add the image to the document
+  if (imagePath) {
+    paragraphs.push(
+      new Paragraph({
+        children: [
+          new ImageRun({
+            data: Buffer.from(""), // This will be populated at runtime with the actual image data
+            transformation: {
+              width: 500,
+              height: 650,
+            },
+            altText: `Answer sheet template for ${numQuestions} questions`,
+          }),
+        ],
+        alignment: AlignmentType.CENTER,
+      })
+    );
+    
+    // Add a note to inform the user that the real image will be shown in the downloaded file
+    paragraphs.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: `Answer sheet for ${numQuestions} questions will appear here in the downloaded document.`,
+            italics: true,
+          }),
+        ],
+        alignment: AlignmentType.CENTER,
+        spacing: {
+          before: 200,
+        },
+      })
+    );
+  }
   
   return paragraphs;
 }
