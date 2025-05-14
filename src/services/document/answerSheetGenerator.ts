@@ -112,3 +112,64 @@ function createStudentIDBox(): Paragraph {
     },
   });
 }
+
+/**
+ * Create the student name header for the answer sheet
+ */
+export function createStudentNameHeader(): Paragraph {
+  return new Paragraph({
+    children: [
+      new TextRun({
+        text: "Ism va familiya (To'rtburchak tashqarisiga yozmang)",
+        bold: true,
+      }),
+    ],
+    border: {
+      top: { style: BorderStyle.SINGLE, size: 1 },
+      bottom: { style: BorderStyle.SINGLE, size: 1 },
+      left: { style: BorderStyle.SINGLE, size: 1 },
+      right: { style: BorderStyle.SINGLE, size: 1 },
+    },
+    alignment: AlignmentType.CENTER,
+    spacing: {
+      after: 360,
+    },
+  });
+}
+
+/**
+ * Create a complete answer sheet section with a title
+ */
+export function createAnswerSheetSection(numQuestions: number): Paragraph[] {
+  // Only generate answer sheets for specific question counts
+  if (![10, 15, 20, 30].includes(numQuestions)) {
+    return [];
+  }
+  
+  return [
+    new Paragraph({
+      pageBreakBefore: true,
+      children: [
+        new TextRun({
+          text: "Answer Sheet",
+          bold: true,
+          size: 24, // 12pt
+        }),
+      ],
+      alignment: AlignmentType.CENTER,
+      spacing: {
+        after: 240,
+      },
+    }),
+    createStudentNameHeader(),
+    new Paragraph({
+      children: [
+        // This paragraph contains the Table, which will be rendered
+      ],
+      spacing: {
+        after: 240,
+      },
+      children: [{ type: "table", table: createCircularAnswerSheet(numQuestions) }],
+    }),
+  ];
+}

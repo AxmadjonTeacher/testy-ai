@@ -8,7 +8,8 @@ import {
   createStudentInfoParagraph,
   createInstructionsParagraph,
   createQuestionParagraph,
-  createAnswerKeySection
+  createAnswerKeySection,
+  createAnswerSheetSection
 } from './documentComponents';
 import type { TestExportData, Question } from '../documentTypes';
 
@@ -43,6 +44,12 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
     documentChildren.push(...questionParagraphs);
     questionCounter++;
   });
+  
+  // Add answer sheet if the number of questions matches one of our templates
+  if ([10, 15, 20, 30].includes(questions.length)) {
+    const answerSheetParagraphs = createAnswerSheetSection(questions.length);
+    documentChildren.push(...answerSheetParagraphs);
+  }
   
   // Add answer key if requested
   if (includeAnswers) {
