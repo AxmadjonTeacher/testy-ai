@@ -53,6 +53,7 @@ const GenerateTest: React.FC = () => {
         dateGenerated: new Date().toLocaleDateString()
       };
       
+      console.log("Generating document with", generatedQuestions.length, "questions");
       toast.info("Preparing your document for download...");
       const blob = await generateWordDocument(docData);
       

@@ -67,7 +67,7 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
             margin: pageMargins,
           },
         },
-        children: documentChildren,
+        children: documentChildren.filter(child => child !== null),
       },
     ],
   });

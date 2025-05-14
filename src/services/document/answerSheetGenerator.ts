@@ -146,36 +146,44 @@ export function createAnswerSheetSection(numQuestions: number): Paragraph[] {
     return [];
   }
   
-  const answerSheetTitle = new Paragraph({
-    pageBreakBefore: true,
-    children: [
-      new TextRun({
-        text: "Answer Sheet",
-        bold: true,
-        size: 24, // 12pt
-      }),
-    ],
-    alignment: AlignmentType.CENTER,
-    spacing: {
-      after: 240,
-    },
-  });
+  const paragraphs: Paragraph[] = [];
   
-  const studentNameHeader = createStudentNameHeader();
+  // Add title with page break
+  paragraphs.push(
+    new Paragraph({
+      pageBreakBefore: true,
+      children: [
+        new TextRun({
+          text: "Answer Sheet",
+          bold: true,
+          size: 24, // 12pt
+        }),
+      ],
+      alignment: AlignmentType.CENTER,
+      spacing: {
+        after: 240,
+      },
+    })
+  );
   
-  // Create a paragraph that will contain the table
-  const tableContainer = new Paragraph({
-    spacing: {
-      after: 240,
-    },
-  });
+  // Add student name header
+  paragraphs.push(createStudentNameHeader());
   
-  // Create the answer sheet paragraphs
-  const result = [answerSheetTitle, studentNameHeader, tableContainer];
+  // Create the answer sheet table
+  const answerSheetTable = createCircularAnswerSheet(numQuestions);
   
-  // Return the result with the table
-  // The table will be properly inserted during document rendering
-  result.push({ table: createCircularAnswerSheet(numQuestions) } as any);
+  // Add a paragraph that will contain the table reference
+  paragraphs.push(
+    new Paragraph({
+      tabStops: [],
+      children: [new TextRun({ text: "" })],
+      spacing: { after: 0 },
+    })
+  );
   
-  return result;
+  // Add the table directly to the paragraphs array
+  // This is a workaround to ensure the table is included in the document
+  paragraphs.push(answerSheetTable as unknown as Paragraph);
+  
+  return paragraphs;
 }

@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
         title: test.name,
         teacher: test.teacher_name || "",
         level: test.level,
-        grade: "",  // The grade information might be in the teacher_name, or we need to add it
+        grade: test.grade || "",  // Make sure grade is properly handled
         questions: questions,
         includeAnswers: test.include_answers || true,
         dateGenerated: new Date(test.created_at).toLocaleDateString()
