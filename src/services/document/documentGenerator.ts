@@ -11,6 +11,7 @@ import {
   createAnswerKeySection,
   createAnswerSheetSection
 } from './documentComponents';
+import { fetchImageData } from './documentUtils';
 import type { TestExportData, Question } from '../documentTypes';
 
 /**

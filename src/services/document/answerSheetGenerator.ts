@@ -1,5 +1,6 @@
 
 import { Paragraph, TextRun, AlignmentType, ImageRun } from 'docx';
+import { fetchImageData } from './documentUtils';
 
 /**
  * Create the student name header for the answer sheet
@@ -76,40 +77,39 @@ export function createAnswerSheetSection(numQuestions: number): Paragraph[] {
       break;
   }
   
-  // Add the image to the document
-  if (imagePath) {
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new ImageRun({
-            data: new Uint8Array(), // Use Uint8Array instead of Buffer
-            transformation: {
-              width: 500,
-              height: 650,
-            },
-            altText: `Answer sheet template for ${numQuestions} questions`,
-          }),
-        ],
-        alignment: AlignmentType.CENTER,
-      })
-    );
-    
-    // Add a note to inform the user that the real image will be shown in the downloaded file
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: `Answer sheet for ${numQuestions} questions will appear here in the downloaded document.`,
-            italics: true,
-          }),
-        ],
-        alignment: AlignmentType.CENTER,
-        spacing: {
-          before: 200,
-        },
-      })
-    );
-  }
+  // Add the image to the document - but don't try to load it here
+  // Instead use an empty Uint8Array which will be replaced at runtime
+  paragraphs.push(
+    new Paragraph({
+      children: [
+        new ImageRun({
+          data: new Uint8Array(), // Empty placeholder - will be replaced in documentGenerator
+          transformation: {
+            width: 500,
+            height: 650,
+          },
+          altText: `Answer sheet template for ${numQuestions} questions`,
+        }),
+      ],
+      alignment: AlignmentType.CENTER,
+    })
+  );
+  
+  // Add a note to inform the user that the real image will be shown in the downloaded file
+  paragraphs.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: `Answer sheet for ${numQuestions} questions will appear here in the downloaded document.`,
+          italics: true,
+        }),
+      ],
+      alignment: AlignmentType.CENTER,
+      spacing: {
+        before: 200,
+      },
+    })
+  );
   
   return paragraphs;
 }

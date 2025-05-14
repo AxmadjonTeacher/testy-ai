@@ -1,3 +1,4 @@
+
 /**
  * Document utility functions
  */
@@ -9,6 +10,10 @@ export async function fetchImageData(imageUrl: string): Promise<Uint8Array> {
   try {
     // For browser environments, we need to use fetch + ArrayBuffer
     const response = await fetch(imageUrl);
+    if (!response.ok) {
+      console.error(`Failed to fetch image: ${response.status} ${response.statusText}`);
+      return new Uint8Array();
+    }
     const arrayBuffer = await response.arrayBuffer();
     return new Uint8Array(arrayBuffer);
   } catch (error) {
