@@ -82,7 +82,7 @@ export function createAnswerSheetSection(numQuestions: number): Paragraph[] {
       new Paragraph({
         children: [
           new ImageRun({
-            data: Buffer.from(""), // This will be populated at runtime with the actual image data
+            data: new Uint8Array(), // Use Uint8Array instead of Buffer
             transformation: {
               width: 500,
               height: 650,
