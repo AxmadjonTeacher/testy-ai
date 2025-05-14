@@ -13,10 +13,10 @@ export function createStudentNameHeader(): Paragraph {
       }),
     ],
     border: {
-      top: { style: 1, size: 1 },
-      bottom: { style: 1, size: 1 },
-      left: { style: 1, size: 1 },
-      right: { style: 1, size: 1 },
+      top: { style: "single", size: 1 },
+      bottom: { style: "single", size: 1 },
+      left: { style: "single", size: 1 },
+      right: { style: "single", size: 1 },
     },
     alignment: AlignmentType.CENTER,
     spacing: {
