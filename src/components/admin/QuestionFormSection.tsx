@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { QuestionFormData } from './QuestionForm';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 interface QuestionFormSectionProps {
-  onSubmit: (data: { level: string; topic: string }) => void;
+  onSubmit: (data: { subject: string; level: string; topic: string }) => void;
   addUploadToHistory: (newUpload: any) => void;
   handleSaveQuestions: (questions: QuestionFormData[]) => Promise<void>;
   isEditMode?: boolean;
@@ -32,6 +33,7 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
 }) => {
   const form = useForm({
     defaultValues: {
+      subject: editData?.subject || "English",
       level: editData?.level || "",
       topic: editData?.topic || ""
     }
@@ -41,12 +43,14 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
   React.useEffect(() => {
     if (isEditMode && editData) {
       form.reset({
+        subject: editData.subject || "English",
         level: editData.level,
         topic: editData.topic
       });
     }
   }, [isEditMode, editData, form]);
   
+  const subject = form.watch("subject");
   const level = form.watch("level");
 
   return (
@@ -88,7 +92,7 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
                   <LevelSelector 
                     value={field.value} 
                     onChange={field.onChange}
-                    subject={form.watch("subject")}
+                    subject={subject}
                     disabled={isEditMode}
                   />
                 </FormControl>
@@ -106,8 +110,8 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
                   <TopicSelector 
                     value={field.value}
                     onChange={field.onChange}
-                    subject={form.watch("subject")}
-                    level={form.watch("level")}
+                    subject={subject}
+                    level={level}
                     disabled={isEditMode}
                   />
                 </FormControl>
@@ -129,7 +133,7 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
         {isEditMode && editData && editData.questions && editData.questions.length > 0 && (
           <div className="pt-4">
             <p className="mb-4 text-sm text-neutral-dark">
-              Editing {editData.questions.length} questions for {editData.level} - {editData.topic}
+              Editing {editData.questions.length} questions for {editData.subject} - {editData.level} - {editData.topic}
             </p>
             <Button 
               type="submit"
