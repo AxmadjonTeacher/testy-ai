@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import LevelSelector from './LevelSelector';
 import TopicSelector from './TopicSelector';
 import FileQuestionUpload from './FileQuestionUpload';
 import { QuestionFormData } from './QuestionForm';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 interface QuestionFormSectionProps {
   onSubmit: (data: { level: string; topic: string }) => void;
@@ -52,17 +52,43 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <FormField
+            control={form.control}
+            name="subject"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Subject</FormLabel>
+                <FormControl>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    disabled={isEditMode}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select subject" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="English">English</SelectItem>
+                      <SelectItem value="Math">Mathematics</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="level"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>English Level</FormLabel>
+                <FormLabel>Level</FormLabel>
                 <FormControl>
                   <LevelSelector 
                     value={field.value} 
                     onChange={field.onChange}
+                    subject={form.watch("subject")}
                     disabled={isEditMode}
                   />
                 </FormControl>
@@ -80,7 +106,8 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
                   <TopicSelector 
                     value={field.value}
                     onChange={field.onChange}
-                    level={level}
+                    subject={form.watch("subject")}
+                    level={form.watch("level")}
                     disabled={isEditMode}
                   />
                 </FormControl>

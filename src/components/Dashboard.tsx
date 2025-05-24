@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from 'sonner';
@@ -90,6 +89,7 @@ const Dashboard: React.FC = () => {
       const docData: TestExportData = {
         title: test.name,
         teacher: test.teacher_name || "",
+        subject: test.subject,
         level: test.level,
         grade: gradeFromTopics,  // Use the extracted grade or empty string
         questions: questions,
@@ -97,7 +97,7 @@ const Dashboard: React.FC = () => {
         dateGenerated: new Date(test.created_at).toLocaleDateString()
       };
       
-      console.log(`Generating document with ${questions.length} questions`);
+      console.log(`Generating ${test.subject} document with ${questions.length} questions`);
       
       const blob = await generateWordDocument(docData);
       downloadDocument(blob, `${test.name.toLowerCase().replace(/\s+/g, '_')}.docx`);

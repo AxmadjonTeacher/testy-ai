@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import TopicSelector from './TopicSelector';
 import { TestParams } from '@/services/testGenerationService';
+import { subjects, getLevelsForSubject } from '@/utils/subjectTopics';
 
 interface TestGenerationFormProps {
   onGenerate: (params: TestParams) => Promise<boolean>;
@@ -20,11 +21,25 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
   isEditMode = false,
   editTestId = null
 }) => {
+  const [subject, setSubject] = useState("");
   const [englishLevel, setEnglishLevel] = useState("");
   const [teacherName, setTeacherName] = useState("");
   const [grade, setGrade] = useState("");
   const [numQuestions, setNumQuestions] = useState("15");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [availableLevels, setAvailableLevels] = useState<Array<{value: string, label: string}>>([]);
+
+  // Update available levels when subject changes
+  useEffect(() => {
+    if (subject) {
+      const levels = getLevelsForSubject(subject);
+      setAvailableLevels(levels);
+      setEnglishLevel(""); // Reset level when subject changes
+      setSelectedTopics([]); // Reset topics when subject changes
+    } else {
+      setAvailableLevels([]);
+    }
+  }, [subject]);
 
   // If in edit mode, we would load the test data here
   useEffect(() => {
@@ -35,6 +50,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
       
       // Mock data - in a real app would come from an API
       const mockData = {
+        subject: "English",
         level: "1",
         teacherName: "Yodgorov Axmadjon",
         grade: "5-6",
@@ -43,6 +59,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
       };
       
       // Set form values
+      setSubject(mockData.subject);
       setEnglishLevel(mockData.level);
       setTeacherName(mockData.teacherName);
       setGrade(mockData.grade);
@@ -53,6 +70,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
 
   const handleGenerate = async () => {
     const params: TestParams = {
+      subject,
       level: englishLevel,
       teacherName: teacherName || undefined,
       grade: grade || undefined,
@@ -67,23 +85,44 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
     <div className="max-w-2xl mx-auto">
       <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
         <div className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="subject">Subject</Label>
+            <Select 
+              value={subject} 
+              onValueChange={setSubject}
+            >
+              <SelectTrigger id="subject">
+                <SelectValue placeholder="Select a subject" />
+              </SelectTrigger>
+              <SelectContent>
+                {subjects.map((subj) => (
+                  <SelectItem key={subj.value} value={subj.value}>
+                    {subj.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="english-level">English Level</Label>
+              <Label htmlFor="level">
+                {subject === "Math" ? "Grade Level" : "English Level"}
+              </Label>
               <Select 
                 value={englishLevel} 
                 onValueChange={setEnglishLevel}
+                disabled={!subject}
               >
-                <SelectTrigger id="english-level">
+                <SelectTrigger id="level">
                   <SelectValue placeholder="Select a level" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0">Level 0</SelectItem>
-                  <SelectItem value="1">Level 1</SelectItem>
-                  <SelectItem value="2">Level 2</SelectItem>
-                  <SelectItem value="3">Level 3</SelectItem>
-                  <SelectItem value="4">Level 4</SelectItem>
-                  <SelectItem value="IELTS">IELTS</SelectItem>
+                  {availableLevels.map((level) => (
+                    <SelectItem key={level.value} value={level.value}>
+                      {level.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -138,6 +177,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
           </div>
           
           <TopicSelector 
+            subject={subject}
             level={englishLevel}
             selectedTopics={selectedTopics}
             onChange={setSelectedTopics}
@@ -145,7 +185,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
           
           <Button 
             className="w-full bg-primary hover:bg-primary/90 text-white"
-            disabled={isGenerating || selectedTopics.length === 0}
+            disabled={isGenerating || selectedTopics.length === 0 || !subject}
             onClick={handleGenerate}
           >
             {isGenerating ? "Generating..." : isEditMode ? "Update test" : "Generate a new test"}

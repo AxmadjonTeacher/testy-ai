@@ -18,6 +18,7 @@ export type Database = {
           name: string
           question_count: number
           questions_json: Json
+          subject: string
           teacher_name: string | null
           topics: string[] | null
           user_id: string | null
@@ -30,6 +31,7 @@ export type Database = {
           name: string
           question_count: number
           questions_json: Json
+          subject?: string
           teacher_name?: string | null
           topics?: string[] | null
           user_id?: string | null
@@ -42,6 +44,7 @@ export type Database = {
           name?: string
           question_count?: number
           questions_json?: Json
+          subject?: string
           teacher_name?: string | null
           topics?: string[] | null
           user_id?: string | null
@@ -82,6 +85,7 @@ export type Database = {
           question_text: string
           question_type: string
           reading_passage: string | null
+          subject: string
           topic: string
         }
         Insert: {
@@ -96,6 +100,7 @@ export type Database = {
           question_text: string
           question_type?: string
           reading_passage?: string | null
+          subject?: string
           topic: string
         }
         Update: {
@@ -110,6 +115,7 @@ export type Database = {
           question_text?: string
           question_type?: string
           reading_passage?: string | null
+          subject?: string
           topic?: string
         }
         Relationships: []

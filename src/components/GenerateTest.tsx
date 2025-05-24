@@ -44,8 +44,9 @@ const GenerateTest: React.FC = () => {
       if (!generatedTest) return;
       
       const docData = {
-        title: `English Level ${generatedTest.level} Test`,
+        title: `${generatedTest.subject} ${generatedTest.subject === 'Math' ? 'Grade' : 'Level'} ${generatedTest.level} Test`,
         teacher: generatedTest.teacherName || null,
+        subject: generatedTest.subject,
         level: generatedTest.level,
         grade: generatedTest.grade || undefined,
         questions: generatedQuestions,
@@ -53,14 +54,16 @@ const GenerateTest: React.FC = () => {
         dateGenerated: new Date().toLocaleDateString()
       };
       
-      console.log(`Generating document with ${generatedQuestions.length} questions`);
+      console.log(`Generating ${generatedTest.subject} document with ${generatedQuestions.length} questions`);
       
       toast.info("Preparing your document for download...");
       const blob = await generateWordDocument(docData);
       
       // Add a timestamp to the filename to ensure uniqueness
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      downloadDocument(blob, `english_level_${generatedTest.level}_test_${timestamp}.docx`);
+      const subjectPrefix = generatedTest.subject.toLowerCase();
+      const levelType = generatedTest.subject === 'Math' ? 'grade' : 'level';
+      downloadDocument(blob, `${subjectPrefix}_${levelType}_${generatedTest.level}_test_${timestamp}.docx`);
       
       toast.success("Test downloaded successfully!");
       

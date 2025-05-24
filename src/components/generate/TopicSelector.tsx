@@ -1,29 +1,32 @@
 
 import React, { useState, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
-import { topicsByLevel } from '@/utils/testTopics';
+import { getTopicsForSubjectAndLevel } from '@/utils/subjectTopics';
 
 interface TopicSelectorProps {
+  subject: string;
   level: string;
   selectedTopics: string[];
   onChange: (topics: string[]) => void;
 }
 
 const TopicSelector: React.FC<TopicSelectorProps> = ({ 
+  subject,
   level, 
   selectedTopics, 
   onChange 
 }) => {
   const [availableTopics, setAvailableTopics] = useState<string[]>([]);
 
-  // Update available topics when English level changes
+  // Update available topics when subject or level changes
   useEffect(() => {
-    if (level) {
-      setAvailableTopics(topicsByLevel[level] || []);
+    if (subject && level) {
+      const topics = getTopicsForSubjectAndLevel(subject, level);
+      setAvailableTopics(topics);
     } else {
       setAvailableTopics([]);
     }
-  }, [level]);
+  }, [subject, level]);
 
   const handleTopicChange = (topic: string) => {
     const updatedTopics = selectedTopics.includes(topic)

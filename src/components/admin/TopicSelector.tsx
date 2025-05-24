@@ -1,37 +1,36 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { topicsByLevel } from '@/utils/testTopics';
+import { getTopicsForSubjectAndLevel } from '@/utils/subjectTopics';
 
 interface TopicSelectorProps {
   value: string;
   onChange: (value: string) => void;
-  level: string;
+  subject?: string;
+  level?: string;
   disabled?: boolean;
 }
 
-const TopicSelector: React.FC<TopicSelectorProps> = ({ value, onChange, level, disabled = false }) => {
-  const [topics, setTopics] = useState<string[]>([]);
-  
-  useEffect(() => {
-    if (level && topicsByLevel[level]) {
-      setTopics(topicsByLevel[level]);
-    } else {
-      setTopics([]);
-    }
-  }, [level]);
-  
+const TopicSelector: React.FC<TopicSelectorProps> = ({ 
+  value, 
+  onChange, 
+  subject = "", 
+  level = "", 
+  disabled = false 
+}) => {
+  const availableTopics = getTopicsForSubjectAndLevel(subject, level);
+
   return (
     <Select 
       value={value} 
       onValueChange={onChange}
-      disabled={disabled || topics.length === 0}
+      disabled={disabled || !subject || !level}
     >
       <SelectTrigger>
-        <SelectValue placeholder={topics.length === 0 ? "Select a level first" : "Select a topic"} />
+        <SelectValue placeholder="Select a topic" />
       </SelectTrigger>
       <SelectContent>
-        {topics.map(topic => (
+        {availableTopics.map((topic) => (
           <SelectItem key={topic} value={topic}>
             {topic}
           </SelectItem>

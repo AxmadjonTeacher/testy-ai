@@ -8,6 +8,7 @@ type Question = Database["public"]["Tables"]["questions"]["Row"];
 
 export interface GeneratedTestData {
   id: string;
+  subject: string;
   level: string;
   teacherName: string;
   grade: string;
@@ -22,8 +23,13 @@ export const useTestGeneration = () => {
   const [generatedQuestions, setGeneratedQuestions] = useState<Question[]>([]);
 
   const generateTest = async (testParams: TestParams) => {
+    if (!testParams.subject) {
+      toast.error("Please select a subject");
+      return false;
+    }
+
     if (!testParams.level) {
-      toast.error("Please select an English level");
+      toast.error("Please select a level");
       return false;
     }
 
@@ -49,7 +55,7 @@ export const useTestGeneration = () => {
       }
       
       // Save the generated test
-      const testName = `English Level ${testParams.level} Test`;
+      const testName = `${testParams.subject} ${testParams.subject === 'Math' ? 'Grade' : 'Level'} ${testParams.level} Test`;
       const testId = await saveGeneratedTest(testName, testParams, questions);
       
       setGeneratedQuestions(questions);
@@ -57,6 +63,7 @@ export const useTestGeneration = () => {
       // Set the generated test data for preview
       setGeneratedTest({
         id: testId,
+        subject: testParams.subject,
         level: testParams.level,
         teacherName: testParams.teacherName || "Not specified",
         grade: testParams.grade || "Not specified",

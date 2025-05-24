@@ -6,6 +6,7 @@ type Question = Database["public"]["Tables"]["questions"]["Row"];
 type GeneratedTest = Database["public"]["Tables"]["generated_tests"]["Row"];
 
 export interface TestParams {
+  subject: string;
   level: string;
   teacherName?: string;
   grade?: string;
@@ -17,12 +18,13 @@ export interface TestParams {
  * Fetches questions from Supabase based on specified criteria
  */
 export const fetchQuestions = async (params: TestParams): Promise<Question[]> => {
-  const { level, topics, numQuestions } = params;
+  const { subject, level, topics, numQuestions } = params;
   
   // Fetch questions for all selected topics
   const { data, error } = await supabase
     .from("questions")
     .select("*")
+    .eq("subject", subject)
     .eq("level", level)
     .in("topic", topics)
     .eq("question_type", "regular") // Ensure we only get regular questions, not reading questions
@@ -36,7 +38,7 @@ export const fetchQuestions = async (params: TestParams): Promise<Question[]> =>
   // Shuffle and limit to requested number of questions
   const shuffledQuestions = shuffleArray(data || []);
   
-  console.log(`Generated test with ${Math.min(shuffledQuestions.length, numQuestions)} questions at timestamp: ${Date.now()}`);
+  console.log(`Generated ${subject} test with ${Math.min(shuffledQuestions.length, numQuestions)} questions at timestamp: ${Date.now()}`);
   
   return shuffledQuestions.slice(0, numQuestions);
 };
@@ -49,7 +51,7 @@ export const saveGeneratedTest = async (
   params: TestParams,
   questions: Question[]
 ): Promise<string> => {
-  const { level, teacherName, numQuestions } = params;
+  const { subject, level, teacherName, numQuestions } = params;
   
   const topics = Array.from(new Set(questions.map(q => q.topic)));
   
@@ -62,6 +64,7 @@ export const saveGeneratedTest = async (
     .insert({
       name,
       teacher_name: teacherName || null,
+      subject,
       level,
       topics,
       include_answers: true, // Default to true since we're removing the checkbox
