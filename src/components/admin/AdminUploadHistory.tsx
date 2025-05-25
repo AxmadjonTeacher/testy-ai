@@ -14,6 +14,7 @@ interface UploadHistoryItem {
   topic: string;
   date: string;
   questionCount: number;
+  subject?: string;
 }
 
 interface AdminUploadHistoryProps {
@@ -40,35 +41,34 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
     const lowerCaseSearch = searchTerm.toLowerCase();
     const results = uploadedFiles.filter(file => 
       file.filename.toLowerCase().includes(lowerCaseSearch) ||
-      file.topic.toLowerCase().includes(lowerCaseSearch)
+      file.topic.toLowerCase().includes(lowerCaseSearch) ||
+      (file.subject && file.subject.toLowerCase().includes(lowerCaseSearch))
     );
     
     setFilteredFiles(results);
   }, [searchTerm, uploadedFiles]);
 
-  // Group files by level
-  const filesByLevel = React.useMemo(() => {
-    return filteredFiles.reduce((acc: {[key: string]: UploadHistoryItem[]}, file) => {
-      if (!acc[file.level]) {
-        acc[file.level] = [];
+  // Group files by subject first, then by level
+  const filesBySubject = React.useMemo(() => {
+    return filteredFiles.reduce((acc: {[key: string]: {[key: string]: UploadHistoryItem[]}}, file) => {
+      const subject = file.subject || 'English'; // Default to English for backward compatibility
+      const level = file.level;
+      
+      if (!acc[subject]) {
+        acc[subject] = {};
       }
-      acc[file.level].push(file);
+      if (!acc[subject][level]) {
+        acc[subject][level] = [];
+      }
+      acc[subject][level].push(file);
       return acc;
     }, {});
   }, [filteredFiles]);
 
-  // Get unique levels sorted
-  const levels = React.useMemo(() => {
-    return Object.keys(filesByLevel).sort((a, b) => {
-      // Try to sort numerically if possible
-      const numA = Number(a);
-      const numB = Number(b);
-      if (!isNaN(numA) && !isNaN(numB)) {
-        return numA - numB;
-      }
-      return a.localeCompare(b);
-    });
-  }, [filesByLevel]);
+  // Get unique subjects sorted
+  const subjects = React.useMemo(() => {
+    return Object.keys(filesBySubject).sort();
+  }, [filesBySubject]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -85,8 +85,23 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
     }
   };
 
-  // Function to render files for a specific level
-  const renderLevelFiles = (level: string, files: UploadHistoryItem[]) => {
+  // Function to get level display name based on subject
+  const getLevelDisplayName = (subject: string, level: string) => {
+    if (subject === 'Math') {
+      const mathLevelMap: {[key: string]: string} = {
+        '1': 'Grade 1-2',
+        '2': 'Grade 3-4', 
+        '3': 'Grade 5-6',
+        '4': 'Grade 7-8',
+        '5': 'Grade 9-10'
+      };
+      return mathLevelMap[level] || `Level ${level}`;
+    }
+    return `Level ${level}`;
+  };
+
+  // Function to render files for a specific subject and level
+  const renderSubjectLevelFiles = (subject: string, level: string, files: UploadHistoryItem[]) => {
     return (
       <div className="space-y-4">
         {files.map((upload) => (
@@ -126,7 +141,7 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
     <Card>
       <CardHeader>
         <CardDescription>
-          View all previously uploaded question files.
+          View all previously uploaded question files organized by subject and level.
           {!isAdmin && (
             <div className="mt-2 flex items-center text-amber-500 text-sm">
               <ShieldAlert className="h-4 w-4 mr-1" />
@@ -138,7 +153,7 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search by filename or topic..."
+            placeholder="Search by filename, topic, or subject..."
             className="pl-8"
             value={searchTerm}
             onChange={handleSearchChange}
@@ -147,20 +162,46 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
       </CardHeader>
       <CardContent>
         {filteredFiles.length > 0 ? (
-          <Tabs defaultValue={levels.length > 0 ? levels[0] : undefined}>
+          <Tabs defaultValue={subjects.length > 0 ? subjects[0] : undefined}>
             <TabsList className="mb-4">
-              {levels.map(level => (
-                <TabsTrigger key={level} value={level}>
-                  Level {level}
+              {subjects.map(subject => (
+                <TabsTrigger key={subject} value={subject}>
+                  {subject}
                 </TabsTrigger>
               ))}
             </TabsList>
             
-            {levels.map(level => (
-              <TabsContent key={level} value={level}>
-                {renderLevelFiles(level, filesByLevel[level])}
-              </TabsContent>
-            ))}
+            {subjects.map(subject => {
+              const levels = Object.keys(filesBySubject[subject]).sort((a, b) => {
+                // Try to sort numerically if possible
+                const numA = Number(a);
+                const numB = Number(b);
+                if (!isNaN(numA) && !isNaN(numB)) {
+                  return numA - numB;
+                }
+                return a.localeCompare(b);
+              });
+
+              return (
+                <TabsContent key={subject} value={subject}>
+                  <Tabs defaultValue={levels.length > 0 ? levels[0] : undefined}>
+                    <TabsList className="mb-4">
+                      {levels.map(level => (
+                        <TabsTrigger key={level} value={level}>
+                          {getLevelDisplayName(subject, level)}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                    
+                    {levels.map(level => (
+                      <TabsContent key={level} value={level}>
+                        {renderSubjectLevelFiles(subject, level, filesBySubject[subject][level])}
+                      </TabsContent>
+                    ))}
+                  </Tabs>
+                </TabsContent>
+              );
+            })}
           </Tabs>
         ) : (
           <div className="text-center py-8 text-neutral-dark">

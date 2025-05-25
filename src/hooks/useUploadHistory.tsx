@@ -10,6 +10,7 @@ interface UploadHistoryItem {
   date: string;
   questionCount: number;
   filename: string;
+  subject: string;
 }
 
 export function useUploadHistory() {
@@ -22,17 +23,18 @@ export function useUploadHistory() {
       console.log("Fetching upload history");
       const { data, error } = await supabase
         .from("questions")
-        .select("level, topic, created_at")
+        .select("level, topic, created_at, subject")
         .order('created_at', { ascending: false });
       
       if (error) throw error;
       
       console.log("Raw data from Supabase:", data);
       
-      // Group by level, topic and date (same day)
+      // Group by subject, level, topic and date (same day)
       const groupedData = data.reduce((acc: any, item) => {
         const date = new Date(item.created_at).toLocaleDateString();
-        const key = `${item.level}-${item.topic}-${date}`;
+        const subject = item.subject || 'English'; // Default to English for backward compatibility
+        const key = `${subject}-${item.level}-${item.topic}-${date}`;
         
         if (!acc[key]) {
           acc[key] = {
@@ -41,7 +43,8 @@ export function useUploadHistory() {
             topic: item.topic,
             date,
             questionCount: 0,
-            filename: `${item.topic}_questions.xlsx`
+            filename: `${item.topic}_questions.xlsx`,
+            subject: subject
           };
         }
         
