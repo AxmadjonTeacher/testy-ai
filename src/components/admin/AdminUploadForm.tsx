@@ -25,11 +25,11 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
   const [isUploading, setIsUploading] = useState(false);
   const [parsedData, setParsedData] = useState<QuestionFormData[] | null>(null);
   
-  const onSubmit = async (data: { level: string; topic: string }) => {
-    const { level, topic } = data;
+  const onSubmit = async (data: { subject: string; level: string; topic: string }) => {
+    const { subject, level, topic } = data;
     
-    if (!level || !topic) {
-      toast.error("Please select both level and topic");
+    if (!subject || !level || !topic) {
+      toast.error("Please select subject, level and topic");
       return;
     }
     
@@ -41,8 +41,8 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
     setIsUploading(true);
     
     try {
-      // File upload logic
-      const formattedQuestions = formatQuestionsForDatabase(parsedData, level, topic);
+      // File upload logic - now properly passing subject
+      const formattedQuestions = formatQuestionsForDatabase(parsedData, level, topic, subject);
       
       if (formattedQuestions && formattedQuestions.length > 0) {
         const { error } = await supabase.from("questions").insert(formattedQuestions);
@@ -53,12 +53,13 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
         }
         
         addUploadToHistory({
-          id: `${level}-${topic}-${new Date().toLocaleDateString()}`,
+          id: `${subject}-${level}-${topic}-${new Date().toLocaleDateString()}`,
           level,
           topic,
           date: new Date().toLocaleDateString(),
           questionCount: formattedQuestions.length,
-          filename: `${topic}_questions.xlsx`
+          filename: `${topic}_questions.xlsx`,
+          subject
         });
         
         toast.success(`Successfully uploaded ${formattedQuestions.length} questions`);
@@ -85,11 +86,11 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
       return;
     }
 
-    // Extract level and topic
-    const { level, topic } = editData || {};
+    // Extract subject, level and topic
+    const { subject, level, topic } = editData || {};
     
-    if (!level || !topic) {
-      toast.error("Please select both level and topic");
+    if (!subject || !level || !topic) {
+      toast.error("Please select subject, level and topic");
       return;
     }
     
@@ -99,6 +100,7 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
       // Format the questions for the database
       const formattedQuestions = questions.map(q => ({
         ...q,
+        subject,
         level,
         topic
       }));
@@ -111,12 +113,13 @@ const AdminUploadForm: React.FC<AdminUploadFormProps> = ({
       }
       
       addUploadToHistory({
-        id: `${level}-${topic}-${new Date().toLocaleDateString()}`,
+        id: `${subject}-${level}-${topic}-${new Date().toLocaleDateString()}`,
         level,
         topic,
         date: new Date().toLocaleDateString(),
         questionCount: formattedQuestions.length,
-        filename: `${topic}_file_upload.xlsx` // Updated filename
+        filename: `${topic}_file_upload.xlsx`,
+        subject
       });
       
       toast.success(`Successfully saved ${formattedQuestions.length} questions`);

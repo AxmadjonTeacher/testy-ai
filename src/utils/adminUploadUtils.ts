@@ -139,9 +139,9 @@ export const validateQuestionData = (data: any[]): { valid: boolean; errors: str
   return result;
 };
 
-// Function to format question data for Supabase
-export const formatQuestionsForDatabase = (data: any[], level: string, topic: string) => {
-  console.log(`Formatting ${data.length} questions for database with level: ${level}, topic: ${topic}`);
+// Function to format question data for Supabase - now includes subject parameter
+export const formatQuestionsForDatabase = (data: any[], level: string, topic: string, subject: string = 'English') => {
+  console.log(`Formatting ${data.length} questions for database with subject: ${subject}, level: ${level}, topic: ${topic}`);
   
   return data.map(row => {
     // Ensure we get the correct answer in the expected format
@@ -175,7 +175,8 @@ export const formatQuestionsForDatabase = (data: any[], level: string, topic: st
       option_d: row.option_d || row.D || row['Option D'] || row['4'] || "No option D provided",
       correct_answer: correctAnswer,
       level,
-      topic
+      topic,
+      subject // Now properly including the subject
     };
     
     console.log("Formatted question:", formattedQuestion);
