@@ -21,24 +21,26 @@ export function useQuestionDelete() {
       setIsDeleting(true);
       const toastId = toast.loading("Deleting questions...");
       
-      // Parse the composite id to get level, topic, and date
+      // Parse the composite id: subject-level-topic-date
       const parts = deleteItemId.split('-');
-      if (parts.length < 2) {
+      if (parts.length < 4) {
         throw new Error("Invalid item ID format");
       }
       
-      const level = parts[0];
-      // Fix the issue with topic parsing - it might contain hyphens
-      // Get the topic part (everything between the first hyphen and the last hyphen)
+      const subject = parts[0];
+      const level = parts[1];
+      // Topic might contain hyphens, so we need to get everything between level and the last part (date)
       const lastHyphenIndex = deleteItemId.lastIndexOf('-');
-      const topic = deleteItemId.substring(deleteItemId.indexOf('-') + 1, lastHyphenIndex);
+      const secondHyphenIndex = deleteItemId.indexOf('-', deleteItemId.indexOf('-') + 1);
+      const topic = deleteItemId.substring(secondHyphenIndex + 1, lastHyphenIndex);
       
-      console.log(`Attempting to delete questions with level: ${level}, topic: ${topic}`);
+      console.log(`Attempting to delete questions with subject: ${subject}, level: ${level}, topic: ${topic}`);
       
       // First, get a count of how many questions will be deleted
       const { data: countData, error: countError } = await supabase
         .from("questions")
         .select("id", { count: 'exact' })
+        .eq("subject", subject)
         .eq("level", level)
         .eq("topic", topic);
 
@@ -49,10 +51,11 @@ export function useQuestionDelete() {
       
       const count = countData ? countData.length : 0;
       
-      // Now perform the delete operation without returning the count
+      // Now perform the delete operation
       const { error } = await supabase
         .from("questions")
         .delete()
+        .eq("subject", subject)
         .eq("level", level)
         .eq("topic", topic);
         
