@@ -2,9 +2,9 @@
 import React from 'react';
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import LevelSelector from './LevelSelector';
-import TopicSelector from './TopicSelector';
 import FileQuestionUpload from './FileQuestionUpload';
 import { QuestionFormData } from './QuestionForm';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -51,7 +51,6 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
   }, [isEditMode, editData, form]);
   
   const subject = form.watch("subject");
-  const level = form.watch("level");
 
   return (
     <Form {...form}>
@@ -107,11 +106,10 @@ const QuestionFormSection: React.FC<QuestionFormSectionProps> = ({
               <FormItem>
                 <FormLabel>Topic</FormLabel>
                 <FormControl>
-                  <TopicSelector 
+                  <Input
+                    placeholder="Enter topic name (e.g., The Verb Tobe)"
                     value={field.value}
                     onChange={field.onChange}
-                    subject={subject}
-                    level={level}
                     disabled={isEditMode}
                   />
                 </FormControl>

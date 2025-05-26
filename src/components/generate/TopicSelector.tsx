@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
-import { getTopicsForSubjectAndLevel } from '@/utils/subjectTopics';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface TopicSelectorProps {
   subject: string;
@@ -17,15 +18,42 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({
   onChange 
 }) => {
   const [availableTopics, setAvailableTopics] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Update available topics when subject or level changes
+  // Fetch available topics from database when subject or level changes
   useEffect(() => {
-    if (subject && level) {
-      const topics = getTopicsForSubjectAndLevel(subject, level);
-      setAvailableTopics(topics);
-    } else {
-      setAvailableTopics([]);
-    }
+    const fetchAvailableTopics = async () => {
+      if (!subject || !level) {
+        setAvailableTopics([]);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('questions')
+          .select('topic')
+          .eq('subject', subject)
+          .eq('level', level);
+
+        if (error) {
+          console.error('Error fetching topics:', error);
+          toast.error('Failed to load available topics');
+          return;
+        }
+
+        // Get unique topics
+        const uniqueTopics = [...new Set(data?.map(item => item.topic) || [])];
+        setAvailableTopics(uniqueTopics);
+      } catch (error) {
+        console.error('Error fetching topics:', error);
+        toast.error('Failed to load available topics');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAvailableTopics();
   }, [subject, level]);
 
   const handleTopicChange = (topic: string) => {
@@ -36,8 +64,37 @@ const TopicSelector: React.FC<TopicSelectorProps> = ({
     onChange(updatedTopics);
   };
 
+  if (!subject || !level) {
+    return (
+      <div className="space-y-3">
+        <Label>Select Topics</Label>
+        <p className="text-sm text-neutral-dark/70">Please select a subject and level first</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-3">
+        <Label>Select Topics</Label>
+        <div className="border rounded-md p-3">
+          <p className="text-sm text-neutral-dark/70">Loading available topics...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (availableTopics.length === 0) {
-    return null;
+    return (
+      <div className="space-y-3">
+        <Label>Select Topics</Label>
+        <div className="border rounded-md p-3">
+          <p className="text-sm text-neutral-dark/70">
+            No topics available for {subject} Level {level}. Please upload questions first.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

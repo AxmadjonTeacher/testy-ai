@@ -14,7 +14,7 @@ export const subjects = [
   { value: "Math", label: "Mathematics" }
 ];
 
-// Get topics for a specific subject and level
+// Get topics for a specific subject and level (deprecated - now topics are fetched from database)
 export const getTopicsForSubjectAndLevel = (subject: string, level: string): string[] => {
   return topicsBySubject[subject as keyof typeof topicsBySubject]?.[level] || [];
 };
