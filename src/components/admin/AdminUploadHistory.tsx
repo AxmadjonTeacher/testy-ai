@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Trash2, Search, ShieldAlert } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { ShieldAlert } from "lucide-react";
 import { toast } from 'sonner';
+import UploadHistorySearch from './upload-history/UploadHistorySearch';
+import SubjectTabs from './upload-history/SubjectTabs';
 
 interface UploadHistoryItem {
   id: string;
@@ -69,10 +69,6 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
     return Object.keys(filesBySubject).sort();
   }, [filesBySubject]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
   const handleDeleteAttempt = (itemId: string) => {
     if (!isAdmin) {
       toast.error("You don't have permission to delete files");
@@ -82,51 +78,6 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
     if (onDeleteItem) {
       onDeleteItem(itemId);
     }
-  };
-
-  // Function to get level display name based on subject
-  const getLevelDisplayName = (subject: string, level: string) => {
-    if (subject === 'Math') {
-      return `Level ${level}`;
-    }
-    return `Level ${level}`;
-  };
-
-  // Function to render files for a specific subject and level
-  const renderSubjectLevelFiles = (subject: string, level: string, files: UploadHistoryItem[]) => {
-    return (
-      <div className="space-y-4">
-        {files.map((upload) => (
-          <div key={upload.id} className="flex items-center justify-between p-4 bg-white rounded-md border">
-            <div className="flex items-center gap-3">
-              <FileText className="w-5 h-5 text-primary" />
-              <div>
-                <p className="font-medium">{upload.filename}</p>
-                <p className="text-sm text-neutral-dark">
-                  Topic: {upload.topic} | Questions: {upload.questionCount}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {onDeleteItem && (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  className="flex items-center gap-1"
-                  onClick={() => handleDeleteAttempt(upload.id)}
-                  disabled={!isAdmin}
-                  title={!isAdmin ? "Admin permission required" : "Delete file"}
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete
-                </Button>
-              )}
-              <p className="text-sm text-neutral-dark ml-2">{upload.date}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
   };
 
   return (
@@ -141,60 +92,20 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
             </div>
           )}
         </CardDescription>
-        <div className="relative mt-4">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search by filename, topic, or subject..."
-            className="pl-8"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
+        <UploadHistorySearch
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
       </CardHeader>
       <CardContent>
         {filteredFiles.length > 0 ? (
-          <Tabs defaultValue={subjects.length > 0 ? subjects[0] : undefined}>
-            <TabsList className="mb-4">
-              {subjects.map(subject => (
-                <TabsTrigger key={subject} value={subject}>
-                  {subject}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            
-            {subjects.map(subject => {
-              const levels = Object.keys(filesBySubject[subject]).sort((a, b) => {
-                // Try to sort numerically if possible
-                const numA = Number(a);
-                const numB = Number(b);
-                if (!isNaN(numA) && !isNaN(numB)) {
-                  return numA - numB;
-                }
-                return a.localeCompare(b);
-              });
-
-              return (
-                <TabsContent key={subject} value={subject}>
-                  <Tabs defaultValue={levels.length > 0 ? levels[0] : undefined}>
-                    <TabsList className="mb-4">
-                      {levels.map(level => (
-                        <TabsTrigger key={level} value={level}>
-                          {getLevelDisplayName(subject, level)}
-                        </TabsTrigger>
-                      ))}
-                    </TabsList>
-                    
-                    {levels.map(level => (
-                      <TabsContent key={level} value={level}>
-                        {renderSubjectLevelFiles(subject, level, filesBySubject[subject][level])}
-                      </TabsContent>
-                    ))}
-                  </Tabs>
-                </TabsContent>
-              );
-            })}
-          </Tabs>
+          <SubjectTabs
+            filesBySubject={filesBySubject}
+            subjects={subjects}
+            onDeleteAttempt={handleDeleteAttempt}
+            onDeleteItem={onDeleteItem}
+            isAdmin={isAdmin}
+          />
         ) : (
           <div className="text-center py-8 text-neutral-dark">
             <p>
