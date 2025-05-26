@@ -47,11 +47,11 @@ export const mathTopicsByLevel: Record<string, string[]> = {
   ]
 };
 
-// Math levels (different from English levels)
+// Math levels (updated to use Level 1-5 format)
 export const mathLevels = [
-  { value: "1", label: "Grade 1-2" },
-  { value: "2", label: "Grade 3-4" },
-  { value: "3", label: "Grade 5-6" },
-  { value: "4", label: "Grade 7-8" },
-  { value: "5", label: "Grade 9-10" }
+  { value: "1", label: "Level 1" },
+  { value: "2", label: "Level 2" },
+  { value: "3", label: "Level 3" },
+  { value: "4", label: "Level 4" },
+  { value: "5", label: "Level 5" }
 ];
