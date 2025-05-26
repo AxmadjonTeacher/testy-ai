@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Trash2, Search, ShieldAlert } from "lucide-react";
@@ -88,14 +87,7 @@ const AdminUploadHistory: React.FC<AdminUploadHistoryProps> = ({
   // Function to get level display name based on subject
   const getLevelDisplayName = (subject: string, level: string) => {
     if (subject === 'Math') {
-      const mathLevelMap: {[key: string]: string} = {
-        '1': 'Grade 1-2',
-        '2': 'Grade 3-4', 
-        '3': 'Grade 5-6',
-        '4': 'Grade 7-8',
-        '5': 'Grade 9-10'
-      };
-      return mathLevelMap[level] || `Level ${level}`;
+      return `Level ${level}`;
     }
     return `Level ${level}`;
   };
