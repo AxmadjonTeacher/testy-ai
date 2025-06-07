@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Shield } from "lucide-react";
+import { Shield, AlertTriangle } from "lucide-react";
 
 interface AdminAccessDialogProps {
   open: boolean;
@@ -22,19 +21,10 @@ interface AdminAccessDialogProps {
 const AdminAccessDialog: React.FC<AdminAccessDialogProps> = ({
   open,
   onOpenChange,
-  onVerify,
   onCancel
 }) => {
-  const [password, setPassword] = useState('');
-
-  const handleVerify = () => {
-    onVerify(password);
-    setPassword('');
-  };
-
-  const handleCancel = () => {
+  const handleClose = () => {
     onCancel();
-    setPassword('');
   };
 
   return (
@@ -42,34 +32,24 @@ const AdminAccessDialog: React.FC<AdminAccessDialogProps> = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5" /> Admin Access Required
+            <AlertTriangle className="h-5 w-5 text-amber-500" /> Access Method Updated
           </DialogTitle>
           <DialogDescription>
-            Please enter the admin password to access the upload functionality.
+            Admin access is now managed through secure user roles instead of passwords.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <Input
-            id="admin-password"
-            type="password"
-            placeholder="Enter admin password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleVerify();
-              }
-            }}
-            autoFocus
-          />
+          <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded">
+            <Shield className="h-4 w-4 text-blue-600" />
+            <p className="text-sm text-blue-800">
+              For security reasons, admin access is now granted through proper user role management. 
+              Contact your administrator if you need admin privileges.
+            </p>
+          </div>
         </div>
-        <DialogFooter className="flex space-x-2 justify-end">
-          <Button variant="outline" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button onClick={handleVerify}>
-            Verify
+        <DialogFooter>
+          <Button onClick={handleClose}>
+            Close
           </Button>
         </DialogFooter>
       </DialogContent>
