@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Shield, AlertTriangle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Shield } from "lucide-react";
 
 interface AdminVerificationDialogProps {
   open: boolean;
@@ -22,8 +23,16 @@ const AdminVerificationDialog: React.FC<AdminVerificationDialogProps> = ({
   onOpenChange,
   onVerify
 }) => {
-  const handleClose = () => {
+  const [adminPassword, setAdminPassword] = useState('');
+
+  const handleVerify = () => {
+    onVerify(adminPassword);
+    setAdminPassword('');
+  };
+
+  const handleCancel = () => {
     onOpenChange(false);
+    setAdminPassword('');
   };
 
   return (
@@ -31,23 +40,36 @@ const AdminVerificationDialog: React.FC<AdminVerificationDialogProps> = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-amber-500" /> Admin Access Required
+            <Shield className="h-5 w-5" /> Admin Verification
           </DialogTitle>
           <DialogDescription>
-            Admin access is now managed through user roles. If you need admin privileges, please contact your system administrator.
+            Enter the admin password to gain delete permissions.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <div className="flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded">
-            <Shield className="h-4 w-4 text-amber-600" />
-            <p className="text-sm text-amber-800">
-              Security has been enhanced - admin access is now role-based rather than password-based.
-            </p>
-          </div>
+          <Input
+            id="admin-password"
+            type="password"
+            placeholder="Enter admin password"
+            value={adminPassword}
+            onChange={(e) => setAdminPassword(e.target.value)}
+            className="w-full"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleVerify();
+              }
+            }}
+          />
+          <p className="text-xs text-muted-foreground">
+            Enter the admin password to enable file deletion functionality.
+          </p>
         </div>
-        <DialogFooter>
-          <Button onClick={handleClose}>
-            Close
+        <DialogFooter className="flex space-x-2 justify-end">
+          <Button variant="outline" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button onClick={handleVerify}>
+            Verify
           </Button>
         </DialogFooter>
       </DialogContent>

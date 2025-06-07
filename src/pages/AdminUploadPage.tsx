@@ -4,14 +4,18 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdminUpload from '@/components/AdminUpload';
 import { useAdminAccess } from '@/hooks/useAdminAccess';
-import { useAuth } from '@/contexts/AuthContext';
+import AdminAccessDialog from '@/components/admin/AdminAccessDialog';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 
 const AdminUploadPage = () => {
-  const { isVerifying, hasAccess } = useAdminAccess();
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const { 
+    isVerifying, 
+    showPasswordDialog, 
+    hasAccess, 
+    verifyPassword, 
+    cancelVerification, 
+    setShowPasswordDialog 
+  } = useAdminAccess();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -26,23 +30,21 @@ const AdminUploadPage = () => {
         ) : (
           <div className="container mx-auto px-4 py-8 flex justify-center items-center h-full">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-neutral-dark mb-4">Admin Access Required</h2>
-              {!user ? (
-                <>
-                  <p className="text-neutral-dark mb-4">You need to sign in to access this page.</p>
-                  <Button onClick={() => navigate('/auth')}>Sign In</Button>
-                </>
-              ) : (
-                <>
-                  <p className="text-neutral-dark mb-4">You do not have admin privileges to access this page.</p>
-                  <Button onClick={() => navigate('/dashboard')}>Go to Dashboard</Button>
-                </>
-              )}
+              <h2 className="text-2xl font-bold text-neutral-dark mb-4">Admin Authentication Required</h2>
+              <p className="text-neutral-dark mb-4">You need to verify your admin credentials to access this page.</p>
+              <Button onClick={() => setShowPasswordDialog(true)}>Enter Admin Password</Button>
             </div>
           </div>
         )}
       </div>
       <Footer />
+      
+      <AdminAccessDialog 
+        open={showPasswordDialog}
+        onOpenChange={setShowPasswordDialog}
+        onVerify={verifyPassword}
+        onCancel={cancelVerification}
+      />
     </div>
   );
 };

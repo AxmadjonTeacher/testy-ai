@@ -12,6 +12,7 @@ import { Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AdminVerificationDialog from './AdminVerificationDialog';
 import { toast } from 'sonner';
+import { verifyAdminPassword } from '@/services/authService';
 
 const AdminUploadTabs = () => {
   const [activeTab, setActiveTab] = useState("upload");
@@ -61,10 +62,13 @@ const AdminUploadTabs = () => {
   };
 
   const handleAdminVerification = (password: string) => {
-    // This function is now just for backwards compatibility
-    // Real admin verification is handled by the role-based system
-    toast.info("Admin access is now managed through user roles. Contact your administrator to get admin privileges.");
-    setIsAdminVerificationOpen(false);
+    if (verifyAdminPassword(password)) {
+      setIsAdmin(true);
+      toast.success("Admin privileges granted");
+      setIsAdminVerificationOpen(false);
+    } else {
+      toast.error("Invalid admin password");
+    }
   };
 
   // Initial load of history data

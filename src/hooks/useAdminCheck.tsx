@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
+import { supabase } from "@/integrations/supabase/client"; 
 import { useAuth } from '@/contexts/AuthContext';
-import { checkAdminRole } from '@/services/authService';
 
 export function useAdminCheck() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -17,8 +17,16 @@ export function useAdminCheck() {
       }
 
       try {
-        const adminStatus = await checkAdminRole();
-        setIsAdmin(adminStatus);
+        const { data, error } = await supabase.rpc('has_role', {
+          _role: 'admin'
+        });
+
+        if (error) {
+          console.error("Error checking admin status:", error);
+          setIsAdmin(false);
+        } else {
+          setIsAdmin(data === true);
+        }
       } catch (error) {
         console.error("Error checking admin status:", error);
         setIsAdmin(false);
