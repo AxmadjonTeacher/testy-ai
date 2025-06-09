@@ -63,7 +63,7 @@ const HeroSection: React.FC = () => {
         <motion.h1 
           className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
           variants={itemVariants}
-          style={{ wordSpacing: '0.1em', letterSpacing: '0.02em' }}
+          style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
         >
           Create Unique Tests for
           <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
