@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, ArrowRight } from 'lucide-react';
 
 const FAQSection: React.FC = () => {
   const faqItems = [
