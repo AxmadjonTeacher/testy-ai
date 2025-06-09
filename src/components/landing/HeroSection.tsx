@@ -22,54 +22,99 @@ const HeroSection: React.FC = () => {
   
   const itemVariants = {
     hidden: {
-      y: 20,
+      y: 30,
       opacity: 0
     },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5
+        duration: 0.6,
+        ease: "easeOut"
       }
     }
   };
 
   return (
     <motion.section 
-      className="py-16 px-4" 
+      className="relative py-20 lg:py-32 overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%)'
+      }}
       initial="hidden" 
       animate="visible" 
       variants={containerVariants}
     >
-      <div className="container mx-auto max-w-4xl text-center">
-        <motion.h1 
-          className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6" 
-          variants={itemVariants}
-        >
-          Test Generator for English Language Teaching
-        </motion.h1>
-        <motion.p 
-          className="text-lg text-neutral-dark/80 mb-8 max-w-2xl mx-auto" 
-          variants={itemVariants}
-        >
-          Information about the website and how it helps generate unique tests for all English proficiency levels
-        </motion.p>
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-4 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 -left-8 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto max-w-6xl text-center relative z-10 px-4">
         <motion.div 
-          className="flex flex-col sm:flex-row justify-center gap-4" 
+          className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
+          variants={itemVariants}
+        >
+          ✨ AI-Powered Test Generation
+        </motion.div>
+        
+        <motion.h1 
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
+          variants={itemVariants}
+        >
+          Create Unique Tests for
+          <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            English Language Teaching
+          </span>
+        </motion.h1>
+        
+        <motion.p 
+          className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-3xl mx-auto leading-relaxed"
+          variants={itemVariants}
+        >
+          Transform your teaching with AI-powered test generation. Upload sample tests, organize by level, and automatically create unique assessments that engage your students and save you time.
+        </motion.p>
+        
+        <motion.div 
+          className="flex flex-col sm:flex-row justify-center gap-4 mb-16"
           variants={itemVariants}
         >
           <Button 
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-md hover:scale-105 transition-transform" 
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
             onClick={() => navigate('/generate')}
           >
-            Get Started
+            Start Creating Tests
           </Button>
           <Button 
-            className="bg-accent hover:bg-accent/90 text-white px-8 py-3 text-lg rounded-md hover:scale-105 transition-transform" 
+            size="lg"
+            variant="outline"
+            className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
             onClick={() => navigate('/admin/upload')}
           >
             Admin Upload
           </Button>
+        </motion.div>
+
+        {/* Stats or trust indicators */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+          variants={itemVariants}
+        >
+          <div className="text-center">
+            <div className="text-3xl font-bold text-primary mb-2">1000+</div>
+            <div className="text-neutral-dark/60">Tests Generated</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-primary mb-2">50+</div>
+            <div className="text-neutral-dark/60">Happy Teachers</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-primary mb-2">5★</div>
+            <div className="text-neutral-dark/60">User Rating</div>
+          </div>
         </motion.div>
       </div>
     </motion.section>
