@@ -1,9 +1,13 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const FAQSection: React.FC = () => {
+  const navigate = useNavigate();
+
   const faqItems = [
     {
       question: "What types of questions can I upload?",
@@ -26,6 +30,10 @@ const FAQSection: React.FC = () => {
       answer: "Test generation is nearly instantaneous! Once you've uploaded your content and selected your preferences, our AI can generate a complete, formatted test in under 10 seconds. The system is optimized for speed without compromising quality."
     }
   ];
+
+  const handleContactClick = () => {
+    navigate('/privacy-policy');
+  };
 
   return (
     <section className="py-20 px-4 bg-white relative overflow-hidden">
@@ -96,13 +104,13 @@ const FAQSection: React.FC = () => {
           viewport={{ once: true }}
         >
           <p className="text-neutral-dark/70 mb-4">Still have questions?</p>
-          <a 
-            href="mailto:support@testy.com" 
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors"
+          <button 
+            onClick={handleContactClick}
+            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors cursor-pointer"
           >
             Get in touch with our team
             <ArrowRight size={16} />
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>
