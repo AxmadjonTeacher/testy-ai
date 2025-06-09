@@ -2,48 +2,56 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from '@/contexts/AuthContext';
 
 export function useAdminAccess() {
   const [isVerifying, setIsVerifying] = useState<boolean>(true);
-  const [showPasswordDialog, setShowPasswordDialog] = useState<boolean>(false);
   const [hasAccess, setHasAccess] = useState<boolean>(false);
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user has previously verified as admin in this session
-    const adminVerified = sessionStorage.getItem('admin_verified') === 'true';
-    
-    if (adminVerified) {
-      setHasAccess(true);
-    } else {
-      setShowPasswordDialog(true);
-    }
-    
-    setIsVerifying(false);
-  }, []);
+    const checkAdminAccess = async () => {
+      if (!user) {
+        setHasAccess(false);
+        setIsVerifying(false);
+        return;
+      }
 
-  const verifyPassword = (password: string) => {
-    if (password === 'letmecook') {
-      setHasAccess(true);
-      setShowPasswordDialog(false);
-      sessionStorage.setItem('admin_verified', 'true');
-      toast.success('Admin access granted');
-    } else {
-      toast.error('Incorrect password');
-    }
-  };
+      try {
+        const { data, error } = await supabase.rpc('has_role', {
+          _role: 'admin'
+        });
 
-  const cancelVerification = () => {
+        if (error) {
+          console.error("Error checking admin role:", error);
+          setHasAccess(false);
+        } else {
+          setHasAccess(data === true);
+          if (data !== true) {
+            toast.error('You do not have admin privileges to access this page');
+          }
+        }
+      } catch (error) {
+        console.error("Error checking admin access:", error);
+        setHasAccess(false);
+      } finally {
+        setIsVerifying(false);
+      }
+    };
+
+    checkAdminAccess();
+  }, [user]);
+
+  const redirectToHome = () => {
     navigate('/');
-    toast.info('Admin access canceled');
+    toast.info('Redirected to home page');
   };
 
   return {
     isVerifying,
-    showPasswordDialog,
     hasAccess,
-    verifyPassword,
-    cancelVerification,
-    setShowPasswordDialog
+    redirectToHome
   };
 }

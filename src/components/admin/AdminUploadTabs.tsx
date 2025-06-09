@@ -10,14 +10,12 @@ import { useQuestionEdit } from '@/hooks/useQuestionEdit';
 import { useAdminCheck } from '@/hooks/useAdminCheck';
 import { Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import AdminVerificationDialog from './AdminVerificationDialog';
 import { toast } from 'sonner';
-import { verifyAdminPassword } from '@/services/authService';
+import { verifyAdminRole } from '@/services/authService';
 
 const AdminUploadTabs = () => {
   const [activeTab, setActiveTab] = useState("upload");
-  const [isAdminVerificationOpen, setIsAdminVerificationOpen] = useState(false);
-  const { isAdmin, setIsAdmin } = useAdminCheck();
+  const { isAdmin, setIsAdmin, checkingAdmin } = useAdminCheck();
   
   const { 
     uploadedFiles, 
@@ -48,7 +46,6 @@ const AdminUploadTabs = () => {
     }
   };
 
-  // Updated to ensure proper refresh after delete
   const handleDeleteConfirm = async () => {
     await confirmDelete(() => {
       console.log("Delete confirmed, refreshing history");
@@ -61,22 +58,29 @@ const AdminUploadTabs = () => {
     setActiveTab("history");
   };
 
-  const handleAdminVerification = (password: string) => {
-    if (verifyAdminPassword(password)) {
+  const handleAdminVerification = async () => {
+    const hasAdminRole = await verifyAdminRole();
+    if (hasAdminRole) {
       setIsAdmin(true);
-      toast.success("Admin privileges granted");
-      setIsAdminVerificationOpen(false);
+      toast.success("Admin privileges verified");
     } else {
-      toast.error("Invalid admin password");
+      toast.error("You do not have admin privileges");
     }
   };
 
-  // Initial load of history data
   useEffect(() => {
     if (activeTab === 'history') {
       fetchUploadHistory();
     }
   }, [activeTab, fetchUploadHistory]);
+
+  if (checkingAdmin) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -104,10 +108,10 @@ const AdminUploadTabs = () => {
                 variant="outline" 
                 size="sm" 
                 className="flex items-center gap-1"
-                onClick={() => setIsAdminVerificationOpen(true)}
+                onClick={handleAdminVerification}
               >
                 <Shield className="h-4 w-4" />
-                {isAdmin ? "Admin" : "Admin Access"}
+                {isAdmin ? "Admin Verified" : "Verify Admin"}
               </Button>
             </div>
             <AdminUploadHistory 
@@ -124,12 +128,6 @@ const AdminUploadTabs = () => {
         onOpenChange={setIsDeleteDialogOpen}
         onConfirm={handleDeleteConfirm}
         isDeleting={isDeleting}
-      />
-
-      <AdminVerificationDialog
-        open={isAdminVerificationOpen}
-        onOpenChange={setIsAdminVerificationOpen}
-        onVerify={handleAdminVerification}
       />
     </>
   );

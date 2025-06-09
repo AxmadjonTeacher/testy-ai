@@ -1,35 +1,55 @@
 
 import { toast } from 'sonner';
+import { supabase } from "@/integrations/supabase/client";
 
-export const verifyAdminPassword = (password: string): boolean => {
-  // Hard-coded admin password for demonstration purposes
-  return password === 'testoradmintesty';
+export const verifyAdminRole = async (): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase.rpc('has_role', {
+      _role: 'admin'
+    });
+
+    if (error) {
+      console.error("Error checking admin role:", error);
+      return false;
+    }
+
+    return data === true;
+  } catch (error) {
+    console.error("Error verifying admin role:", error);
+    return false;
+  }
 };
 
-export const handleAdminVerification = (
-  password: string,
+export const handleAdminVerification = async (
   setIsAdmin: (isAdmin: boolean) => void,
   setSelectedRole: (role: 'user' | 'admin') => void
-): void => {
-  if (verifyAdminPassword(password)) {
+): Promise<void> => {
+  const isAdmin = await verifyAdminRole();
+  
+  if (isAdmin) {
     setIsAdmin(true);
     setSelectedRole('admin');
     toast.success('Admin verification successful');
   } else {
-    toast.error('Invalid admin password');
+    toast.error('You do not have admin privileges');
   }
 };
 
-export const handleRoleChange = (
+export const handleRoleChange = async (
   value: string,
   setSelectedRole: (role: 'user' | 'admin') => void,
   setAdminPasswordDialogOpen: (open: boolean) => void
-): void => {
+): Promise<void> => {
   const role = value as 'user' | 'admin';
   setSelectedRole(role);
 
   if (role === 'admin') {
-    setAdminPasswordDialogOpen(true);
+    // Check if user already has admin role
+    const isAdmin = await verifyAdminRole();
+    if (!isAdmin) {
+      toast.error('You do not have admin privileges');
+      setSelectedRole('user');
+    }
   }
 };
 
