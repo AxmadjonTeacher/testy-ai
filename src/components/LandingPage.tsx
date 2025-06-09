@@ -166,7 +166,7 @@ const LandingPage: React.FC = () => {
           </motion.h2>
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12" 
+            className="grid grid-cols-1 md:grid-cols-2 gap-8" 
             initial={{ opacity: 0 }} 
             whileInView={{ opacity: 1 }} 
             transition={{ duration: 0.8, staggerChildren: 0.2 }} 
@@ -205,24 +205,6 @@ const LandingPage: React.FC = () => {
               </motion.div>
             ))}
           </motion.div>
-
-          <motion.div 
-            className="text-center" 
-            initial={{ opacity: 0 }} 
-            whileInView={{ opacity: 1 }} 
-            transition={{ duration: 0.8, delay: 0.4 }} 
-            viewport={{ once: true }}
-          >
-            <p className="text-xl font-medium text-neutral-dark mb-6">
-              Ready to try?
-            </p>
-            <Button 
-              className="bg-primary hover:bg-primary/90 text-white hover:scale-105 transition-transform" 
-              onClick={() => navigate('/generate')}
-            >
-              Generate
-            </Button>
-          </motion.div>
         </div>
       </section>
 
@@ -257,6 +239,29 @@ const LandingPage: React.FC = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Ready to Try Section */}
+      <section className="py-12 bg-neutral-light px-4">
+        <div className="container mx-auto max-w-5xl">
+          <motion.div 
+            className="text-center" 
+            initial={{ opacity: 0 }} 
+            whileInView={{ opacity: 1 }} 
+            transition={{ duration: 0.8 }} 
+            viewport={{ once: true }}
+          >
+            <p className="text-xl font-medium text-neutral-dark mb-6">
+              Ready to try?
+            </p>
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-white hover:scale-105 transition-transform" 
+              onClick={() => navigate('/generate')}
+            >
+              Generate
+            </Button>
           </motion.div>
         </div>
       </section>
