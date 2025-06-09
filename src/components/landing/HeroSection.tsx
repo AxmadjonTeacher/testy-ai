@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -65,9 +64,9 @@ const HeroSection: React.FC = () => {
           variants={itemVariants}
           style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
         >
-          Create Unique Tests for
+          Create Unique Tests and
           <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            English Language Teaching
+            Craft Smart Classes
           </span>
         </motion.h1>
         
