@@ -19,28 +19,9 @@ const GeneratePage = () => {
         
         <div className="container mx-auto px-4 py-8 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-8"
-          >
-            <div className="text-center mb-8">
-              <div className="inline-block px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4">
-                ✨ Test Generation
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-4">
-                Generate Your Test
-              </h1>
-              <p className="text-lg text-neutral-dark/70 max-w-2xl mx-auto">
-                Create unique, customized tests in seconds with our AI-powered platform
-              </p>
-            </div>
-          </motion.div>
-          
-          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6 }}
             className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden"
           >
             <GenerateTest />
