@@ -69,10 +69,10 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2">
-        {[...Array(12)].map((_, i) => (
-          <Card key={i} className="animate-pulse h-16">
-            <CardContent className="p-2">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-1.5">
+        {[...Array(14)].map((_, i) => (
+          <Card key={i} className="animate-pulse h-32 w-44">
+            <CardContent className="p-1.5">
               <div className="h-2 bg-gray-200 rounded w-3/4 mb-1"></div>
               <div className="h-2 bg-gray-200 rounded w-1/2 mb-1"></div>
               <div className="h-2 bg-gray-200 rounded w-2/3"></div>
@@ -98,7 +98,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-2">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-1.5">
       {tests.map((test, index) => (
         <motion.div
           key={test.id}
@@ -106,20 +106,20 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.02 }}
         >
-          <Card className="h-full hover:shadow-md transition-shadow cursor-pointer group">
-            <CardHeader className="pb-1 p-2">
-              <div className="flex justify-between items-start mb-1">
+          <Card className="h-32 w-44 hover:shadow-md transition-shadow cursor-pointer group">
+            <CardHeader className="pb-0.5 p-1.5">
+              <div className="flex justify-between items-start mb-0.5">
                 <CardTitle className="text-xs font-medium line-clamp-1 flex-1 pr-1">
                   {test.title}
                 </CardTitle>
-                <Badge variant="outline" className="text-xs px-1 py-0 h-4 text-xs">
+                <Badge variant="outline" className="text-xs px-1 py-0 h-3 text-xs">
                   {test.file_type.toUpperCase()}
                 </Badge>
               </div>
               
-              <div className="flex gap-1 mb-1">
-                <Badge variant="secondary" className="text-xs px-1 py-0 h-4">Level {test.level}</Badge>
-                <Badge variant="outline" className="text-xs px-1 py-0 h-4">Grade {test.grade}</Badge>
+              <div className="flex gap-0.5 mb-0.5">
+                <Badge variant="secondary" className="text-xs px-1 py-0 h-3">Level {test.level}</Badge>
+                <Badge variant="outline" className="text-xs px-1 py-0 h-3">Grade {test.grade}</Badge>
               </div>
 
               <div className="space-y-0 text-xs text-neutral-dark/70">
@@ -134,16 +134,16 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
               </div>
             </CardHeader>
             
-            <CardContent className="pt-0 p-2">
-              <div className="mb-1">
-                <div className="flex flex-wrap gap-1">
+            <CardContent className="pt-0 p-1.5">
+              <div className="mb-0.5">
+                <div className="flex flex-wrap gap-0.5">
                   {test.topics.slice(0, 1).map((topic) => (
-                    <Badge key={topic} variant="outline" className="text-xs px-1 py-0 h-4">
+                    <Badge key={topic} variant="outline" className="text-xs px-1 py-0 h-3">
                       {topic}
                     </Badge>
                   ))}
                   {test.topics.length > 1 && (
-                    <Badge variant="outline" className="text-xs px-1 py-0 h-4">
+                    <Badge variant="outline" className="text-xs px-1 py-0 h-3">
                       +{test.topics.length - 1}
                     </Badge>
                   )}
@@ -154,7 +154,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
                 onClick={() => handleDownload(test)}
                 size="sm"
                 variant="outline"
-                className="w-full text-xs h-5 group-hover:bg-primary group-hover:text-white transition-colors"
+                className="w-full text-xs h-4 group-hover:bg-primary group-hover:text-white transition-colors"
               >
                 <Download className="h-2 w-2 mr-1" />
                 Download
