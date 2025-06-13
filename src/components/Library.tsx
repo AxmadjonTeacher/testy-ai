@@ -104,7 +104,7 @@ const Library = () => {
           </TabsTrigger>
           <TabsTrigger value="all" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            All Tests ({filteredTests.length})
+            All Tests
           </TabsTrigger>
           <TabsTrigger value="browse" className="flex items-center gap-2">
             <BookOpen className="h-4 w-4" />
@@ -119,8 +119,11 @@ const Library = () => {
         <TabsContent value="all">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex-1">
+              <div className="flex items-center gap-4 flex-1">
                 <LibrarySearch onSearch={handleSearch} />
+                <div className="text-sm text-neutral-dark/70 whitespace-nowrap">
+                  {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''}
+                </div>
               </div>
               <div className="flex gap-2 ml-4">
                 <Button
@@ -172,7 +175,12 @@ const Library = () => {
             </div>
             
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">All Tests</h3>
+              <div className="flex items-center gap-4">
+                <h3 className="text-lg font-semibold">All Tests</h3>
+                <div className="text-sm text-neutral-dark/70">
+                  {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''}
+                </div>
+              </div>
               <div className="flex gap-2">
                 <Button
                   variant={viewMode === 'compact' ? 'default' : 'outline'}

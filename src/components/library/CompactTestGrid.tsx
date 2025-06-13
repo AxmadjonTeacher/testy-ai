@@ -69,13 +69,13 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {[...Array(8)].map((_, i) => (
-          <Card key={i} className="animate-pulse h-32">
-            <CardContent className="p-4">
-              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-1/2 mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+        {[...Array(10)].map((_, i) => (
+          <Card key={i} className="animate-pulse h-24">
+            <CardContent className="p-3">
+              <div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-2 bg-gray-200 rounded w-1/2 mb-1"></div>
+              <div className="h-2 bg-gray-200 rounded w-2/3"></div>
             </CardContent>
           </Card>
         ))}
@@ -98,53 +98,53 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
       {tests.map((test, index) => (
         <motion.div
           key={test.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: index * 0.05 }}
+          transition={{ duration: 0.3, delay: index * 0.03 }}
         >
           <Card className="h-full hover:shadow-md transition-shadow cursor-pointer group">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 p-3">
               <div className="flex justify-between items-start mb-2">
-                <CardTitle className="text-sm font-medium line-clamp-2 flex-1">
+                <CardTitle className="text-sm font-medium line-clamp-1 flex-1 pr-2">
                   {test.title}
                 </CardTitle>
-                <Badge variant="outline" className="ml-2 text-xs">
+                <Badge variant="outline" className="text-xs px-1 py-0">
                   {test.file_type.toUpperCase()}
                 </Badge>
               </div>
               
               <div className="flex gap-1 mb-2">
-                <Badge variant="secondary" className="text-xs">Level {test.level}</Badge>
-                <Badge variant="outline" className="text-xs">Grade {test.grade}</Badge>
+                <Badge variant="secondary" className="text-xs px-1 py-0">Level {test.level}</Badge>
+                <Badge variant="outline" className="text-xs px-1 py-0">Grade {test.grade}</Badge>
               </div>
 
               <div className="space-y-1 text-xs text-neutral-dark/70">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
-                  {formatDate(test.created_at)}
+                  <span className="truncate">{formatDate(test.created_at)}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <HardDrive className="h-3 w-3" />
-                  {formatFileSize(test.file_size)}
+                  <span>{formatFileSize(test.file_size)}</span>
                 </div>
               </div>
             </CardHeader>
             
-            <CardContent className="pt-0">
-              <div className="mb-3">
+            <CardContent className="pt-0 p-3">
+              <div className="mb-2">
                 <div className="flex flex-wrap gap-1">
-                  {test.topics.slice(0, 2).map((topic) => (
-                    <Badge key={topic} variant="outline" className="text-xs">
+                  {test.topics.slice(0, 1).map((topic) => (
+                    <Badge key={topic} variant="outline" className="text-xs px-1 py-0">
                       {topic}
                     </Badge>
                   ))}
-                  {test.topics.length > 2 && (
-                    <Badge variant="outline" className="text-xs">
-                      +{test.topics.length - 2}
+                  {test.topics.length > 1 && (
+                    <Badge variant="outline" className="text-xs px-1 py-0">
+                      +{test.topics.length - 1}
                     </Badge>
                   )}
                 </div>
@@ -154,7 +154,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
                 onClick={() => handleDownload(test)}
                 size="sm"
                 variant="outline"
-                className="w-full text-xs group-hover:bg-primary group-hover:text-white transition-colors"
+                className="w-full text-xs h-7 group-hover:bg-primary group-hover:text-white transition-colors"
               >
                 <Download className="h-3 w-3 mr-1" />
                 Download
