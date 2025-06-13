@@ -22,12 +22,14 @@ interface LibraryAllTestsProps {
   filteredTests: UploadedTest[];
   isLoading: boolean;
   onSearch: (query: string, filterType: string) => void;
+  onTestDeleted?: () => void;
 }
 
 const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
   filteredTests,
   isLoading,
-  onSearch
+  onSearch,
+  onTestDeleted
 }) => {
   return (
     <div className="space-y-4">
@@ -36,7 +38,11 @@ const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
         testCount={filteredTests.length}
       />
       
-      <CompactTestGrid tests={filteredTests} isLoading={isLoading} />
+      <CompactTestGrid 
+        tests={filteredTests} 
+        isLoading={isLoading} 
+        onTestDeleted={onTestDeleted}
+      />
     </div>
   );
 };

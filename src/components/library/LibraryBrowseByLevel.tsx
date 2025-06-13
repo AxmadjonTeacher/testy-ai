@@ -23,12 +23,14 @@ interface LibraryBrowseByLevelProps {
   filteredTests: UploadedTest[];
   isLoading: boolean;
   onSearch: (query: string, filterType: string) => void;
+  onTestDeleted?: () => void;
 }
 
 const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
   filteredTests,
   isLoading,
-  onSearch
+  onSearch,
+  onTestDeleted
 }) => {
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
 
@@ -119,7 +121,11 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
         </h3>
       </div>
       
-      <CompactTestGrid tests={subjectTests} isLoading={isLoading} />
+      <CompactTestGrid 
+        tests={subjectTests} 
+        isLoading={isLoading} 
+        onTestDeleted={onTestDeleted}
+      />
     </div>
   );
 };
