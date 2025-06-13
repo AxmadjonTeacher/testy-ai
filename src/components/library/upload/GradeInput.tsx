@@ -15,10 +15,8 @@ const GradeInput: React.FC<GradeInputProps> = ({ value, onChange, className }) =
       <Label htmlFor="grade">Grade *</Label>
       <Input
         id="grade"
-        type="number"
-        min="1"
-        max="12"
-        placeholder="Enter grade (e.g., 1, 2, 3)"
+        type="text"
+        placeholder="Enter grade (e.g., 1, 2, 1-2, 2-3)"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
