@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, Calendar, HardDrive } from 'lucide-react';
+import { Download, FileText, Calendar, HardDrive } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from 'sonner';
@@ -51,22 +52,19 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0B';
+    if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', { 
       month: 'short', 
-      day: 'numeric'
+      day: 'numeric', 
+      year: 'numeric' 
     });
-  };
-
-  const truncateTitle = (title: string, maxLength: number = 15) => {
-    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
   };
 
   if (isLoading) {
@@ -92,9 +90,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
         animate={{ opacity: 1, y: 0 }}
         className="text-center py-8"
       >
-        <div className="h-12 w-12 mx-auto bg-gray-100 rounded-lg flex items-center justify-center mb-3">
-          <span className="text-gray-400 text-sm">No Tests</span>
-        </div>
+        <FileText className="h-12 w-12 mx-auto text-gray-400 mb-3" />
         <h3 className="text-lg font-semibold text-neutral-dark mb-1">No Tests Found</h3>
         <p className="text-sm text-neutral-dark/70">Try adjusting your search criteria or upload new tests.</p>
       </motion.div>
@@ -113,8 +109,8 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
           <Card className="h-32 w-44 hover:shadow-md transition-shadow cursor-pointer group">
             <CardHeader className="pb-0.5 p-1.5">
               <div className="flex justify-between items-start mb-0.5">
-                <CardTitle className="text-xs font-medium line-clamp-1 flex-1 pr-1" title={test.title}>
-                  {truncateTitle(test.title)}
+                <CardTitle className="text-xs font-medium line-clamp-1 flex-1 pr-1">
+                  {test.title}
                 </CardTitle>
                 <Badge variant="outline" className="text-xs px-1 py-0 h-3 text-xs">
                   {test.file_type.toUpperCase()}
@@ -122,17 +118,17 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
               </div>
               
               <div className="flex gap-0.5 mb-0.5">
-                <Badge variant="secondary" className="text-xs px-1 py-0 h-3">L{test.level}</Badge>
-                <Badge variant="outline" className="text-xs px-1 py-0 h-3">G{test.grade}</Badge>
+                <Badge variant="secondary" className="text-xs px-1 py-0 h-3">Level {test.level}</Badge>
+                <Badge variant="outline" className="text-xs px-1 py-0 h-3">Grade {test.grade}</Badge>
               </div>
 
               <div className="space-y-0 text-xs text-neutral-dark/70">
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-2 w-2 shrink-0" />
+                  <Calendar className="h-2 w-2" />
                   <span className="truncate text-xs">{formatDate(test.created_at)}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <HardDrive className="h-2 w-2 shrink-0" />
+                  <HardDrive className="h-2 w-2" />
                   <span className="text-xs">{formatFileSize(test.file_size)}</span>
                 </div>
               </div>
@@ -142,12 +138,12 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
               <div className="mb-0.5">
                 <div className="flex flex-wrap gap-0.5">
                   {test.topics.slice(0, 1).map((topic) => (
-                    <Badge key={topic} variant="outline" className="text-xs px-1 py-0 h-3" title={topic}>
-                      {topic.length > 8 ? topic.substring(0, 8) + '...' : topic}
+                    <Badge key={topic} variant="outline" className="text-xs px-1 py-0 h-3">
+                      {topic}
                     </Badge>
                   ))}
                   {test.topics.length > 1 && (
-                    <Badge variant="outline" className="text-xs px-1 py-0 h-3" title={test.topics.join(', ')}>
+                    <Badge variant="outline" className="text-xs px-1 py-0 h-3">
                       +{test.topics.length - 1}
                     </Badge>
                   )}
