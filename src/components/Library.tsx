@@ -5,20 +5,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from '@/contexts/AuthContext';
 import LibraryUpload from './library/LibraryUpload';
 import LibraryGrid from './library/LibraryGrid';
+import CompactTestGrid from './library/CompactTestGrid';
+import LibrarySearch from './library/LibrarySearch';
 import { useUploadedTests } from '@/hooks/useUploadedTests';
 import { motion } from 'framer-motion';
-import { BookOpen, Upload, FileText } from 'lucide-react';
+import { BookOpen, Upload, FileText, Grid, List } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 
 const Library = () => {
   const { user } = useAuth();
   const { uploadedTests, isLoading, fetchUploadedTests } = useUploadedTests();
   const [activeTab, setActiveTab] = useState('all');
+  const [filteredTests, setFilteredTests] = useState(uploadedTests);
+  const [viewMode, setViewMode] = useState<'grid' | 'compact'>('compact');
 
   useEffect(() => {
     if (user) {
       fetchUploadedTests();
     }
   }, [user, fetchUploadedTests]);
+
+  useEffect(() => {
+    setFilteredTests(uploadedTests);
+  }, [uploadedTests]);
 
   if (!user) {
     return (
@@ -37,8 +46,40 @@ const Library = () => {
   }
 
   const filterTestsByLevel = (level: string) => {
-    if (level === 'all') return uploadedTests;
-    return uploadedTests.filter(test => test.level === level);
+    if (level === 'all') return filteredTests;
+    return filteredTests.filter(test => test.level === level);
+  };
+
+  const handleSearch = (query: string, filterType: string) => {
+    if (!query.trim()) {
+      setFilteredTests(uploadedTests);
+      return;
+    }
+
+    const filtered = uploadedTests.filter(test => {
+      const searchQuery = query.toLowerCase();
+      
+      switch (filterType) {
+        case 'title':
+          return test.title.toLowerCase().includes(searchQuery);
+        case 'topics':
+          return test.topics.some(topic => topic.toLowerCase().includes(searchQuery));
+        case 'grade':
+          return test.grade.toLowerCase().includes(searchQuery);
+        case 'date':
+          return new Date(test.created_at).toLocaleDateString().includes(searchQuery);
+        case 'keywords':
+        default:
+          return (
+            test.title.toLowerCase().includes(searchQuery) ||
+            test.topics.some(topic => topic.toLowerCase().includes(searchQuery)) ||
+            test.grade.toLowerCase().includes(searchQuery) ||
+            test.level.toLowerCase().includes(searchQuery)
+          );
+      }
+    });
+
+    setFilteredTests(filtered);
   };
 
   return (
@@ -63,7 +104,7 @@ const Library = () => {
           </TabsTrigger>
           <TabsTrigger value="all" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            All Tests ({uploadedTests.length})
+            All Tests ({filteredTests.length})
           </TabsTrigger>
           <TabsTrigger value="browse" className="flex items-center gap-2">
             <BookOpen className="h-4 w-4" />
@@ -76,11 +117,44 @@ const Library = () => {
         </TabsContent>
 
         <TabsContent value="all">
-          <LibraryGrid tests={uploadedTests} isLoading={isLoading} />
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <LibrarySearch onSearch={handleSearch} />
+              </div>
+              <div className="flex gap-2 ml-4">
+                <Button
+                  variant={viewMode === 'compact' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('compact')}
+                >
+                  <Grid className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
+            {viewMode === 'compact' ? (
+              <CompactTestGrid tests={filteredTests} isLoading={isLoading} />
+            ) : (
+              <LibraryGrid tests={filteredTests} isLoading={isLoading} />
+            )}
+          </div>
         </TabsContent>
 
         <TabsContent value="browse">
           <div className="space-y-6">
+            <LibrarySearch 
+              onSearch={handleSearch} 
+              placeholder="Search by level, topic, grade, or keywords..."
+            />
+            
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {['0', '1', '2', '3', '4', 'IELTS'].map((level) => {
                 const levelTests = filterTestsByLevel(level);
@@ -96,7 +170,32 @@ const Library = () => {
                 );
               })}
             </div>
-            <LibraryGrid tests={uploadedTests} isLoading={isLoading} />
+            
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">All Tests</h3>
+              <div className="flex gap-2">
+                <Button
+                  variant={viewMode === 'compact' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('compact')}
+                >
+                  <Grid className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            
+            {viewMode === 'compact' ? (
+              <CompactTestGrid tests={filteredTests} isLoading={isLoading} />
+            ) : (
+              <LibraryGrid tests={filteredTests} isLoading={isLoading} />
+            )}
           </div>
         </TabsContent>
       </Tabs>
