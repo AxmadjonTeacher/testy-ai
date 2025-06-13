@@ -129,7 +129,8 @@ export type Database = {
           file_type: string
           grade: string
           id: string
-          level: string
+          level: string | null
+          subject: string
           title: string
           topics: string[]
           updated_at: string
@@ -143,7 +144,8 @@ export type Database = {
           file_type: string
           grade: string
           id?: string
-          level: string
+          level?: string | null
+          subject?: string
           title: string
           topics: string[]
           updated_at?: string
@@ -157,7 +159,8 @@ export type Database = {
           file_type?: string
           grade?: string
           id?: string
-          level?: string
+          level?: string | null
+          subject?: string
           title?: string
           topics?: string[]
           updated_at?: string

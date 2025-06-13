@@ -133,13 +133,14 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
 
         if (uploadError) throw uploadError;
 
-        // Save metadata to database
+        // Save metadata to database - now properly handling subject and nullable level
         const { error: dbError } = await supabase
           .from('uploaded_tests')
           .insert({
             user_id: user.id,
+            title: file.name.split('.')[0], // Use filename without extension as title
             subject: formData.subject,
-            level: formData.level || null,
+            level: requiresLevel() ? formData.level : null,
             grade: formData.grade,
             topics: formData.topics,
             file_name: file.name,
