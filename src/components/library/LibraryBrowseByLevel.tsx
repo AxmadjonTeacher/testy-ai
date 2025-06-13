@@ -1,16 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Grid, List } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
-import LibraryGrid from './LibraryGrid';
 
 interface UploadedTest {
   id: string;
-  title: string;
-  level: string;
+  title?: string;
+  subject: string;
+  level?: string;
   grade: string;
   topics: string[];
   file_name: string;
@@ -23,78 +23,105 @@ interface UploadedTest {
 interface LibraryBrowseByLevelProps {
   filteredTests: UploadedTest[];
   isLoading: boolean;
-  viewMode: 'grid' | 'compact';
   onSearch: (query: string, filterType: string) => void;
-  onViewModeChange: (mode: 'grid' | 'compact') => void;
 }
 
 const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
   filteredTests,
   isLoading,
-  viewMode,
-  onSearch,
-  onViewModeChange
+  onSearch
 }) => {
-  const filterTestsByLevel = (level: string) => {
-    if (level === 'all') return filteredTests;
-    return filteredTests.filter(test => test.level === level);
+  const [selectedSubject, setSelectedSubject] = useState<string>('all');
+
+  const subjects = [
+    { value: 'all', label: 'All Subjects' },
+    { value: 'English', label: 'English' },
+    { value: 'Science', label: 'Science' },
+    { value: 'Math', label: 'Math' },
+    { value: 'History', label: 'History' },
+    { value: 'Native Language', label: 'Native Language' },
+    { value: 'IT', label: 'IT' }
+  ];
+
+  const filterTestsBySubject = (tests: UploadedTest[]) => {
+    if (selectedSubject === 'all') return tests;
+    return tests.filter(test => test.subject === selectedSubject);
+  };
+
+  const filterTestsByLevel = (tests: UploadedTest[], level: string) => {
+    if (level === 'all') return tests;
+    return tests.filter(test => test.level === level);
+  };
+
+  const getSubjectTests = () => filterTestsBySubject(filteredTests);
+  const subjectTests = getSubjectTests();
+
+  const getLevelsForSubject = () => {
+    if (selectedSubject === 'English') {
+      return ['0', '1', '2', '3', '4', 'IELTS'];
+    } else if (selectedSubject === 'Math') {
+      return ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    }
+    return [];
+  };
+
+  const shouldShowLevels = () => {
+    return selectedSubject === 'English' || selectedSubject === 'Math' || selectedSubject === 'all';
   };
 
   return (
     <div className="space-y-4">
       <LibrarySearch 
         onSearch={onSearch} 
-        placeholder="Search by level, topic, grade, or keywords..."
+        placeholder="Search by subject, level, topic, grade, or keywords..."
       />
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {['0', '1', '2', '3', '4', 'IELTS'].map((level) => {
-          const levelTests = filterTestsByLevel(level);
-          return (
-            <Card key={level} className="cursor-pointer hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg text-center">Level {level}</CardTitle>
-                <CardDescription className="text-center">
-                  {levelTests.length} test{levelTests.length !== 1 ? 's' : ''}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          );
-        })}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Filter by Subject:</label>
+        <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Select subject" />
+          </SelectTrigger>
+          <SelectContent>
+            {subjects.map((subject) => (
+              <SelectItem key={subject.value} value={subject.value}>
+                {subject.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
+
+      {shouldShowLevels() && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {getLevelsForSubject().map((level) => {
+            const levelTests = filterTestsByLevel(subjectTests, level);
+            return (
+              <Card key={level} className="cursor-pointer hover:shadow-lg transition-shadow">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg text-center">Level {level}</CardTitle>
+                  <CardDescription className="text-center">
+                    {levelTests.length} test{levelTests.length !== 1 ? 's' : ''}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            );
+          })}
+        </div>
+      )}
       
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <h3 className="text-lg font-semibold">All Tests</h3>
+          <h3 className="text-lg font-semibold">
+            {selectedSubject === 'all' ? 'All Tests' : `${selectedSubject} Tests`}
+          </h3>
           <div className="text-xs text-neutral-dark/70 bg-gray-100 px-2 py-1 rounded">
-            {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''}
+            {subjectTests.length} test{subjectTests.length !== 1 ? 's' : ''}
           </div>
-        </div>
-        <div className="flex gap-1">
-          <Button
-            variant={viewMode === 'compact' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => onViewModeChange('compact')}
-            className="h-8 w-8 p-0"
-          >
-            <Grid className="h-3 w-3" />
-          </Button>
-          <Button
-            variant={viewMode === 'grid' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => onViewModeChange('grid')}
-            className="h-8 w-8 p-0"
-          >
-            <List className="h-3 w-3" />
-          </Button>
         </div>
       </div>
       
-      {viewMode === 'compact' ? (
-        <CompactTestGrid tests={filteredTests} isLoading={isLoading} />
-      ) : (
-        <LibraryGrid tests={filteredTests} isLoading={isLoading} />
-      )}
+      <CompactTestGrid tests={subjectTests} isLoading={isLoading} />
     </div>
   );
 };

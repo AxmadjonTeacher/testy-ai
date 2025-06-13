@@ -19,7 +19,7 @@ interface LibraryUploadProps {
 const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
-    title: '',
+    subject: '',
     level: '',
     grade: '',
     topics: [] as string[],
@@ -28,8 +28,17 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
   const [files, setFiles] = useState<FileList | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  const levels = ['0', '1', '2', '3', '4', 'IELTS'];
-  const grades = ['1-2', '3-4', '5-6', '7-8', '9-11'];
+  const subjects = [
+    { value: 'English', label: 'English' },
+    { value: 'Science', label: 'Science' },
+    { value: 'Math', label: 'Math' },
+    { value: 'History', label: 'History' },
+    { value: 'Native Language', label: 'Native Language' },
+    { value: 'IT', label: 'IT' }
+  ];
+
+  const englishLevels = ['0', '1', '2', '3', '4', 'IELTS'];
+  const mathLevels = Array.from({ length: 10 }, (_, i) => `${i + 1}`);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
@@ -69,6 +78,26 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
     }));
   };
 
+  const handleSubjectChange = (subject: string) => {
+    setFormData(prev => ({
+      ...prev,
+      subject,
+      level: '', // Reset level when subject changes
+      grade: '', // Reset grade when subject changes
+      topics: [] // Reset topics when subject changes
+    }));
+  };
+
+  const requiresLevel = () => {
+    return formData.subject === 'English' || formData.subject === 'Math';
+  };
+
+  const getLevelsForSubject = () => {
+    if (formData.subject === 'English') return englishLevels;
+    if (formData.subject === 'Math') return mathLevels;
+    return [];
+  };
+
   const handleUpload = async () => {
     if (!user) {
       toast.error('Please sign in to upload tests');
@@ -80,8 +109,13 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
       return;
     }
 
-    if (!formData.title || !formData.level || !formData.grade || formData.topics.length === 0) {
+    if (!formData.subject || !formData.grade || formData.topics.length === 0) {
       toast.error('Please fill in all required fields');
+      return;
+    }
+
+    if (requiresLevel() && !formData.level) {
+      toast.error(`Please select a level for ${formData.subject}`);
       return;
     }
 
@@ -104,8 +138,8 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
           .from('uploaded_tests')
           .insert({
             user_id: user.id,
-            title: formData.title,
-            level: formData.level,
+            subject: formData.subject,
+            level: formData.level || null,
             grade: formData.grade,
             topics: formData.topics,
             file_name: file.name,
@@ -123,7 +157,7 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
       
       // Reset form
       setFormData({
-        title: '',
+        subject: '',
         level: '',
         grade: '',
         topics: [],
@@ -156,51 +190,56 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
             Upload Test Files
           </CardTitle>
           <CardDescription>
-            Upload PDF or DOCX test files and organize them by level, grade, and topics.
+            Upload PDF or DOCX test files and organize them by subject, level, grade, and topics.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="title">Test Title *</Label>
-            <Input
-              id="title"
-              placeholder="Enter test title"
-              value={formData.title}
-              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-            />
+            <Label htmlFor="subject">Subject *</Label>
+            <Select value={formData.subject} onValueChange={handleSubjectChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select subject" />
+              </SelectTrigger>
+              <SelectContent>
+                {subjects.map((subject) => (
+                  <SelectItem key={subject.value} value={subject.value}>
+                    {subject.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="level">Level *</Label>
-              <Select value={formData.level} onValueChange={(value) => setFormData(prev => ({ ...prev, level: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select level" />
-                </SelectTrigger>
-                <SelectContent>
-                  {levels.map((level) => (
-                    <SelectItem key={level} value={level}>
-                      Level {level}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {requiresLevel() && (
+              <div>
+                <Label htmlFor="level">Level *</Label>
+                <Select value={formData.level} onValueChange={(value) => setFormData(prev => ({ ...prev, level: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {getLevelsForSubject().map((level) => (
+                      <SelectItem key={level} value={level}>
+                        Level {level}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
-            <div>
+            <div className={requiresLevel() ? '' : 'col-span-2'}>
               <Label htmlFor="grade">Grade *</Label>
-              <Select value={formData.grade} onValueChange={(value) => setFormData(prev => ({ ...prev, grade: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select grade" />
-                </SelectTrigger>
-                <SelectContent>
-                  {grades.map((grade) => (
-                    <SelectItem key={grade} value={grade}>
-                      Grade {grade}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input
+                id="grade"
+                type="number"
+                min="1"
+                max="12"
+                placeholder="Enter grade (e.g., 1, 2, 3)"
+                value={formData.grade}
+                onChange={(e) => setFormData(prev => ({ ...prev, grade: e.target.value }))}
+              />
             </div>
           </div>
 

@@ -5,8 +5,9 @@ import { toast } from "sonner";
 
 interface UploadedTest {
   id: string;
-  title: string;
-  level: string;
+  title?: string;
+  subject: string;
+  level?: string;
   grade: string;
   topics: string[];
   file_name: string;

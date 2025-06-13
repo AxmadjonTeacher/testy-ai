@@ -16,7 +16,6 @@ const Library = () => {
   const { uploadedTests, isLoading, fetchUploadedTests } = useUploadedTests();
   const [activeTab, setActiveTab] = useState('all');
   const [filteredTests, setFilteredTests] = useState(uploadedTests);
-  const [viewMode, setViewMode] = useState<'grid' | 'compact'>('compact');
 
   useEffect(() => {
     if (user) {
@@ -55,29 +54,28 @@ const Library = () => {
       
       switch (filterType) {
         case 'title':
-          return test.title.toLowerCase().includes(searchQuery);
+          return (test.title || test.file_name).toLowerCase().includes(searchQuery);
         case 'topics':
           return test.topics.some(topic => topic.toLowerCase().includes(searchQuery));
         case 'grade':
           return test.grade.toLowerCase().includes(searchQuery);
+        case 'subject':
+          return test.subject.toLowerCase().includes(searchQuery);
         case 'date':
           return new Date(test.created_at).toLocaleDateString().includes(searchQuery);
         case 'keywords':
         default:
           return (
-            test.title.toLowerCase().includes(searchQuery) ||
+            (test.title || test.file_name).toLowerCase().includes(searchQuery) ||
             test.topics.some(topic => topic.toLowerCase().includes(searchQuery)) ||
             test.grade.toLowerCase().includes(searchQuery) ||
-            test.level.toLowerCase().includes(searchQuery)
+            (test.level && test.level.toLowerCase().includes(searchQuery)) ||
+            test.subject.toLowerCase().includes(searchQuery)
           );
       }
     });
 
     setFilteredTests(filtered);
-  };
-
-  const handleViewModeChange = (mode: 'grid' | 'compact') => {
-    setViewMode(mode);
   };
 
   return (
@@ -95,9 +93,7 @@ const Library = () => {
           <LibraryAllTests
             filteredTests={filteredTests}
             isLoading={isLoading}
-            viewMode={viewMode}
             onSearch={handleSearch}
-            onViewModeChange={handleViewModeChange}
           />
         </TabsContent>
 
@@ -105,9 +101,7 @@ const Library = () => {
           <LibraryBrowseByLevel
             filteredTests={filteredTests}
             isLoading={isLoading}
-            viewMode={viewMode}
             onSearch={handleSearch}
-            onViewModeChange={handleViewModeChange}
           />
         </TabsContent>
       </Tabs>

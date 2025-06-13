@@ -10,8 +10,9 @@ import { toast } from 'sonner';
 
 interface UploadedTest {
   id: string;
-  title: string;
-  level: string;
+  title?: string;
+  subject: string;
+  level?: string;
   grade: string;
   topics: string[];
   file_name: string;
@@ -52,26 +53,25 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return '0B';
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ['B', 'KB', 'MB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + sizes[i];
   };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', { 
       month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
+      day: 'numeric'
     });
   };
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-1.5">
-        {[...Array(14)].map((_, i) => (
-          <Card key={i} className="animate-pulse h-32 w-44">
+      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-1.5">
+        {[...Array(16)].map((_, i) => (
+          <Card key={i} className="animate-pulse h-28 w-36">
             <CardContent className="p-1.5">
               <div className="h-2 bg-gray-200 rounded w-3/4 mb-1"></div>
               <div className="h-2 bg-gray-200 rounded w-1/2 mb-1"></div>
@@ -98,7 +98,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-1.5">
+    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-1.5">
       {tests.map((test, index) => (
         <motion.div
           key={test.id}
@@ -106,20 +106,23 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.02 }}
         >
-          <Card className="h-32 w-44 hover:shadow-md transition-shadow cursor-pointer group">
+          <Card className="h-28 w-36 hover:shadow-md transition-shadow cursor-pointer group">
             <CardHeader className="pb-0.5 p-1.5">
               <div className="flex justify-between items-start mb-0.5">
                 <CardTitle className="text-xs font-medium line-clamp-1 flex-1 pr-1">
-                  {test.title}
+                  {test.title || test.file_name.split('.')[0]}
                 </CardTitle>
-                <Badge variant="outline" className="text-xs px-1 py-0 h-3 text-xs">
+                <Badge variant="outline" className="text-xs px-1 py-0 h-3">
                   {test.file_type.toUpperCase()}
                 </Badge>
               </div>
               
-              <div className="flex gap-0.5 mb-0.5">
-                <Badge variant="secondary" className="text-xs px-1 py-0 h-3">Level {test.level}</Badge>
-                <Badge variant="outline" className="text-xs px-1 py-0 h-3">Grade {test.grade}</Badge>
+              <div className="flex flex-wrap gap-0.5 mb-0.5">
+                <Badge variant="secondary" className="text-xs px-1 py-0 h-3">{test.subject}</Badge>
+                {test.level && (
+                  <Badge variant="outline" className="text-xs px-1 py-0 h-3">L{test.level}</Badge>
+                )}
+                <Badge variant="outline" className="text-xs px-1 py-0 h-3">G{test.grade}</Badge>
               </div>
 
               <div className="space-y-0 text-xs text-neutral-dark/70">
@@ -139,7 +142,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
                 <div className="flex flex-wrap gap-0.5">
                   {test.topics.slice(0, 1).map((topic) => (
                     <Badge key={topic} variant="outline" className="text-xs px-1 py-0 h-3">
-                      {topic}
+                      {topic.length > 8 ? topic.substring(0, 8) + '...' : topic}
                     </Badge>
                   ))}
                   {test.topics.length > 1 && (
