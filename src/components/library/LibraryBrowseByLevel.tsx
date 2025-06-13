@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
@@ -74,6 +73,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
       <LibrarySearch 
         onSearch={onSearch} 
         placeholder="Search by subject, level, topic, grade, or keywords..."
+        testCount={subjectTests.length}
       />
       
       <div className="mb-4">
@@ -93,7 +93,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
       </div>
 
       {shouldShowLevels() && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
           {getLevelsForSubject().map((level) => {
             const levelTests = filterTestsByLevel(subjectTests, level);
             return (
@@ -110,15 +110,10 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
         </div>
       )}
       
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <h3 className="text-lg font-semibold">
-            {selectedSubject === 'all' ? 'All Tests' : `${selectedSubject} Tests`}
-          </h3>
-          <div className="text-xs text-neutral-dark/70 bg-gray-100 px-2 py-1 rounded">
-            {subjectTests.length} test{subjectTests.length !== 1 ? 's' : ''}
-          </div>
-        </div>
+      <div className="flex items-center gap-3 mb-4">
+        <h3 className="text-lg font-semibold">
+          {selectedSubject === 'all' ? 'All Tests' : `${selectedSubject} Tests`}
+        </h3>
       </div>
       
       <CompactTestGrid tests={subjectTests} isLoading={isLoading} />

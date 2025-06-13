@@ -29,15 +29,11 @@ const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
   onSearch
 }) => {
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 flex-1">
-          <LibrarySearch onSearch={onSearch} />
-          <div className="text-xs text-neutral-dark/70 whitespace-nowrap bg-gray-100 px-2 py-1 rounded">
-            {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''}
-          </div>
-        </div>
-      </div>
+    <div className="space-y-4">
+      <LibrarySearch 
+        onSearch={onSearch} 
+        testCount={filteredTests.length}
+      />
       
       <CompactTestGrid tests={filteredTests} isLoading={isLoading} />
     </div>
