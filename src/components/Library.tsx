@@ -117,28 +117,30 @@ const Library = () => {
         </TabsContent>
 
         <TabsContent value="all">
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 flex-1">
+              <div className="flex items-center gap-3 flex-1">
                 <LibrarySearch onSearch={handleSearch} />
-                <div className="text-sm text-neutral-dark/70 whitespace-nowrap">
+                <div className="text-xs text-neutral-dark/70 whitespace-nowrap bg-gray-100 px-2 py-1 rounded">
                   {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''}
                 </div>
               </div>
-              <div className="flex gap-2 ml-4">
+              <div className="flex gap-1 ml-3">
                 <Button
                   variant={viewMode === 'compact' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('compact')}
+                  className="h-8 w-8 p-0"
                 >
-                  <Grid className="h-4 w-4" />
+                  <Grid className="h-3 w-3" />
                 </Button>
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('grid')}
+                  className="h-8 w-8 p-0"
                 >
-                  <List className="h-4 w-4" />
+                  <List className="h-3 w-3" />
                 </Button>
               </div>
             </div>
@@ -152,7 +154,7 @@ const Library = () => {
         </TabsContent>
 
         <TabsContent value="browse">
-          <div className="space-y-6">
+          <div className="space-y-4">
             <LibrarySearch 
               onSearch={handleSearch} 
               placeholder="Search by level, topic, grade, or keywords..."
@@ -174,27 +176,29 @@ const Library = () => {
               })}
             </div>
             
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
                 <h3 className="text-lg font-semibold">All Tests</h3>
-                <div className="text-sm text-neutral-dark/70">
+                <div className="text-xs text-neutral-dark/70 bg-gray-100 px-2 py-1 rounded">
                   {filteredTests.length} test{filteredTests.length !== 1 ? 's' : ''}
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-1">
                 <Button
                   variant={viewMode === 'compact' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('compact')}
+                  className="h-8 w-8 p-0"
                 >
-                  <Grid className="h-4 w-4" />
+                  <Grid className="h-3 w-3" />
                 </Button>
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('grid')}
+                  className="h-8 w-8 p-0"
                 >
-                  <List className="h-4 w-4" />
+                  <List className="h-3 w-3" />
                 </Button>
               </div>
             </div>

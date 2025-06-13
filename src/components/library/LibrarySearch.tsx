@@ -25,21 +25,21 @@ const LibrarySearch: React.FC<LibrarySearchProps> = ({ onSearch, placeholder = "
   };
 
   return (
-    <div className="flex gap-3 mb-6 p-4 bg-gray-50 rounded-lg">
+    <div className="flex gap-2 mb-4 p-3 bg-gray-50 rounded-lg">
       <div className="flex-1 relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3 w-3 text-gray-400" />
         <Input
           placeholder={placeholder}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
-          className="pl-10"
+          className="pl-7 h-8 text-sm"
         />
       </div>
       
       <Select value={filterType} onValueChange={setFilterType}>
-        <SelectTrigger className="w-40">
-          <Filter className="h-4 w-4 mr-2" />
+        <SelectTrigger className="w-32 h-8 text-sm">
+          <Filter className="h-3 w-3 mr-1" />
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -51,7 +51,7 @@ const LibrarySearch: React.FC<LibrarySearchProps> = ({ onSearch, placeholder = "
         </SelectContent>
       </Select>
       
-      <Button onClick={handleSearch} variant="outline">
+      <Button onClick={handleSearch} variant="outline" size="sm" className="h-8 px-3 text-sm">
         Search
       </Button>
     </div>
