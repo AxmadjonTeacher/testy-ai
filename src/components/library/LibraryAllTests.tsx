@@ -15,6 +15,7 @@ interface UploadedTest {
   file_type: string;
   file_size: number;
   created_at: string;
+  user_id: string;
 }
 
 interface LibraryAllTestsProps {

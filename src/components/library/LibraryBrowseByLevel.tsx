@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,6 +16,7 @@ interface UploadedTest {
   file_type: string;
   file_size: number;
   created_at: string;
+  user_id: string;
 }
 
 interface LibraryBrowseByLevelProps {
