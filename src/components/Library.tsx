@@ -16,7 +16,6 @@ const Library = () => {
   const { uploadedTests, isLoading, fetchUploadedTests } = useUploadedTests();
   const [activeTab, setActiveTab] = useState('all');
   const [filteredTests, setFilteredTests] = useState(uploadedTests);
-  const [viewMode, setViewMode] = useState<'grid' | 'compact'>('compact');
 
   useEffect(() => {
     if (user) {
@@ -76,10 +75,6 @@ const Library = () => {
     setFilteredTests(filtered);
   };
 
-  const handleViewModeChange = (mode: 'grid' | 'compact') => {
-    setViewMode(mode);
-  };
-
   return (
     <div className="p-6">
       <LibraryHeader />
@@ -95,9 +90,7 @@ const Library = () => {
           <LibraryAllTests
             filteredTests={filteredTests}
             isLoading={isLoading}
-            viewMode={viewMode}
             onSearch={handleSearch}
-            onViewModeChange={handleViewModeChange}
           />
         </TabsContent>
 
@@ -105,9 +98,7 @@ const Library = () => {
           <LibraryBrowseByLevel
             filteredTests={filteredTests}
             isLoading={isLoading}
-            viewMode={viewMode}
             onSearch={handleSearch}
-            onViewModeChange={handleViewModeChange}
           />
         </TabsContent>
       </Tabs>
