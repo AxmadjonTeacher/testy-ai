@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, FileText, Calendar, HardDrive } from 'lucide-react';
+import { Download, FileText, Calendar, HardDrive, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from 'sonner';
@@ -20,6 +20,7 @@ interface UploadedTest {
   file_type: string;
   file_size: number;
   created_at: string;
+  user_id: string;
 }
 
 interface CompactTestGridProps {
@@ -67,6 +68,11 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
     });
   };
 
+  const getAuthorInitials = (userId: string) => {
+    // Extract first two characters of user ID for display
+    return userId.substring(0, 2).toUpperCase();
+  };
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -92,7 +98,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
       >
         <FileText className="h-16 w-16 mx-auto text-gray-400 mb-4" />
         <h3 className="text-xl font-semibold text-neutral-dark mb-2">No Tests Found</h3>
-        <p className="text-neutral-dark/70">Try adjusting your search criteria or upload new tests.</p>
+        <p className="text-neutral-dark/70">Try adjusting your search criteria or be the first to upload tests in this category.</p>
       </motion.div>
     );
   }
@@ -106,7 +112,7 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: index * 0.02 }}
         >
-          <Card className="h-48 hover:shadow-lg transition-all duration-200 cursor-pointer group border-gray-200">
+          <Card className="h-52 hover:shadow-lg transition-all duration-200 cursor-pointer group border-gray-200">
             <CardHeader className="pb-2 p-3">
               {/* Header with title and file type */}
               <div className="flex justify-between items-start mb-2">
@@ -129,6 +135,14 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading }) =
             </CardHeader>
             
             <CardContent className="pt-0 p-3 space-y-2">
+              {/* Author info */}
+              <div className="flex items-center gap-1 text-xs text-neutral-dark/70">
+                <User className="h-3 w-3 shrink-0" />
+                <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-xs">
+                  {getAuthorInitials(test.user_id)}
+                </span>
+              </div>
+
               {/* File info */}
               <div className="space-y-1 text-xs text-neutral-dark/70">
                 <div className="flex items-center gap-1">

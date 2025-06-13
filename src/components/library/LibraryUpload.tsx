@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from 'sonner';
-import { Upload } from 'lucide-react';
+import { Upload, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { requiresLevel } from '@/utils/subjectConfig';
 import { FormData } from '@/utils/uploadValidation';
@@ -94,10 +93,11 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Upload className="h-5 w-5" />
-            Upload Test Files
+            Share Test Files with Community
+            <Share2 className="h-4 w-4 text-primary/70" />
           </CardTitle>
           <CardDescription>
-            Upload PDF or DOCX test files and organize them by subject, level, grade, and topics.
+            Upload PDF or DOCX test files to share with the entire community. Your contributions help build a comprehensive library for everyone.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -142,7 +142,7 @@ const LibraryUpload: React.FC<LibraryUploadProps> = ({ onUploadSuccess }) => {
             disabled={uploading}
             className="w-full"
           >
-            {uploading ? 'Uploading...' : 'Upload Tests'}
+            {uploading ? 'Uploading to Community...' : 'Share with Community'}
           </Button>
         </CardFooter>
       </Card>
