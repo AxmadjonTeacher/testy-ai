@@ -73,11 +73,14 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
       <LibrarySearch 
         onSearch={onSearch} 
         placeholder="Search by subject, level, topic, grade, or keywords..."
-        testCount={subjectTests.length}
       />
       
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Filter by Subject:</label>
+      {/* Test count and subject selector on the same line */}
+      <div className="flex items-center gap-4">
+        <div className="text-sm text-neutral-dark/70 bg-gray-100 px-3 py-2 rounded">
+          {subjectTests.length} test{subjectTests.length !== 1 ? 's' : ''}
+        </div>
+        
         <Select value={selectedSubject} onValueChange={setSelectedSubject}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Select subject" />
