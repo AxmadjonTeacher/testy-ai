@@ -71,14 +71,27 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo and Mobile Menu */}
           <motion.div 
-            className="flex items-center flex-shrink-0"
+            className="flex items-center gap-3 flex-shrink-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <Link to="/" className="flex items-center gap-3">
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
+            
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-3 ml-2">
               <motion.img 
                 src="/lovable-uploads/86990c82-4285-4b75-a8b6-372915c73199.png" 
                 alt="Testy Logo" 
@@ -136,18 +149,6 @@ const Header = () => {
             </div>
           </motion.nav>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden">
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          </div>
-          
           {/* User Actions */}
           <motion.div 
             className="flex items-center space-x-3 flex-shrink-0"
