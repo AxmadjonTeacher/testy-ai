@@ -78,6 +78,11 @@ const Library = () => {
     setFilteredTests(filtered);
   };
 
+  const handleTestDeleted = () => {
+    console.log("Test deleted, refreshing list");
+    fetchUploadedTests();
+  };
+
   return (
     <div className="p-6">
       <LibraryHeader />
@@ -94,6 +99,7 @@ const Library = () => {
             filteredTests={filteredTests}
             isLoading={isLoading}
             onSearch={handleSearch}
+            onTestDeleted={handleTestDeleted}
           />
         </TabsContent>
 
@@ -102,6 +108,7 @@ const Library = () => {
             filteredTests={filteredTests}
             isLoading={isLoading}
             onSearch={handleSearch}
+            onTestDeleted={handleTestDeleted}
           />
         </TabsContent>
       </Tabs>

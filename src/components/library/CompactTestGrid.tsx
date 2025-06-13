@@ -60,22 +60,27 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading, onT
   };
 
   const handleDeleteClick = (test: UploadedTest) => {
+    console.log("Delete button clicked for test:", test.id);
     setTestToDelete(test);
     setDeleteDialogOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
     if (testToDelete) {
+      console.log("Confirming delete for test:", testToDelete.id);
       const success = await deleteTest(testToDelete);
       if (success) {
         setDeleteDialogOpen(false);
         setTestToDelete(null);
-        onTestDeleted?.();
+        if (onTestDeleted) {
+          onTestDeleted();
+        }
       }
     }
   };
 
   const handleDeleteCancel = () => {
+    console.log("Delete cancelled");
     setDeleteDialogOpen(false);
     setTestToDelete(null);
   };
@@ -153,7 +158,10 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading, onT
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleDeleteClick(test)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteClick(test);
+                      }}
                       className="h-6 w-6 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                       title="Delete test"
                     >
@@ -213,7 +221,10 @@ const CompactTestGrid: React.FC<CompactTestGridProps> = ({ tests, isLoading, onT
                 
                 {/* Download button */}
                 <Button 
-                  onClick={() => handleDownload(test)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDownload(test);
+                  }}
                   size="sm"
                   variant="outline"
                   className="w-full text-xs h-8 group-hover:bg-primary group-hover:text-white transition-colors mt-auto"
