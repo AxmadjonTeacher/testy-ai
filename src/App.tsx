@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import GeneratePage from "./pages/GeneratePage";
 import DashboardPage from "./pages/DashboardPage";
+import LibraryPage from "./pages/LibraryPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import AdminUploadPage from "./pages/AdminUploadPage";
 import AuthPage from "./pages/AuthPage";
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/generate" element={<GeneratePage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/library" element={<LibraryPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/admin/upload" element={<AdminUploadPage />} />
             <Route path="/auth" element={<AuthPage />} />

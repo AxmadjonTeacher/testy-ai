@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -109,6 +108,11 @@ const Header = () => {
             <motion.div variants={itemVariants}>
               <Link to="/generate" className="px-6 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium">
                 Generate
+              </Link>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <Link to="/library" className="px-6 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium">
+                Library
               </Link>
             </motion.div>
             {isAdmin && (

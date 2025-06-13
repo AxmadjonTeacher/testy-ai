@@ -120,6 +120,51 @@ export type Database = {
         }
         Relationships: []
       }
+      uploaded_tests: {
+        Row: {
+          created_at: string
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          grade: string
+          id: string
+          level: string
+          title: string
+          topics: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          grade: string
+          id?: string
+          level: string
+          title: string
+          topics: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          grade?: string
+          id?: string
+          level?: string
+          title?: string
+          topics?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
