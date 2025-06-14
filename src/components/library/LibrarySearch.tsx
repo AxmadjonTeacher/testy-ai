@@ -3,17 +3,20 @@ import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface LibrarySearchProps {
   onSearch: (query: string, filterType: string) => void;
   placeholder?: string;
   testCount?: number;
+  className?: string;
 }
 
 const LibrarySearch: React.FC<LibrarySearchProps> = ({ 
   onSearch, 
   placeholder = "Search tests...",
-  testCount 
+  testCount,
+  className
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('keywords');
@@ -30,7 +33,7 @@ const LibrarySearch: React.FC<LibrarySearchProps> = ({
   };
 
   return (
-    <div className="space-y-3">
+    <div className={cn("space-y-3", className)}>
       {/* Search bar - expanded to full width */}
       <div className="flex gap-2 p-3 bg-gray-50 rounded-lg">
         <div className="flex-1 relative">

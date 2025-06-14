@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
@@ -112,6 +113,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
         <LibrarySearch 
           onSearch={onSearch} 
           placeholder="Search by subject, level, topic, grade, or keywords..."
+          className="md:flex-grow"
         />
         <div className="flex mt-2 md:mt-0 justify-end">
           <ViewSwitcher view={view} onViewChange={setView} />
