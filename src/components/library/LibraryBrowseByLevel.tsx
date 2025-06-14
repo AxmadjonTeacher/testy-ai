@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
@@ -7,7 +6,6 @@ import ViewSwitcher from './ViewSwitcher';
 import LibraryFilters from './LibraryFilters';
 import LevelFilterGrid from './LevelFilterGrid';
 import TestListHeader from './TestListHeader';
-import { useTestDelete } from '@/hooks/useTestDelete';
 import { supabase } from '@/integrations/supabase/client';
 import { downloadDocument } from '@/services/document/documentDownloader';
 import { toast } from 'sonner';
@@ -43,14 +41,6 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const [view, setView] = useState<"grid" | "list">("grid");
-  const { deleteTest } = useTestDelete();
-
-  const handleDelete = async (test: UploadedTest) => {
-    const success = await deleteTest(test);
-    if (success && onTestDeleted) {
-      onTestDeleted();
-    }
-  };
 
   const handleDownload = async (test: UploadedTest) => {
     try {
@@ -160,7 +150,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
           tests={displayTests}
           isLoading={isLoading}
           onDownload={handleDownload}
-          onDelete={handleDelete}
+          onTestDeleted={onTestDeleted}
         />
       )}
     </div>

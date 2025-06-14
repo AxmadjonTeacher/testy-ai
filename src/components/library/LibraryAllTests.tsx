@@ -1,10 +1,8 @@
-
 import React, { useState } from 'react';
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
 import TestListView from './TestListView';
 import ViewSwitcher from './ViewSwitcher';
-import { useTestDelete } from '@/hooks/useTestDelete';
 import { supabase } from '@/integrations/supabase/client';
 import { downloadDocument } from '@/services/document/documentDownloader';
 import { toast } from 'sonner';
@@ -38,14 +36,6 @@ const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
   onTestDeleted
 }) => {
   const [view, setView] = useState<"grid" | "list">("grid");
-  const { deleteTest } = useTestDelete();
-
-  const handleDelete = async (test: UploadedTest) => {
-    const success = await deleteTest(test);
-    if (success && onTestDeleted) {
-      onTestDeleted();
-    }
-  };
 
   const handleDownload = async (test: UploadedTest) => {
     try {
@@ -86,7 +76,7 @@ const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
           tests={filteredTests}
           isLoading={isLoading}
           onDownload={handleDownload}
-          onDelete={handleDelete}
+          onTestDeleted={onTestDeleted}
         />
       )}
     </div>
