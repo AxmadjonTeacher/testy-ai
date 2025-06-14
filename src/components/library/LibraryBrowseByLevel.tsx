@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
 import { Button } from "@/components/ui/button";
-import { Table, LayoutGrid } from "lucide-react";
+import { List, LayoutGrid } from "lucide-react";
 import TestListView from './TestListView';
 
 interface UploadedTest {
@@ -106,7 +106,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
             }
             onClick={() => setView("list")}
           >
-            <Table className="h-5 w-5" />
+            <List className="h-5 w-5" />
           </Button>
           <Button 
             variant="outline"
