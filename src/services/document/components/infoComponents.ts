@@ -4,6 +4,7 @@ import { textStyles, spacingConfig } from '../documentConfig';
 
 /**
  * Creates the test information paragraph
+ * - Now with improved spacing for inline layout (Level, Grade, Teacher) 
  */
 export function createTestInfoParagraph(level: string, grade?: string, teacher?: string): Paragraph {
   return new Paragraph({
@@ -13,7 +14,7 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
         ...textStyles.bold,
       }),
       new TextRun({
-        text: level + " ",
+        text: level + "    ", // extra spaces for separation
         ...textStyles.normal,
       }),
       new TextRun({
@@ -21,7 +22,7 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
         ...textStyles.bold,
       }),
       new TextRun({
-        text: grade || "Not specified" + " ",
+        text: (grade || "Not specified") + "    ",
         ...textStyles.normal,
       }),
       new TextRun({
@@ -40,7 +41,7 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
 }
 
 /**
- * Creates the student information fields
+ * Creates the student information fields, with improved underline lengths and spacing
  */
 export function createStudentInfoParagraph(): Paragraph {
   return new Paragraph({
@@ -50,15 +51,15 @@ export function createStudentInfoParagraph(): Paragraph {
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "_".repeat(50),
+        text: "_".repeat(36),
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "  Class ",
+        text: "    Class ",
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "_".repeat(10),
+        text: "_".repeat(18),
         ...textStyles.normal,
       }),
     ],
@@ -84,3 +85,4 @@ export function createInstructionsParagraph(): Paragraph {
     },
   });
 }
+

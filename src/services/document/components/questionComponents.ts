@@ -25,7 +25,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
     new Paragraph({
       children: [
         new TextRun({
-          text: `a) ${question.option_a}`,
+          text: `A) ${question.option_a}`,
           ...textStyles.normal,
         }),
       ],
@@ -41,7 +41,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
     new Paragraph({
       children: [
         new TextRun({
-          text: `b) ${question.option_b}`,
+          text: `B) ${question.option_b}`,
           ...textStyles.normal,
         }),
       ],
@@ -57,7 +57,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
     new Paragraph({
       children: [
         new TextRun({
-          text: `c) ${question.option_c}`,
+          text: `C) ${question.option_c}`,
           ...textStyles.normal,
         }),
       ],
@@ -73,7 +73,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
     new Paragraph({
       children: [
         new TextRun({
-          text: `d) ${question.option_d}`,
+          text: `D) ${question.option_d}`,
           ...textStyles.normal,
         }),
       ],
@@ -127,3 +127,4 @@ export function createAnswerKeySection(questions: Question[]): Paragraph[] {
   
   return answerKeyParagraphs;
 }
+
