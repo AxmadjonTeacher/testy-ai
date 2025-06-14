@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Table, LayoutGrid } from "lucide-react";
+import { List, LayoutGrid } from "lucide-react";
 
 interface ViewSwitcherProps {
   view: 'grid' | 'list';
@@ -14,7 +14,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, onViewChange }) => {
       <Button
         variant="outline"
         size="icon"
-        aria-label="Table view"
+        aria-label="List view"
         className={
           `transition ${
             view === 'list'
@@ -24,7 +24,7 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, onViewChange }) => {
         }
         onClick={() => onViewChange("list")}
       >
-        <Table className="h-5 w-5" />
+        <List className="h-5 w-5" />
       </Button>
       <Button
         variant="outline"

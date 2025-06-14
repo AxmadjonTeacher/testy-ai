@@ -1,10 +1,8 @@
-
 import React, { useState } from 'react';
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
 import TestListView from './TestListView';
-import { Button } from "@/components/ui/button";
-import { Table, LayoutGrid } from "lucide-react";
+import ViewSwitcher from './ViewSwitcher';
 
 interface UploadedTest {
   id: string;
@@ -47,25 +45,8 @@ const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
           onSearch={onSearch} 
           testCount={filteredTests.length}
         />
-        <div className="flex gap-1 mt-2 md:mt-0 justify-end">
-          <Button 
-            variant={view === 'list' ? "secondary" : "outline"} 
-            size="icon" 
-            aria-label="List view"
-            className={view === 'list' ? "ring-2 ring-primary" : ""}
-            onClick={() => setView("list")}
-          >
-            <Table className="h-5 w-5" />
-          </Button>
-          <Button 
-            variant={view === 'grid' ? "secondary" : "outline"}
-            size="icon"
-            aria-label="Grid view"
-            className={view === 'grid' ? "ring-2 ring-primary" : ""}
-            onClick={() => setView("grid")}
-          >
-            <LayoutGrid className="h-5 w-5" />
-          </Button>
+        <div className="flex mt-2 md:mt-0 justify-end">
+          <ViewSwitcher view={view} onViewChange={setView} />
         </div>
       </div>
       {view === "grid" ? (
