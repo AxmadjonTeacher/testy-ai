@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
 import { Button } from "@/components/ui/button";
-import { List, LayoutGrid } from "lucide-react";
+import { Table, LayoutGrid } from "lucide-react"; // <- Use Table instead of List
 import TestListView from './TestListView';
 
 interface UploadedTest {
@@ -96,7 +97,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
           <Button 
             variant="outline"
             size="icon"
-            aria-label="List view"
+            aria-label="Table view"
             className={
               `transition ${
                 view === 'list'
@@ -106,7 +107,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
             }
             onClick={() => setView("list")}
           >
-            <List className="h-5 w-5" />
+            <Table className="h-5 w-5" />  {/* This shows a "table" icon */}
           </Button>
           <Button 
             variant="outline"
