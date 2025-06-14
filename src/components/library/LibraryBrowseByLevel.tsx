@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -33,6 +34,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
   onTestDeleted
 }) => {
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
+  const [selectedLevel, setSelectedLevel] = useState<string>('all');
 
   const subjects = [
     { value: 'all', label: 'All Subjects' },
@@ -55,7 +57,13 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
   };
 
   const getSubjectTests = () => filterTestsBySubject(filteredTests);
+  const getDisplayTests = () => {
+    const subjectTests = getSubjectTests();
+    return filterTestsByLevel(subjectTests, selectedLevel);
+  };
+
   const subjectTests = getSubjectTests();
+  const displayTests = getDisplayTests();
 
   const getLevelsForSubject = () => {
     if (selectedSubject === 'English') {
@@ -70,6 +78,10 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
     return selectedSubject === 'English' || selectedSubject === 'Math' || selectedSubject === 'all';
   };
 
+  const handleLevelClick = (level: string) => {
+    setSelectedLevel(level);
+  };
+
   return (
     <div className="space-y-4">
       <LibrarySearch 
@@ -80,10 +92,13 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
       {/* Test count and subject selector on the same line */}
       <div className="flex items-center gap-4">
         <div className="text-sm text-neutral-dark/70 bg-gray-100 px-3 py-2 rounded">
-          {subjectTests.length} test{subjectTests.length !== 1 ? 's' : ''}
+          {displayTests.length} test{displayTests.length !== 1 ? 's' : ''}
         </div>
         
-        <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+        <Select value={selectedSubject} onValueChange={(value) => {
+          setSelectedSubject(value);
+          setSelectedLevel('all'); // Reset level when subject changes
+        }}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Select subject" />
           </SelectTrigger>
@@ -95,16 +110,35 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
             ))}
           </SelectContent>
         </Select>
+
+        {/* Level filter reset button */}
+        {selectedLevel !== 'all' && (
+          <button 
+            onClick={() => setSelectedLevel('all')}
+            className="text-sm text-blue-600 hover:text-blue-800 underline"
+          >
+            Show all levels
+          </button>
+        )}
       </div>
 
       {shouldShowLevels() && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
           {getLevelsForSubject().map((level) => {
             const levelTests = filterTestsByLevel(subjectTests, level);
+            const isSelected = selectedLevel === level;
             return (
-              <Card key={level} className="cursor-pointer hover:shadow-lg transition-shadow">
+              <Card 
+                key={level} 
+                className={`cursor-pointer hover:shadow-lg transition-all duration-200 ${
+                  isSelected ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-gray-50'
+                }`}
+                onClick={() => handleLevelClick(level)}
+              >
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg text-center">Level {level}</CardTitle>
+                  <CardTitle className={`text-lg text-center ${isSelected ? 'text-primary' : ''}`}>
+                    Level {level}
+                  </CardTitle>
                   <CardDescription className="text-center">
                     {levelTests.length} test{levelTests.length !== 1 ? 's' : ''}
                   </CardDescription>
@@ -117,12 +151,19 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
       
       <div className="flex items-center gap-3 mb-4">
         <h3 className="text-lg font-semibold">
-          {selectedSubject === 'all' ? 'All Tests' : `${selectedSubject} Tests`}
+          {selectedSubject === 'all' 
+            ? selectedLevel === 'all' 
+              ? 'All Tests' 
+              : `Level ${selectedLevel} Tests`
+            : selectedLevel === 'all'
+              ? `${selectedSubject} Tests`
+              : `${selectedSubject} - Level ${selectedLevel} Tests`
+          }
         </h3>
       </div>
       
       <CompactTestGrid 
-        tests={subjectTests} 
+        tests={displayTests} 
         isLoading={isLoading} 
         onTestDeleted={onTestDeleted}
       />

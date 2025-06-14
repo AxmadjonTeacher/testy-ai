@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { Search, Filter } from 'lucide-react';
 
 interface LibrarySearchProps {
@@ -24,13 +23,9 @@ const LibrarySearch: React.FC<LibrarySearchProps> = ({
     onSearch(searchQuery, filterType);
   }, [searchQuery, filterType, onSearch]);
 
-  const handleSearch = () => {
-    onSearch(searchQuery, filterType);
-  };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleSearch();
+      onSearch(searchQuery, filterType);
     }
   };
 
@@ -62,10 +57,6 @@ const LibrarySearch: React.FC<LibrarySearchProps> = ({
             <SelectItem value="date">Date</SelectItem>
           </SelectContent>
         </Select>
-        
-        <Button onClick={handleSearch} variant="outline" size="sm" className="h-10 px-4 text-sm">
-          Search
-        </Button>
       </div>
       
       {/* Test count underneath */}
