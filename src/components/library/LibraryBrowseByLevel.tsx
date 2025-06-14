@@ -35,6 +35,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
 }) => {
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
+  const [view, setView] = useState<"grid" | "list">("grid");
 
   const subjects = [
     { value: 'all', label: 'All Subjects' },
@@ -84,11 +85,33 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
 
   return (
     <div className="space-y-4">
-      <LibrarySearch 
-        onSearch={onSearch} 
-        placeholder="Search by subject, level, topic, grade, or keywords..."
-      />
-      
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+        <LibrarySearch 
+          onSearch={onSearch} 
+          placeholder="Search by subject, level, topic, grade, or keywords..."
+        />
+        <div className="flex gap-1 mt-2 md:mt-0 justify-end">
+          <Button 
+            variant={view === 'list' ? "secondary" : "outline"} 
+            size="icon" 
+            aria-label="List view"
+            className={view === 'list' ? "ring-2 ring-primary" : ""}
+            onClick={() => setView("list")}
+          >
+            <Table className="h-5 w-5" />
+          </Button>
+          <Button 
+            variant={view === 'grid' ? "secondary" : "outline"}
+            size="icon"
+            aria-label="Grid view"
+            className={view === 'grid' ? "ring-2 ring-primary" : ""}
+            onClick={() => setView("grid")}
+          >
+            <LayoutGrid className="h-5 w-5" />
+          </Button>
+        </div>
+      </div>
+
       {/* Test count and subject selector on the same line */}
       <div className="flex items-center gap-4">
         <div className="text-sm text-neutral-dark/70 bg-gray-100 px-3 py-2 rounded">
@@ -148,7 +171,7 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
           })}
         </div>
       )}
-      
+
       <div className="flex items-center gap-3 mb-4">
         <h3 className="text-lg font-semibold">
           {selectedSubject === 'all' 
@@ -161,12 +184,21 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
           }
         </h3>
       </div>
-      
-      <CompactTestGrid 
-        tests={displayTests} 
-        isLoading={isLoading} 
-        onTestDeleted={onTestDeleted}
-      />
+
+      {view === "grid" ? (
+        <CompactTestGrid 
+          tests={displayTests} 
+          isLoading={isLoading} 
+          onTestDeleted={onTestDeleted}
+        />
+      ) : (
+        <TestListView 
+          tests={displayTests}
+          isLoading={isLoading}
+          onDownload={() => {}}
+          onDelete={() => {}}
+        />
+      )}
     </div>
   );
 };
