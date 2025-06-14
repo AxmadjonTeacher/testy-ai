@@ -9,7 +9,7 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
   return new Paragraph({
     children: [
       new TextRun({
-        text: "#Level: ",
+        text: "Level: ",
         ...textStyles.bold,
       }),
       new TextRun({
@@ -17,7 +17,7 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "#Grade: ",
+        text: "Grade: ",
         ...textStyles.bold,
       }),
       new TextRun({
@@ -25,7 +25,7 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "#Teacher: ",
+        text: "Teacher: ",
         ...textStyles.bold,
       }),
       new TextRun({

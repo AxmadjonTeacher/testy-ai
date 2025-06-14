@@ -38,7 +38,7 @@ export const textStyles = {
   },
 };
 
-// Updated logo configuration with exact dimensions in inches
+// Logo configuration with exact dimensions in inches
 export const logoConfig = {
   width: convertInchesToTwip(5.12), // 5.12 inches
   height: convertInchesToTwip(0.93), // 0.93 inches
