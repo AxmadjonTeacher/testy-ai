@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,11 @@ const LibrarySearch: React.FC<LibrarySearchProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('keywords');
+
+  // Auto-search when query or filter type changes
+  useEffect(() => {
+    onSearch(searchQuery, filterType);
+  }, [searchQuery, filterType, onSearch]);
 
   const handleSearch = () => {
     onSearch(searchQuery, filterType);
