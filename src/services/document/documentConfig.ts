@@ -1,3 +1,4 @@
+
 import { HeadingLevel, IStylesOptions, ITableOfContentsOptions, convertInchesToTwip } from "docx";
 
 export const pageMargins = {
@@ -8,16 +9,16 @@ export const pageMargins = {
 };
 
 export const spacingConfig = {
-  afterTitle: 160, // was 240, now 8pt closer
-  afterInstructions: 320, // was 480, now 16pt closer
-  afterQuestionText: 120, // was 160, 2pt closer
-  betweenOptions: 120, // (not used in inline but leave less than before)
-  betweenQuestions: 240, // was 360, now more compact between each question
-  afterSection: 720,
-  beforeSection: 480,
-  afterReadingPassage: 320, // was 480, tightened
-  afterTestInfo: 220, // was 360, more compact
-  afterStudentInfo: 220, // was 480, more compact
+  afterTitle: 240, // 12 points
+  afterInstructions: 480, // 24 points
+  afterQuestionText: 160, // 8 points
+  betweenOptions: 160, // 8 points
+  betweenQuestions: 360, // 18 points
+  afterSection: 720, // 36 points
+  beforeSection: 480, // 24 points
+  afterReadingPassage: 480, // 24 points
+  afterTestInfo: 360, // 18 points
+  afterStudentInfo: 480, // 24 points
 };
 
 export const textStyles = {
