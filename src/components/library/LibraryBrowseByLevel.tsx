@@ -94,19 +94,31 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
         />
         <div className="flex gap-1 mt-2 md:mt-0 justify-end">
           <Button 
-            variant={view === 'list' ? "secondary" : "outline"} 
-            size="icon" 
+            variant="outline"
+            size="icon"
             aria-label="List view"
-            className={view === 'list' ? "ring-2 ring-primary" : ""}
+            className={
+              `transition ${
+                view === 'list'
+                  ? "bg-teal-100 border-2 border-teal-500 text-teal-900"
+                  : "hover:bg-gray-50"
+              } rounded-xl`
+            }
             onClick={() => setView("list")}
           >
             <Table className="h-5 w-5" />
           </Button>
           <Button 
-            variant={view === 'grid' ? "secondary" : "outline"}
+            variant="outline"
             size="icon"
             aria-label="Grid view"
-            className={view === 'grid' ? "ring-2 ring-primary" : ""}
+            className={
+              `transition ${
+                view === 'grid'
+                  ? "bg-primary/5 border-2 border-primary text-primary"
+                  : "hover:bg-gray-50"
+              } rounded-xl`
+            }
             onClick={() => setView("grid")}
           >
             <LayoutGrid className="h-5 w-5" />
