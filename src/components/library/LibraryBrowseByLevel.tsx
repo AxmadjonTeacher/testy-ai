@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
-import { Button } from "@/components/ui/button";
-import { Table, LayoutGrid } from "lucide-react"; // <- Use Table instead of List
 import TestListView from './TestListView';
+import ViewSwitcher from './ViewSwitcher';
+import LibraryFilters from './LibraryFilters';
+import LevelFilterGrid from './LevelFilterGrid';
+import TestListHeader from './TestListHeader';
 
 interface UploadedTest {
   id: string;
@@ -82,8 +82,9 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
     return selectedSubject === 'English' || selectedSubject === 'Math' || selectedSubject === 'all';
   };
 
-  const handleLevelClick = (level: string) => {
-    setSelectedLevel(level);
+  const handleSubjectChange = (value: string) => {
+    setSelectedSubject(value);
+    setSelectedLevel('all'); // Reset level when subject changes
   };
 
   return (
@@ -93,112 +94,31 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
           onSearch={onSearch} 
           placeholder="Search by subject, level, topic, grade, or keywords..."
         />
-        <div className="flex gap-1 mt-2 md:mt-0 justify-end">
-          <Button 
-            variant="outline"
-            size="icon"
-            aria-label="Table view"
-            className={
-              `transition ${
-                view === 'list'
-                  ? "bg-teal-100 border-2 border-teal-500 text-teal-900"
-                  : "hover:bg-gray-50"
-              } rounded-xl`
-            }
-            onClick={() => setView("list")}
-          >
-            <Table className="h-5 w-5" />  {/* This shows a "table" icon */}
-          </Button>
-          <Button 
-            variant="outline"
-            size="icon"
-            aria-label="Grid view"
-            className={
-              `transition ${
-                view === 'grid'
-                  ? "bg-primary/5 border-2 border-primary text-primary"
-                  : "hover:bg-gray-50"
-              } rounded-xl`
-            }
-            onClick={() => setView("grid")}
-          >
-            <LayoutGrid className="h-5 w-5" />
-          </Button>
+        <div className="flex mt-2 md:mt-0 justify-end">
+          <ViewSwitcher view={view} onViewChange={setView} />
         </div>
       </div>
 
-      {/* Test count and subject selector on the same line */}
-      <div className="flex items-center gap-4">
-        <div className="text-sm text-neutral-dark/70 bg-gray-100 px-3 py-2 rounded">
-          {displayTests.length} test{displayTests.length !== 1 ? 's' : ''}
-        </div>
-        
-        <Select value={selectedSubject} onValueChange={(value) => {
-          setSelectedSubject(value);
-          setSelectedLevel('all'); // Reset level when subject changes
-        }}>
-          <SelectTrigger className="w-48">
-            <SelectValue placeholder="Select subject" />
-          </SelectTrigger>
-          <SelectContent>
-            {subjects.map((subject) => (
-              <SelectItem key={subject.value} value={subject.value}>
-                {subject.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Level filter reset button */}
-        {selectedLevel !== 'all' && (
-          <button 
-            onClick={() => setSelectedLevel('all')}
-            className="text-sm text-blue-600 hover:text-blue-800 underline"
-          >
-            Show all levels
-          </button>
-        )}
-      </div>
+      <LibraryFilters
+        testCount={displayTests.length}
+        selectedSubject={selectedSubject}
+        onSubjectChange={handleSubjectChange}
+        selectedLevel={selectedLevel}
+        onLevelReset={() => setSelectedLevel('all')}
+        subjects={subjects}
+      />
 
       {shouldShowLevels() && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-          {getLevelsForSubject().map((level) => {
-            const levelTests = filterTestsByLevel(subjectTests, level);
-            const isSelected = selectedLevel === level;
-            return (
-              <Card 
-                key={level} 
-                className={`cursor-pointer hover:shadow-lg transition-all duration-200 ${
-                  isSelected ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-gray-50'
-                }`}
-                onClick={() => handleLevelClick(level)}
-              >
-                <CardHeader className="pb-2">
-                  <CardTitle className={`text-lg text-center ${isSelected ? 'text-primary' : ''}`}>
-                    Level {level}
-                  </CardTitle>
-                  <CardDescription className="text-center">
-                    {levelTests.length} test{levelTests.length !== 1 ? 's' : ''}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            );
-          })}
-        </div>
+        <LevelFilterGrid
+          levels={getLevelsForSubject()}
+          subjectTests={subjectTests}
+          selectedLevel={selectedLevel}
+          onLevelClick={setSelectedLevel}
+          filterTestsByLevel={filterTestsByLevel}
+        />
       )}
 
-      <div className="flex items-center gap-3 mb-4">
-        <h3 className="text-lg font-semibold">
-          {selectedSubject === 'all' 
-            ? selectedLevel === 'all' 
-              ? 'All Tests' 
-              : `Level ${selectedLevel} Tests`
-            : selectedLevel === 'all'
-              ? `${selectedSubject} Tests`
-              : `${selectedSubject} - Level ${selectedLevel} Tests`
-          }
-        </h3>
-      </div>
+      <TestListHeader selectedSubject={selectedSubject} selectedLevel={selectedLevel} />
 
       {view === "grid" ? (
         <CompactTestGrid 
