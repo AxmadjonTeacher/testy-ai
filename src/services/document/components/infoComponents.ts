@@ -1,4 +1,3 @@
-
 import { Paragraph, TextRun } from 'docx';
 import { textStyles, spacingConfig } from '../documentConfig';
 
@@ -41,7 +40,7 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
 }
 
 /**
- * Creates the student information fields, with improved underline lengths and spacing
+ * Creates the student information fields, more compact and on a single line
  */
 export function createStudentInfoParagraph(): Paragraph {
   return new Paragraph({
@@ -51,15 +50,15 @@ export function createStudentInfoParagraph(): Paragraph {
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "_".repeat(36),
+        text: "_".repeat(32),
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "    Class ",
+        text: "      Class ",
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "_".repeat(18),
+        text: "_".repeat(12),
         ...textStyles.normal,
       }),
     ],
@@ -85,4 +84,3 @@ export function createInstructionsParagraph(): Paragraph {
     },
   });
 }
-
