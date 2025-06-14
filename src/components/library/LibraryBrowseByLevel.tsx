@@ -7,6 +7,10 @@ import ViewSwitcher from './ViewSwitcher';
 import LibraryFilters from './LibraryFilters';
 import LevelFilterGrid from './LevelFilterGrid';
 import TestListHeader from './TestListHeader';
+import { useTestDelete } from '@/hooks/useTestDelete';
+import { supabase } from '@/integrations/supabase/client';
+import { downloadDocument } from '@/services/document/documentDownloader';
+import { toast } from 'sonner';
 
 interface UploadedTest {
   id: string;
@@ -39,6 +43,31 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
   const [view, setView] = useState<"grid" | "list">("grid");
+  const { deleteTest } = useTestDelete();
+
+  const handleDelete = async (test: UploadedTest) => {
+    const success = await deleteTest(test);
+    if (success && onTestDeleted) {
+      onTestDeleted();
+    }
+  };
+
+  const handleDownload = async (test: UploadedTest) => {
+    try {
+      toast.info("Preparing download...");
+      const { data, error } = await supabase.storage
+        .from('uploaded-tests')
+        .download(test.file_path);
+
+      if (error) throw error;
+
+      downloadDocument(data, test.file_name);
+      toast.success("Test downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading test:", error);
+      toast.error("Failed to download test.");
+    }
+  };
 
   const subjects = [
     { value: 'all', label: 'All Subjects' },
@@ -130,8 +159,8 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
         <TestListView 
           tests={displayTests}
           isLoading={isLoading}
-          onDownload={() => {}}
-          onDelete={() => {}}
+          onDownload={handleDownload}
+          onDelete={handleDelete}
         />
       )}
     </div>

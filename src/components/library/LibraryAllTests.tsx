@@ -1,8 +1,13 @@
+
 import React, { useState } from 'react';
 import LibrarySearch from './LibrarySearch';
 import CompactTestGrid from './CompactTestGrid';
 import TestListView from './TestListView';
 import ViewSwitcher from './ViewSwitcher';
+import { useTestDelete } from '@/hooks/useTestDelete';
+import { supabase } from '@/integrations/supabase/client';
+import { downloadDocument } from '@/services/document/documentDownloader';
+import { toast } from 'sonner';
 
 interface UploadedTest {
   id: string;
@@ -33,10 +38,31 @@ const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
   onTestDeleted
 }) => {
   const [view, setView] = useState<"grid" | "list">("grid");
+  const { deleteTest } = useTestDelete();
 
-  // handlers for CompactTestGrid
-  const [downloadTest, setDownloadTest] = useState<any>(null);
-  const [deleteTest, setDeleteTest] = useState<any>(null);
+  const handleDelete = async (test: UploadedTest) => {
+    const success = await deleteTest(test);
+    if (success && onTestDeleted) {
+      onTestDeleted();
+    }
+  };
+
+  const handleDownload = async (test: UploadedTest) => {
+    try {
+      toast.info("Preparing download...");
+      const { data, error } = await supabase.storage
+        .from('uploaded-tests')
+        .download(test.file_path);
+
+      if (error) throw error;
+
+      downloadDocument(data, test.file_name);
+      toast.success("Test downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading test:", error);
+      toast.error("Failed to download test.");
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -59,17 +85,8 @@ const LibraryAllTests: React.FC<LibraryAllTestsProps> = ({
         <TestListView 
           tests={filteredTests}
           isLoading={isLoading}
-          onDownload={(test) => {
-            // hacky but matches CompactTestGrid props
-            document.querySelectorAll('[data-download]').forEach(btn =>
-              (btn as HTMLElement).click()
-            );
-          }}
-          onDelete={(test) => {
-            document.querySelectorAll('[data-delete]').forEach(btn =>
-              (btn as HTMLElement).click()
-            );
-          }}
+          onDownload={handleDownload}
+          onDelete={handleDelete}
         />
       )}
     </div>
