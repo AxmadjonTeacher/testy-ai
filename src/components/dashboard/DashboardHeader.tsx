@@ -8,9 +8,9 @@ const DashboardHeader: React.FC = () => {
   
   return (
     <div className="flex justify-between items-center mb-8">
-      <h2 className="text-2xl font-bold text-neutral-dark">My Tests</h2>
+      <h2 className="text-2xl font-bold text-foreground">My Tests</h2>
       <Button 
-        className="bg-primary hover:bg-primary/90 text-white"
+        className="bg-primary hover:bg-primary/90 text-primary-foreground liquid-button"
         onClick={() => navigate('/generate')}
       >
         Generate New Test

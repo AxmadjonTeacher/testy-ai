@@ -46,12 +46,12 @@ const AuthForm: React.FC = () => {
   };
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md glass-dark border-white/20">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">
+        <CardTitle className="text-2xl font-bold text-center text-foreground">
           {mode === 'signIn' ? 'Sign In' : 'Create Account'}
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-center text-muted-foreground">
           {mode === 'signIn'
             ? 'Enter your email and password to access your account'
             : 'Enter your details to create a new account'}
@@ -72,7 +72,7 @@ const AuthForm: React.FC = () => {
 
           <Button
             type="submit"
-            className="w-full bg-primary hover:bg-primary/90 text-white"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground liquid-button"
             disabled={loading}
           >
             {loading ? (
@@ -85,8 +85,8 @@ const AuthForm: React.FC = () => {
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-center border-t pt-4">
-        <Button variant="link" onClick={toggleMode}>
+      <CardFooter className="flex justify-center border-t border-white/10 pt-4">
+        <Button variant="link" onClick={toggleMode} className="text-muted-foreground hover:text-foreground">
           {mode === 'signIn'
             ? "Don't have an account? Sign up"
             : 'Already have an account? Sign in'}
