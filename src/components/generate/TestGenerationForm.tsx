@@ -83,20 +83,20 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
+      <div className="bg-white border border-gray-200 p-8 rounded-lg shadow-sm mb-8">
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="subject">Subject</Label>
+            <Label htmlFor="subject" className="text-gray-700 font-medium">Subject</Label>
             <Select 
               value={subject} 
               onValueChange={setSubject}
             >
-              <SelectTrigger id="subject">
+              <SelectTrigger id="subject" className="bg-white border-gray-300 text-gray-900">
                 <SelectValue placeholder="Select a subject" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white border-gray-200">
                 {subjects.map((subj) => (
-                  <SelectItem key={subj.value} value={subj.value}>
+                  <SelectItem key={subj.value} value={subj.value} className="text-gray-900 hover:bg-gray-50">
                     {subj.label}
                   </SelectItem>
                 ))}
@@ -106,7 +106,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="level">
+              <Label htmlFor="level" className="text-gray-700 font-medium">
                 {subject === "Math" ? "Grade Level" : "English Level"}
               </Label>
               <Select 
@@ -114,12 +114,12 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
                 onValueChange={setEnglishLevel}
                 disabled={!subject}
               >
-                <SelectTrigger id="level">
+                <SelectTrigger id="level" className="bg-white border-gray-300 text-gray-900">
                   <SelectValue placeholder="Select a level" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white border-gray-200">
                   {availableLevels.map((level) => (
-                    <SelectItem key={level.value} value={level.value}>
+                    <SelectItem key={level.value} value={level.value} className="text-gray-900 hover:bg-gray-50">
                       {level.label}
                     </SelectItem>
                   ))}
@@ -128,49 +128,50 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="teacher-name">Teacher's full name</Label>
+              <Label htmlFor="teacher-name" className="text-gray-700 font-medium">Teacher's full name</Label>
               <Input
                 id="teacher-name"
                 placeholder="Enter teacher's name"
                 value={teacherName}
                 onChange={(e) => setTeacherName(e.target.value)}
+                className="bg-white border-gray-300 text-gray-900 placeholder-gray-500"
               />
             </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="grade">Grade</Label>
+              <Label htmlFor="grade" className="text-gray-700 font-medium">Grade</Label>
               <Select 
                 value={grade} 
                 onValueChange={setGrade}
               >
-                <SelectTrigger id="grade">
+                <SelectTrigger id="grade" className="bg-white border-gray-300 text-gray-900">
                   <SelectValue placeholder="Select grade range" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5-6">Grades 5-6</SelectItem>
-                  <SelectItem value="7-8">Grades 7-8</SelectItem>
-                  <SelectItem value="9-11">Grades 9-11</SelectItem>
+                <SelectContent className="bg-white border-gray-200">
+                  <SelectItem value="5-6" className="text-gray-900 hover:bg-gray-50">Grades 5-6</SelectItem>
+                  <SelectItem value="7-8" className="text-gray-900 hover:bg-gray-50">Grades 7-8</SelectItem>
+                  <SelectItem value="9-11" className="text-gray-900 hover:bg-gray-50">Grades 9-11</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="num-questions">Number of Questions</Label>
+              <Label htmlFor="num-questions" className="text-gray-700 font-medium">Number of Questions</Label>
               <Select 
                 value={numQuestions} 
                 onValueChange={setNumQuestions}
               >
-                <SelectTrigger id="num-questions">
+                <SelectTrigger id="num-questions" className="bg-white border-gray-300 text-gray-900">
                   <SelectValue placeholder="Select number" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10">10 questions</SelectItem>
-                  <SelectItem value="15">15 questions</SelectItem>
-                  <SelectItem value="20">20 questions</SelectItem>
-                  <SelectItem value="25">25 questions</SelectItem>
-                  <SelectItem value="30">30 questions</SelectItem>
+                <SelectContent className="bg-white border-gray-200">
+                  <SelectItem value="10" className="text-gray-900 hover:bg-gray-50">10 questions</SelectItem>
+                  <SelectItem value="15" className="text-gray-900 hover:bg-gray-50">15 questions</SelectItem>
+                  <SelectItem value="20" className="text-gray-900 hover:bg-gray-50">20 questions</SelectItem>
+                  <SelectItem value="25" className="text-gray-900 hover:bg-gray-50">25 questions</SelectItem>
+                  <SelectItem value="30" className="text-gray-900 hover:bg-gray-50">30 questions</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -184,7 +185,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
           />
           
           <Button 
-            className="w-full bg-primary hover:bg-primary/90 text-white"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg shadow-sm"
             disabled={isGenerating || selectedTopics.length === 0 || !subject}
             onClick={handleGenerate}
           >

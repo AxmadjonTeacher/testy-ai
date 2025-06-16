@@ -11,11 +11,11 @@ const LibraryHeader: React.FC = () => {
       className="mb-8"
     >
       <div className="flex items-center gap-3 mb-2">
-        <BookOpen className="h-8 w-8 text-primary" />
-        <h1 className="text-3xl font-bold text-foreground">Community Test Library</h1>
-        <Users className="h-6 w-6 text-primary/70" />
+        <BookOpen className="h-8 w-8 text-blue-600" />
+        <h1 className="text-3xl font-bold text-gray-800">Community Test Library</h1>
+        <Users className="h-6 w-6 text-blue-500" />
       </div>
-      <p className="text-muted-foreground">Upload and share test files with the community. Browse tests by subject, level, grade, and topics.</p>
+      <p className="text-gray-600">Upload and share test files with the community. Browse tests by subject, level, grade, and topics.</p>
     </motion.div>
   );
 };

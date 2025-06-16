@@ -29,15 +29,15 @@ const Library = () => {
 
   if (!user) {
     return (
-      <div className="p-8 text-center">
+      <div className="p-8 text-center bg-white min-h-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md mx-auto"
         >
-          <BookOpen className="h-16 w-16 mx-auto text-primary mb-4" />
-          <h2 className="text-2xl font-bold text-neutral-dark mb-2">Access Required</h2>
-          <p className="text-neutral-dark/70">Please sign in to access your test library and upload tests.</p>
+          <BookOpen className="h-16 w-16 mx-auto text-blue-600 mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Access Required</h2>
+          <p className="text-gray-600">Please sign in to access your test library and upload tests.</p>
         </motion.div>
       </div>
     );
@@ -84,7 +84,7 @@ const Library = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-white min-h-full">
       <LibraryHeader />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
