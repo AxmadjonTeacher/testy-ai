@@ -74,46 +74,54 @@ const KeyFeaturesSection: React.FC = () => {
           </p>
         </motion.div>
         
-        {/* Animated sliding container */}
-        <div className="relative overflow-hidden">
+        {/* Animated icons and titles container */}
+        <div className="relative overflow-hidden mb-8">
           <motion.div 
             className="flex gap-8"
             animate={{
-              x: [0, -(320 + 32) * features.length] // 320px width + 32px gap
+              x: [0, -(280 + 32) * features.length] // 280px width + 32px gap
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: features.length * 5, // 5 seconds per feature
+                duration: features.length * 4, // 4 seconds per feature
                 ease: "linear",
               },
             }}
           >
             {duplicatedFeatures.map((feature, index) => (
-              <motion.div
+              <div
                 key={index}
-                className="group relative flex-shrink-0 w-80"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: (index % features.length) * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                className="flex-shrink-0 w-70 text-center"
               >
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-6 text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-bold text-neutral-dark mb-4">
-                    {feature.title}
-                  </h3>
-                  <p className="text-neutral-dark/70 leading-relaxed">
-                    {feature.description}
-                  </p>
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-4 text-white shadow-lg mx-auto`}>
+                  {feature.icon}
                 </div>
-              </motion.div>
+                <h3 className="text-lg font-bold text-neutral-dark">
+                  {feature.title}
+                </h3>
+              </div>
             ))}
           </motion.div>
+        </div>
+
+        {/* Static descriptions grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              className="text-center"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-neutral-dark/70 leading-relaxed">
+                {feature.description}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
