@@ -23,8 +23,9 @@ interface UploadedTest {
 
 interface TestCardProps {
   test: UploadedTest;
+  index?: number;
   onDownload: (test: UploadedTest) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (test: UploadedTest) => void;
   currentUserId?: string;
 }
 
@@ -108,7 +109,7 @@ const TestCard: React.FC<TestCardProps> = ({ test, onDownload, onDelete, current
             </Button>
             {canDelete && onDelete && (
               <Button
-                onClick={() => onDelete(test.id)}
+                onClick={() => onDelete(test)}
                 variant="destructive"
                 size="sm"
                 className="liquid-button"
