@@ -79,13 +79,13 @@ const KeyFeaturesSection: React.FC = () => {
           <motion.div 
             className="flex gap-8"
             animate={{
-              x: [0, -100 * features.length]
+              x: [0, -(320 + 32) * features.length] // 320px width + 32px gap
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 30,
+                duration: features.length * 5, // 5 seconds per feature
                 ease: "linear",
               },
             }}
