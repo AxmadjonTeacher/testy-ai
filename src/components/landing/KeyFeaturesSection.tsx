@@ -43,6 +43,9 @@ const KeyFeaturesSection: React.FC = () => {
     }
   ];
 
+  // Duplicate features for seamless infinite scroll
+  const duplicatedFeatures = [...features, ...features];
+
   return (
     <section className="py-20 px-4 bg-white relative overflow-hidden">
       {/* Background pattern */}
@@ -71,37 +74,47 @@ const KeyFeaturesSection: React.FC = () => {
           </p>
         </motion.div>
         
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, staggerChildren: 0.1 }}
-          viewport={{ once: true }}
-        >
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="group relative"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-6 text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  {feature.icon}
+        {/* Animated sliding container */}
+        <div className="relative overflow-hidden">
+          <motion.div 
+            className="flex gap-8"
+            animate={{
+              x: [0, -100 * features.length]
+            }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 30,
+                ease: "linear",
+              },
+            }}
+          >
+            {duplicatedFeatures.map((feature, index) => (
+              <motion.div
+                key={index}
+                className="group relative flex-shrink-0 w-80"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: (index % features.length) * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              >
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 h-full">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-6 text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-neutral-dark mb-4">
+                    {feature.title}
+                  </h3>
+                  <p className="text-neutral-dark/70 leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-neutral-dark mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-neutral-dark/70 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );
