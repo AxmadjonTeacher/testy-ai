@@ -36,7 +36,14 @@ const HowItWorksSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-white relative overflow-hidden">
+    <section className="py-20 px-4 relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20"></div>
+      
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+      <div className="absolute bottom-20 right-10 w-40 h-40 bg-accent/5 rounded-full blur-2xl"></div>
+
       <div className="container mx-auto max-w-6xl relative z-10">
         <motion.div
           className="text-center mb-16"
@@ -45,20 +52,20 @@ const HowItWorksSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-block px-4 py-2 bg-purple-100 rounded-full text-sm font-medium text-purple-600 mb-4">
+          <div className="inline-block px-4 py-2 bg-accent/10 rounded-full text-sm font-medium text-accent mb-4">
             Our Process
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
             How It Works: Simple Steps to Success
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-neutral-dark/70 max-w-2xl mx-auto">
             From upload to download in just four easy steps. Our streamlined process ensures you get professional results every time.
           </p>
         </motion.div>
 
         <div className="relative">
           {/* Connection line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-200 to-transparent transform -translate-y-1/2"></div>
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent transform -translate-y-1/2"></div>
           
           <motion.div 
             className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-4"
@@ -84,15 +91,15 @@ const HowItWorksSection: React.FC = () => {
                   </div>
                   
                   {/* Icon */}
-                  <div className="text-blue-600 mb-4">
+                  <div className="text-primary mb-4">
                     {step.icon}
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-neutral-dark mb-4">
                     {step.title}
                   </h3>
                   
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-neutral-dark/70 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -101,7 +108,7 @@ const HowItWorksSection: React.FC = () => {
                 {index < steps.length - 1 && (
                   <div className="hidden lg:flex absolute top-1/2 -right-2 transform -translate-y-1/2 z-20">
                     <div className="bg-white rounded-full p-2 shadow-md border border-gray-200">
-                      <ArrowRight size={16} className="text-blue-600" />
+                      <ArrowRight size={16} className="text-primary" />
                     </div>
                   </div>
                 )}

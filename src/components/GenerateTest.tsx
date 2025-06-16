@@ -78,8 +78,8 @@ const GenerateTest: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white min-h-full">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+    <div className="container mx-auto px-4 py-8">
+      <h2 className="text-2xl font-bold text-neutral-dark mb-6">
         {isEditMode ? "Edit test" : "Generate a new test"}
       </h2>
       

@@ -44,7 +44,14 @@ const KeyFeaturesSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-gray-50 relative overflow-hidden">
+    <section className="py-20 px-4 bg-white relative overflow-hidden">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }} />
+      </div>
+
       <div className="container mx-auto max-w-7xl relative z-10">
         <motion.div
           className="text-center mb-16"
@@ -53,13 +60,13 @@ const KeyFeaturesSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-block px-4 py-2 bg-blue-100 rounded-full text-sm font-medium text-blue-600 mb-4">
+          <div className="inline-block px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4">
             Why Choose Our Platform
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
             Powerful Features for Modern Educators
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-neutral-dark/70 max-w-2xl mx-auto">
             Everything you need to create engaging, unique tests that challenge your students and streamline your workflow.
           </p>
         </motion.div>
@@ -85,10 +92,10 @@ const KeyFeaturesSection: React.FC = () => {
                 <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-6 text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <h3 className="text-xl font-bold text-neutral-dark mb-4">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-neutral-dark/70 leading-relaxed">
                   {feature.description}
                 </p>
               </div>

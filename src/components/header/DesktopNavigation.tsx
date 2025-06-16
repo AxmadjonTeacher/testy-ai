@@ -30,32 +30,32 @@ const DesktopNavigation = ({ isAdmin }: DesktopNavigationProps) => {
       initial="hidden"
       animate="visible"
     >
-      <div className="flex items-center bg-gray-50 rounded-full px-2 py-2 shadow-sm border border-gray-200">
+      <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full px-2 py-2 shadow-sm border border-gray-100">
         <motion.div variants={itemVariants}>
-          <Link to="/dashboard" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50 font-medium text-sm">
+          <Link to="/dashboard" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
             Dashboard
           </Link>
         </motion.div>
         <motion.div variants={itemVariants}>
-          <Link to="/generate" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50 font-medium text-sm">
+          <Link to="/generate" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
             Generate
           </Link>
         </motion.div>
         <motion.div variants={itemVariants}>
-          <Link to="/library" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50 font-medium text-sm">
+          <Link to="/library" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
             Library
           </Link>
         </motion.div>
         {isAdmin && (
           <motion.div variants={itemVariants}>
-            <Link to="/admin/upload" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50 font-medium flex items-center gap-2 text-sm">
+            <Link to="/admin/upload" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium flex items-center gap-2 text-sm">
               <ShieldCheck className="h-4 w-4" />
               Admin
             </Link>
           </motion.div>
         )}
         <motion.div variants={itemVariants}>
-          <Link to="/privacy-policy#data-retention" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors rounded-full hover:bg-blue-50 font-medium text-sm">
+          <Link to="/privacy-policy#data-retention" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
             Help
           </Link>
         </motion.div>
