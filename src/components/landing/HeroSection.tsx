@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -37,30 +38,27 @@ const HeroSection: React.FC = () => {
   return (
     <motion.section 
       className="relative py-20 lg:py-32 overflow-hidden"
-      style={{
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%)'
-      }}
       initial="hidden" 
       animate="visible" 
       variants={containerVariants}
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-4 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 -left-8 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-3xl"></div>
+        <div className="absolute -top-4 -right-4 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 -left-8 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container mx-auto max-w-6xl text-center relative z-10 px-4">
         <motion.div 
-          className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
+          className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white mb-6 border border-white/20"
           variants={itemVariants}
         >
           ✨ AI-Powered Test Generation
         </motion.div>
         
         <motion.h1 
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight"
           variants={itemVariants}
           style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
         >
@@ -71,7 +69,7 @@ const HeroSection: React.FC = () => {
         </motion.h1>
         
         <motion.p 
-          className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="text-lg md:text-xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed"
           variants={itemVariants}
         >
           Transform your teaching with AI-powered test generation. Upload sample tests, organize by level, and automatically create unique assessments that engage your students and save you time.
@@ -91,7 +89,7 @@ const HeroSection: React.FC = () => {
           <Button 
             size="lg"
             variant="outline"
-            className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
+            className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg rounded-xl transition-all duration-300"
             onClick={() => navigate('/admin/upload')}
           >
             Admin Upload
@@ -105,15 +103,15 @@ const HeroSection: React.FC = () => {
         >
           <div className="text-center">
             <div className="text-3xl font-bold text-primary mb-2">1000+</div>
-            <div className="text-neutral-dark/60">Tests Generated</div>
+            <div className="text-white/70">Tests Generated</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-primary mb-2">50+</div>
-            <div className="text-neutral-dark/60">Happy Teachers</div>
+            <div className="text-white/70">Happy Teachers</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-primary mb-2">5★</div>
-            <div className="text-neutral-dark/60">User Rating</div>
+            <div className="text-white/70">User Rating</div>
           </div>
         </motion.div>
       </div>

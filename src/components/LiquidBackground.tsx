@@ -12,8 +12,8 @@ const LiquidBackground: React.FC = () => {
       <div className="floating-orb"></div>
       <div className="floating-orb"></div>
       
-      {/* Overlay for content readability */}
-      <div className="absolute inset-0 bg-black/20"></div>
+      {/* Better overlay for content readability */}
+      <div className="absolute inset-0 bg-black/40"></div>
     </div>
   );
 };

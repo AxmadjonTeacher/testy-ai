@@ -56,19 +56,19 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f0f23 0%, #1a0b2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
     min-height: 100vh;
   }
 }
 
-/* Liquid background effects */
+/* Liquid background effects - with better opacity for text readability */
 .liquid-bg {
   background: linear-gradient(135deg, 
-    rgba(139, 69, 219, 0.3) 0%, 
-    rgba(59, 130, 246, 0.2) 25%, 
-    rgba(16, 185, 129, 0.1) 50%, 
-    rgba(245, 101, 101, 0.2) 75%, 
-    rgba(139, 69, 219, 0.3) 100%);
+    rgba(139, 69, 219, 0.15) 0%, 
+    rgba(59, 130, 246, 0.1) 25%, 
+    rgba(16, 185, 129, 0.08) 50%, 
+    rgba(245, 101, 101, 0.1) 75%, 
+    rgba(139, 69, 219, 0.15) 100%);
   background-size: 400% 400%;
   animation: liquid-flow 15s ease-in-out infinite;
 }
@@ -84,29 +84,29 @@
   z-index: -1;
 }
 
-/* Glass morphism effects */
+/* Glass morphism effects - improved for better readability */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 .glass-dark {
-  background: rgba(15, 15, 35, 0.7);
+  background: rgba(10, 10, 26, 0.85);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(15, 15, 35, 0.75);
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.25);
 }
 
-/* Floating orbs */
+/* Floating orbs - reduced opacity for better text readability */
 .floating-orb {
   position: absolute;
   border-radius: 50%;
@@ -116,7 +116,7 @@
 }
 
 .floating-orb:nth-child(1) {
-  background: linear-gradient(45deg, rgba(139, 69, 219, 0.4), rgba(59, 130, 246, 0.4));
+  background: linear-gradient(45deg, rgba(139, 69, 219, 0.2), rgba(59, 130, 246, 0.2));
   width: 300px;
   height: 300px;
   top: 10%;
@@ -125,7 +125,7 @@
 }
 
 .floating-orb:nth-child(2) {
-  background: linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(16, 185, 129, 0.3));
+  background: linear-gradient(45deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15));
   width: 200px;
   height: 200px;
   top: 50%;
@@ -134,7 +134,7 @@
 }
 
 .floating-orb:nth-child(3) {
-  background: linear-gradient(45deg, rgba(245, 101, 101, 0.3), rgba(139, 69, 219, 0.3));
+  background: linear-gradient(45deg, rgba(245, 101, 101, 0.15), rgba(139, 69, 219, 0.15));
   width: 250px;
   height: 250px;
   bottom: 10%;
