@@ -36,13 +36,7 @@ const FAQSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 px-4 bg-white relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl transform -translate-x-1/2"></div>
-        <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl transform translate-x-1/2"></div>
-      </div>
-
+    <section className="py-20 px-4 bg-gray-50 relative overflow-hidden">
       <div className="container mx-auto max-w-4xl relative z-10">
         <motion.div
           className="text-center mb-16"
@@ -51,14 +45,14 @@ const FAQSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 rounded-full text-sm font-medium text-green-600 mb-4">
             <HelpCircle size={16} />
             FAQ
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             Questions & Answers
           </h2>
-          <p className="text-lg text-neutral-dark/70 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Find answers to common questions about our AI-powered test generation platform. Can't find what you're looking for? Contact our support team.
           </p>
         </motion.div>
@@ -77,15 +71,15 @@ const FAQSection: React.FC = () => {
                 value={`item-${index}`} 
                 className="border-b border-gray-100 last:border-b-0"
               >
-                <AccordionTrigger className="text-left px-8 py-6 text-lg font-semibold text-neutral-dark hover:text-primary transition-colors hover:no-underline group">
+                <AccordionTrigger className="text-left px-8 py-6 text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors hover:no-underline group">
                   <span className="flex items-start gap-4">
-                    <span className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="text-left">{item.question}</span>
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="px-8 pb-6 text-neutral-dark/80 leading-relaxed">
+                <AccordionContent className="px-8 pb-6 text-gray-600 leading-relaxed">
                   <div className="pl-12">
                     {item.answer}
                   </div>
@@ -103,10 +97,10 @@ const FAQSection: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          <p className="text-neutral-dark/70 mb-4">Still have questions?</p>
+          <p className="text-gray-600 mb-4">Still have questions?</p>
           <button 
             onClick={handleContactClick}
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors cursor-pointer"
           >
             Get in touch with our team
             <ArrowRight size={16} />
