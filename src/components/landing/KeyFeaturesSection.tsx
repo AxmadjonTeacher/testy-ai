@@ -171,18 +171,18 @@ const KeyFeaturesSection: React.FC = () => {
           </p>
         </motion.div>
         
-        {/* Animated icons and titles container with enhanced effects */}
-        <div className="relative overflow-hidden mb-8">
+        {/* Fixed animated icons and titles container */}
+        <div className="relative overflow-hidden mb-8 py-4">
           <motion.div 
-            className="flex gap-8"
+            className="flex gap-12 px-6"
             animate={{
-              x: [0, -(280 + 32) * features.length] // 280px width + 32px gap
+              x: [0, -(320) * features.length] // Increased width to 320px per item for better spacing
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: features.length * 4, // 4 seconds per feature
+                duration: features.length * 4,
                 ease: "linear",
               },
             }}
@@ -190,12 +190,12 @@ const KeyFeaturesSection: React.FC = () => {
             {duplicatedFeatures.map((feature, index) => (
               <motion.div
                 key={index}
-                className="flex-shrink-0 w-70 text-center"
+                className="flex-shrink-0 w-80 text-center px-4" // Increased width and added padding
                 whileHover={{ y: -10 }}
                 transition={{ duration: 0.3 }}
               >
                 <motion.div 
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-4 text-white shadow-lg mx-auto`}
+                  className={`w-20 h-20 rounded-2xl bg-gradient-to-r ${feature.color} p-5 mb-4 text-white shadow-lg mx-auto flex items-center justify-center`} // Increased size and added flex centering
                   whileHover={{ 
                     scale: 1.1,
                     rotate: 5,
@@ -203,10 +203,10 @@ const KeyFeaturesSection: React.FC = () => {
                   }}
                   transition={{ duration: 0.2 }}
                 >
-                  {feature.icon}
+                  {React.cloneElement(feature.icon, { size: 32 })} {/* Increased icon size */}
                 </motion.div>
                 <motion.h3 
-                  className="text-lg font-bold text-neutral-dark"
+                  className="text-lg font-bold text-neutral-dark px-2" // Added horizontal padding
                   whileHover={{ color: "#009688" }}
                   transition={{ duration: 0.2 }}
                 >
