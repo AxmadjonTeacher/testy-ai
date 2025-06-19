@@ -37,10 +37,74 @@ const FAQSection: React.FC = () => {
 
   return (
     <section className="py-20 px-4 bg-white relative overflow-hidden">
-      {/* Background decoration */}
+      {/* Enhanced background with ripple effects */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl transform -translate-x-1/2"></div>
-        <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl transform translate-x-1/2"></div>
+        <motion.div 
+          className="absolute top-1/4 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl transform -translate-x-1/2"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-1/4 right-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl transform translate-x-1/2"
+          animate={{
+            scale: [1, 0.7, 1.2, 1],
+            opacity: [0.2, 0.5, 0.2],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+
+        {/* Ripple effects */}
+        <motion.div
+          className="absolute top-1/3 right-1/3 w-32 h-32 border-2 border-primary/20 rounded-full"
+          animate={{
+            scale: [1, 2, 1],
+            opacity: [0.5, 0, 0.5],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute top-1/3 right-1/3 w-32 h-32 border-2 border-accent/20 rounded-full"
+          animate={{
+            scale: [1, 2.5, 1],
+            opacity: [0.3, 0, 0.3],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 left-1/4 w-24 h-24 border border-secondary/30 rounded-full"
+          animate={{
+            scale: [1, 1.8, 1],
+            opacity: [0.4, 0, 0.4],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.5
+          }}
+        />
       </div>
 
       <div className="container mx-auto max-w-4xl relative z-10">
@@ -51,10 +115,19 @@ const FAQSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4">
-            <HelpCircle size={16} />
+          <motion.div 
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            >
+              <HelpCircle size={16} />
+            </motion.div>
             FAQ
-          </div>
+          </motion.div>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
             Questions & Answers
           </h2>
@@ -69,6 +142,9 @@ const FAQSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
+          whileHover={{
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+          }}
         >
           <Accordion type="single" collapsible className="w-full">
             {faqItems.map((item, index) => (
@@ -79,23 +155,32 @@ const FAQSection: React.FC = () => {
               >
                 <AccordionTrigger className="text-left px-8 py-6 text-lg font-semibold text-neutral-dark hover:text-primary transition-colors hover:no-underline group">
                   <span className="flex items-start gap-4">
-                    <span className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors">
+                    <motion.span 
+                      className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       {String(index + 1).padStart(2, '0')}
-                    </span>
+                    </motion.span>
                     <span className="text-left">{item.question}</span>
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="px-8 pb-6 text-neutral-dark/80 leading-relaxed">
-                  <div className="pl-12">
+                  <motion.div 
+                    className="pl-12"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     {item.answer}
-                  </div>
+                  </motion.div>
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </motion.div>
 
-        {/* Call to action */}
+        {/* Enhanced call to action */}
         <motion.div
           className="text-center mt-12"
           initial={{ opacity: 0 }}
@@ -104,13 +189,24 @@ const FAQSection: React.FC = () => {
           viewport={{ once: true }}
         >
           <p className="text-neutral-dark/70 mb-4">Still have questions?</p>
-          <button 
+          <motion.button 
             onClick={handleContactClick}
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors cursor-pointer"
+            whileHover={{ 
+              scale: 1.05,
+              x: 5,
+            }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
             Get in touch with our team
-            <ArrowRight size={16} />
-          </button>
+            <motion.div
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ArrowRight size={16} />
+            </motion.div>
+          </motion.button>
         </motion.div>
       </div>
     </section>

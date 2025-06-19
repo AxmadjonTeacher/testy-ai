@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +35,16 @@ const HeroSection: React.FC = () => {
     }
   };
 
+  // Generate floating particles
+  const particles = Array.from({ length: 15 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 8 + 4,
+    initialX: Math.random() * 100,
+    initialY: Math.random() * 100,
+    duration: Math.random() * 10 + 15,
+    delay: Math.random() * 5,
+  }));
+
   return (
     <motion.section 
       className="relative py-20 lg:py-32 overflow-hidden"
@@ -44,17 +55,98 @@ const HeroSection: React.FC = () => {
       animate="visible" 
       variants={containerVariants}
     >
-      {/* Background decorative elements */}
+      {/* Enhanced background with floating particles */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-4 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 -left-8 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-3xl"></div>
+        {/* Original decorative elements with animations */}
+        <motion.div 
+          className="absolute -top-4 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute top-1/3 -left-8 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 0.8, 1],
+            x: [0, 50, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div 
+          className="absolute bottom-0 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, -40, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+
+        {/* Floating particles */}
+        {particles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            className="absolute rounded-full bg-gradient-to-r from-primary/20 to-accent/20"
+            style={{
+              width: particle.size,
+              height: particle.size,
+              left: `${particle.initialX}%`,
+              top: `${particle.initialY}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              x: [0, Math.sin(particle.id) * 50, 0],
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0],
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Infinity,
+              delay: particle.delay,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+
+        {/* Morphing background shapes */}
+        <motion.div
+          className="absolute top-20 right-20 w-32 h-32 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-full blur-xl"
+          animate={{
+            borderRadius: ["50%", "30%", "50%"],
+            rotate: [0, 360],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
       </div>
 
       <div className="container mx-auto max-w-6xl text-center relative z-10 px-4">
         <motion.div 
           className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
           variants={itemVariants}
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 10px 25px -5px rgba(0, 150, 136, 0.3)"
+          }}
+          transition={{ duration: 0.2 }}
         >
           ✨ AI-Powered Test Generation
         </motion.div>
@@ -65,9 +157,19 @@ const HeroSection: React.FC = () => {
           style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
         >
           Create Unique Tests and
-          <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <motion.span 
+            className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+            animate={{
+              backgroundPosition: ["0%", "100%", "0%"],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
             Craft Smart Classes
-          </span>
+          </motion.span>
         </motion.h1>
         
         <motion.p 
@@ -81,40 +183,61 @@ const HeroSection: React.FC = () => {
           className="flex flex-col sm:flex-row justify-center gap-4 mb-16"
           variants={itemVariants}
         >
-          <Button 
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-            onClick={() => navigate('/generate')}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Start Creating Tests
-          </Button>
-          <Button 
-            size="lg"
-            variant="outline"
-            className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
-            onClick={() => navigate('/admin/upload')}
+            <Button 
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => navigate('/generate')}
+            >
+              Start Creating Tests
+            </Button>
+          </motion.div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Admin Upload
-          </Button>
+            <Button 
+              size="lg"
+              variant="outline"
+              className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
+              onClick={() => navigate('/admin/upload')}
+            >
+              Admin Upload
+            </Button>
+          </motion.div>
         </motion.div>
 
-        {/* Stats or trust indicators */}
+        {/* Enhanced stats with hover effects */}
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
           variants={itemVariants}
         >
-          <div className="text-center">
-            <div className="text-3xl font-bold text-primary mb-2">1000+</div>
-            <div className="text-neutral-dark/60">Tests Generated</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-primary mb-2">50+</div>
-            <div className="text-neutral-dark/60">Happy Teachers</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-primary mb-2">5★</div>
-            <div className="text-neutral-dark/60">User Rating</div>
-          </div>
+          {[
+            { number: "1000+", label: "Tests Generated" },
+            { number: "50+", label: "Happy Teachers" },
+            { number: "5★", label: "User Rating" }
+          ].map((stat, index) => (
+            <motion.div 
+              key={index}
+              className="text-center"
+              whileHover={{ 
+                scale: 1.1,
+                y: -5,
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="text-3xl font-bold text-primary mb-2"
+                whileHover={{ color: "#004D40" }}
+              >
+                {stat.number}
+              </motion.div>
+              <div className="text-neutral-dark/60">{stat.label}</div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </motion.section>

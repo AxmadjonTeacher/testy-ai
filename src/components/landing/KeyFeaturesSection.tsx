@@ -48,19 +48,20 @@ const KeyFeaturesSection: React.FC = () => {
 
   return (
     <section className="py-20 px-4 bg-white relative overflow-hidden">
-      {/* Liquid Animation Background */}
+      {/* Enhanced Liquid Animation Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0">
-          {/* Animated liquid blobs */}
+          {/* Main liquid blobs */}
           <motion.div
             className="absolute w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-3xl"
             animate={{
-              x: [0, 100, -50, 0],
-              y: [0, -80, 50, 0],
-              scale: [1, 1.2, 0.8, 1],
+              x: [0, 100, -50, 80, 0],
+              y: [0, -80, 50, -30, 0],
+              scale: [1, 1.2, 0.8, 1.1, 1],
+              rotate: [0, 90, 180, 270, 360],
             }}
             transition={{
-              duration: 15,
+              duration: 20,
               repeat: Infinity,
               ease: "easeInOut"
             }}
@@ -69,12 +70,13 @@ const KeyFeaturesSection: React.FC = () => {
           <motion.div
             className="absolute w-80 h-80 bg-gradient-to-r from-secondary/30 to-primary/30 rounded-full blur-2xl"
             animate={{
-              x: [0, -120, 80, 0],
-              y: [0, 90, -40, 0],
-              scale: [1, 0.7, 1.3, 1],
+              x: [0, -120, 80, -60, 0],
+              y: [0, 90, -40, 70, 0],
+              scale: [1, 0.7, 1.3, 0.9, 1],
+              rotate: [360, 270, 180, 90, 0],
             }}
             transition={{
-              duration: 12,
+              duration: 18,
               repeat: Infinity,
               ease: "easeInOut",
               delay: 2
@@ -84,12 +86,12 @@ const KeyFeaturesSection: React.FC = () => {
           <motion.div
             className="absolute w-72 h-72 bg-gradient-to-r from-accent/25 to-secondary/25 rounded-full blur-3xl"
             animate={{
-              x: [0, 150, -100, 0],
-              y: [0, -60, 120, 0],
-              scale: [1, 1.4, 0.6, 1],
+              x: [0, 150, -100, 120, 0],
+              y: [0, -60, 120, -40, 0],
+              scale: [1, 1.4, 0.6, 1.2, 1],
             }}
             transition={{
-              duration: 18,
+              duration: 22,
               repeat: Infinity,
               ease: "easeInOut",
               delay: 4
@@ -99,17 +101,49 @@ const KeyFeaturesSection: React.FC = () => {
           <motion.div
             className="absolute w-64 h-64 bg-gradient-to-r from-primary/15 to-secondary/15 rounded-full blur-2xl"
             animate={{
-              x: [0, -80, 60, 0],
-              y: [0, 100, -80, 0],
-              scale: [1, 0.9, 1.1, 1],
+              x: [0, -80, 60, -40, 0],
+              y: [0, 100, -80, 50, 0],
+              scale: [1, 0.9, 1.1, 0.8, 1],
             }}
             transition={{
-              duration: 20,
+              duration: 25,
               repeat: Infinity,
               ease: "easeInOut",
               delay: 1
             }}
             style={{ top: '30%', right: '30%' }}
+          />
+          
+          {/* Additional smaller floating elements */}
+          <motion.div
+            className="absolute w-32 h-32 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-xl"
+            animate={{
+              x: [0, 50, -30, 0],
+              y: [0, -40, 30, 0],
+              scale: [1, 1.3, 0.7, 1],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 6
+            }}
+            style={{ top: '80%', left: '20%' }}
+          />
+          <motion.div
+            className="absolute w-40 h-40 bg-gradient-to-r from-green-400/15 to-teal-400/15 rounded-full blur-2xl"
+            animate={{
+              x: [0, -60, 40, 0],
+              y: [0, 80, -50, 0],
+              scale: [1, 0.8, 1.2, 1],
+            }}
+            transition={{
+              duration: 16,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 8
+            }}
+            style={{ top: '5%', right: '5%' }}
           />
         </div>
       </div>
@@ -122,9 +156,13 @@ const KeyFeaturesSection: React.FC = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="inline-block px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4">
+          <motion.div 
+            className="inline-block px-4 py-2 bg-primary/10 rounded-full text-sm font-medium text-primary mb-4"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             Why Choose Our Platform
-          </div>
+          </motion.div>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
             Powerful Features for Modern Educators
           </h2>
@@ -133,7 +171,7 @@ const KeyFeaturesSection: React.FC = () => {
           </p>
         </motion.div>
         
-        {/* Animated icons and titles container */}
+        {/* Animated icons and titles container with enhanced effects */}
         <div className="relative overflow-hidden mb-8">
           <motion.div 
             className="flex gap-8"
@@ -150,17 +188,31 @@ const KeyFeaturesSection: React.FC = () => {
             }}
           >
             {duplicatedFeatures.map((feature, index) => (
-              <div
+              <motion.div
                 key={index}
                 className="flex-shrink-0 w-70 text-center"
+                whileHover={{ y: -10 }}
+                transition={{ duration: 0.3 }}
               >
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-4 text-white shadow-lg mx-auto`}>
+                <motion.div 
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} p-4 mb-4 text-white shadow-lg mx-auto`}
+                  whileHover={{ 
+                    scale: 1.1,
+                    rotate: 5,
+                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
                   {feature.icon}
-                </div>
-                <h3 className="text-lg font-bold text-neutral-dark">
+                </motion.div>
+                <motion.h3 
+                  className="text-lg font-bold text-neutral-dark"
+                  whileHover={{ color: "#009688" }}
+                  transition={{ duration: 0.2 }}
+                >
                   {feature.title}
-                </h3>
-              </div>
+                </motion.h3>
+              </motion.div>
             ))}
           </motion.div>
         </div>
