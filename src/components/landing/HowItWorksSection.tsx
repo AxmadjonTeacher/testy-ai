@@ -130,7 +130,7 @@ const HowItWorksSection: React.FC = () => {
             {steps.map((step, index) => (
               <motion.div
                 key={index}
-                className="relative"
+                className="relative h-full" // Added h-full to make container full height
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
@@ -142,7 +142,7 @@ const HowItWorksSection: React.FC = () => {
                 }}
               >
                 <motion.div 
-                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative z-10"
+                  className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative z-10 h-full flex flex-col" // Added h-full and flex flex-col
                   whileHover={{
                     boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                   }}
@@ -188,9 +188,11 @@ const HowItWorksSection: React.FC = () => {
                     {step.title}
                   </motion.h3>
                   
-                  <p className="text-neutral-dark/70 leading-relaxed">
-                    {step.description}
-                  </p>
+                  <div className="flex-grow"> {/* Added flex-grow to push content to fill available space */}
+                    <p className="text-neutral-dark/70 leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
 
                   {/* Subtle glow effect on hover */}
                   <motion.div
