@@ -8,7 +8,7 @@ import { steps } from './how-it-works/stepsData';
 
 const HowItWorksSection: React.FC = () => {
   return (
-    <section className="py-20 px-4 relative overflow-hidden">
+    <section className="py-20 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <BackgroundAnimations />
 
       <div className="container mx-auto max-w-6xl relative z-10">

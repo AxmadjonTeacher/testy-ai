@@ -35,27 +35,32 @@ const StepCard: React.FC<StepCardProps> = ({ step, index, totalSteps }) => {
     >
       <div 
         ref={cardRef}
-        className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-100 relative z-10 h-full flex flex-col overflow-hidden"
+        className="bg-white/60 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/30 relative z-10 h-full flex flex-col overflow-hidden transition-all duration-300"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
           background: isHovered 
-            ? `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(0, 150, 136, 0.1) 0%, rgba(255, 255, 255, 0.8) 50%)`
-            : 'rgba(255, 255, 255, 0.8)'
+            ? `radial-gradient(circle 300px at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.1) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0.5) 100%)`
+            : 'rgba(255, 255, 255, 0.6)',
+          boxShadow: isHovered 
+            ? `0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(99, 102, 241, 0.1), inset 0 0 100px rgba(99, 102, 241, 0.05)`
+            : '0 8px 32px rgba(0, 0, 0, 0.1)'
         }}
       >
-        {/* Mouse tracking glow effect */}
+        {/* Professional mouse tracking glow effect */}
         {isHovered && (
           <div
-            className="absolute pointer-events-none rounded-full opacity-20 blur-xl transition-opacity duration-300"
+            className="absolute pointer-events-none transition-all duration-500"
             style={{
-              width: '200px',
-              height: '200px',
-              background: 'radial-gradient(circle, rgba(0, 150, 136, 0.3) 0%, transparent 70%)',
-              left: mousePosition.x - 100,
-              top: mousePosition.y - 100,
+              width: '400px',
+              height: '400px',
+              background: `radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.08) 30%, rgba(99, 102, 241, 0.02) 60%, transparent 80%)`,
+              left: mousePosition.x - 200,
+              top: mousePosition.y - 200,
               transform: 'translate3d(0, 0, 0)',
+              filter: 'blur(20px)',
+              opacity: 0.8,
             }}
           />
         )}
