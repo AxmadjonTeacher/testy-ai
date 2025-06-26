@@ -35,33 +35,37 @@ const StepCard: React.FC<StepCardProps> = ({ step, index, totalSteps }) => {
     >
       <div 
         ref={cardRef}
-        className="bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 relative z-10 h-full flex flex-col overflow-hidden transition-all duration-300 ease-out"
+        className="bg-white/60 backdrop-blur-md rounded-2xl p-8 shadow-xl border border-white/30 relative z-10 h-full flex flex-col overflow-hidden transition-all duration-300"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
           background: isHovered 
-            ? `radial-gradient(circle 400px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%)`
-            : 'rgba(255, 255, 255, 0.4)',
+            ? `radial-gradient(circle 300px at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.1) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0.5) 100%)`
+            : 'rgba(255, 255, 255, 0.6)',
+          boxShadow: isHovered 
+            ? `0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(99, 102, 241, 0.1), inset 0 0 100px rgba(99, 102, 241, 0.05)`
+            : '0 8px 32px rgba(0, 0, 0, 0.1)'
         }}
       >
-        {/* Mouse tracking glow effect */}
+        {/* Professional mouse tracking glow effect */}
         {isHovered && (
           <div
-            className="absolute pointer-events-none transition-all duration-200 ease-out"
+            className="absolute pointer-events-none transition-all duration-500"
             style={{
-              width: '300px',
-              height: '300px',
-              background: `radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, rgba(255, 255, 255, 0.1) 60%, transparent 100%)`,
-              left: mousePosition.x - 150,
-              top: mousePosition.y - 150,
-              filter: 'blur(30px)',
+              width: '400px',
+              height: '400px',
+              background: `radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.08) 30%, rgba(99, 102, 241, 0.02) 60%, transparent 80%)`,
+              left: mousePosition.x - 200,
+              top: mousePosition.y - 200,
+              transform: 'translate3d(0, 0, 0)',
+              filter: 'blur(20px)',
               opacity: 0.8,
             }}
           />
         )}
 
-        {/* Step number */}
+        {/* Enhanced step number */}
         <div 
           className={`w-12 h-12 rounded-xl bg-gradient-to-r ${step.color} flex items-center justify-center text-white font-bold text-lg mb-6 shadow-lg relative z-20`}
         >
