@@ -35,31 +35,28 @@ const StepCard: React.FC<StepCardProps> = ({ step, index, totalSteps }) => {
     >
       <div 
         ref={cardRef}
-        className="bg-white/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 relative z-10 h-full flex flex-col overflow-hidden transition-all duration-300 ease-out"
+        className="bg-white/40 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 relative z-10 h-full flex flex-col overflow-hidden transition-all duration-300 ease-out"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
           background: isHovered 
-            ? `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.5))`
-            : 'rgba(255, 255, 255, 0.5)',
-          boxShadow: isHovered 
-            ? `0 20px 40px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.1)`
-            : '0 8px 32px rgba(0, 0, 0, 0.08)',
+            ? `radial-gradient(circle 400px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%)`
+            : 'rgba(255, 255, 255, 0.4)',
         }}
       >
-        {/* Smooth subtle glow */}
+        {/* Mouse tracking glow effect */}
         {isHovered && (
           <div
-            className="absolute pointer-events-none transition-all duration-300 ease-out"
+            className="absolute pointer-events-none transition-all duration-200 ease-out"
             style={{
-              width: '200px',
-              height: '200px',
-              background: `radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 70%)`,
-              left: mousePosition.x - 100,
-              top: mousePosition.y - 100,
-              filter: 'blur(40px)',
-              opacity: 0.6,
+              width: '300px',
+              height: '300px',
+              background: `radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, rgba(255, 255, 255, 0.1) 60%, transparent 100%)`,
+              left: mousePosition.x - 150,
+              top: mousePosition.y - 150,
+              filter: 'blur(30px)',
+              opacity: 0.8,
             }}
           />
         )}
