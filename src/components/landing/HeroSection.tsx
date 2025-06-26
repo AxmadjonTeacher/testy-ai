@@ -3,7 +3,6 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import GraduationHat3D from './GraduationHat3D';
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
@@ -139,122 +138,107 @@ const HeroSection: React.FC = () => {
         />
       </div>
 
-      <div className="container mx-auto max-w-6xl relative z-10 px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left side - Text content */}
-          <div className="text-center lg:text-left">
-            <motion.div 
-              className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
-              variants={itemVariants}
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: "0 10px 25px -5px rgba(0, 150, 136, 0.3)"
-              }}
-              transition={{ duration: 0.2 }}
-            >
-              ✨ AI-Powered Test Generation
-            </motion.div>
-            
-            <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
-              variants={itemVariants}
-              style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
-            >
-              Create Unique Tests and
-              <motion.span 
-                className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-                animate={{
-                  backgroundPosition: ["0%", "100%", "0%"],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                Craft Smart Classes
-              </motion.span>
-            </motion.h1>
-            
-            <motion.p 
-              className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed"
-              variants={itemVariants}
-            >
-              Transform your teaching with AI-powered test generation. Upload sample tests, organize by level, and automatically create unique assessments that engage your students and save you time.
-            </motion.p>
-            
-            <motion.div 
-              className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mb-16"
-              variants={itemVariants}
-            >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button 
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => navigate('/generate')}
-                >
-                  Start Creating Tests
-                </Button>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button 
-                  size="lg"
-                  variant="outline"
-                  className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
-                  onClick={() => navigate('/admin/upload')}
-                >
-                  Admin Upload
-                </Button>
-              </motion.div>
-            </motion.div>
-
-            {/* Enhanced stats with hover effects */}
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto lg:mx-0"
-              variants={itemVariants}
-            >
-              {[
-                { number: "1000+", label: "Tests Generated" },
-                { number: "50+", label: "Happy Teachers" },
-                { number: "5★", label: "User Rating" }
-              ].map((stat, index) => (
-                <motion.div 
-                  key={index}
-                  className="text-center lg:text-left"
-                  whileHover={{ 
-                    scale: 1.1,
-                    y: -5,
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.div 
-                    className="text-3xl font-bold text-primary mb-2"
-                    whileHover={{ color: "#004D40" }}
-                  >
-                    {stat.number}
-                  </motion.div>
-                  <div className="text-neutral-dark/60">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Right side - 3D Graduation Hat */}
-          <motion.div 
-            className="flex justify-center lg:justify-end"
-            variants={itemVariants}
+      <div className="container mx-auto max-w-6xl text-center relative z-10 px-4">
+        <motion.div 
+          className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
+          variants={itemVariants}
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 10px 25px -5px rgba(0, 150, 136, 0.3)"
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          ✨ AI-Powered Test Generation
+        </motion.div>
+        
+        <motion.h1 
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
+          variants={itemVariants}
+          style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
+        >
+          Create Unique Tests and
+          <motion.span 
+            className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+            animate={{
+              backgroundPosition: ["0%", "100%", "0%"],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           >
-            <div className="w-full max-w-md">
-              <GraduationHat3D />
-            </div>
+            Craft Smart Classes
+          </motion.span>
+        </motion.h1>
+        
+        <motion.p 
+          className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-3xl mx-auto leading-relaxed"
+          variants={itemVariants}
+        >
+          Transform your teaching with AI-powered test generation. Upload sample tests, organize by level, and automatically create unique assessments that engage your students and save you time.
+        </motion.p>
+        
+        <motion.div 
+          className="flex flex-col sm:flex-row justify-center gap-4 mb-16"
+          variants={itemVariants}
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button 
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => navigate('/generate')}
+            >
+              Start Creating Tests
+            </Button>
           </motion.div>
-        </div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button 
+              size="lg"
+              variant="outline"
+              className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
+              onClick={() => navigate('/admin/upload')}
+            >
+              Admin Upload
+            </Button>
+          </motion.div>
+        </motion.div>
+
+        {/* Enhanced stats with hover effects */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+          variants={itemVariants}
+        >
+          {[
+            { number: "1000+", label: "Tests Generated" },
+            { number: "50+", label: "Happy Teachers" },
+            { number: "5★", label: "User Rating" }
+          ].map((stat, index) => (
+            <motion.div 
+              key={index}
+              className="text-center"
+              whileHover={{ 
+                scale: 1.1,
+                y: -5,
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="text-3xl font-bold text-primary mb-2"
+                whileHover={{ color: "#004D40" }}
+              >
+                {stat.number}
+              </motion.div>
+              <div className="text-neutral-dark/60">{stat.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </motion.section>
   );
