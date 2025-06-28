@@ -17,19 +17,19 @@ const StepCard: React.FC<StepCardProps> = ({ step, index, totalSteps }) => {
   const [isHovered, setIsHovered] = useState(false);
   const animationFrameRef = useRef<number>();
 
-  // Smooth animation using requestAnimationFrame
+  // Enhanced smooth animation with better easing
   const animateMousePosition = useCallback(() => {
     setMousePosition(prev => {
       const dx = targetPosition.x - prev.x;
       const dy = targetPosition.y - prev.y;
       
-      // Smooth interpolation with easing
-      const ease = 0.15;
+      // Smoother interpolation with cubic easing
+      const ease = 0.08;
       const newX = prev.x + dx * ease;
       const newY = prev.y + dy * ease;
       
       // Continue animation if not close enough to target
-      if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+      if (Math.abs(dx) > 0.3 || Math.abs(dy) > 0.3) {
         animationFrameRef.current = requestAnimationFrame(animateMousePosition);
       }
       
@@ -80,53 +80,133 @@ const StepCard: React.FC<StepCardProps> = ({ step, index, totalSteps }) => {
     >
       <div 
         ref={cardRef}
-        className="relative h-full flex flex-col overflow-hidden rounded-2xl border border-white/20 shadow-xl backdrop-blur-sm transition-all duration-500 ease-out"
+        className="relative h-full flex flex-col overflow-hidden rounded-2xl border border-white/30 backdrop-blur-md transition-all duration-500 ease-out"
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
           background: isHovered 
-            ? `radial-gradient(circle 400px at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.12) 0%, rgba(255, 255, 255, 0.85) 35%, rgba(255, 255, 255, 0.75) 100%)`
-            : 'rgba(255, 255, 255, 0.75)',
+            ? 'rgba(255, 255, 255, 0.95)'
+            : 'rgba(255, 255, 255, 0.85)',
           boxShadow: isHovered 
-            ? `0 20px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(99, 102, 241, 0.08)`
-            : '0 8px 24px rgba(0, 0, 0, 0.04)'
+            ? `0 25px 50px rgba(0, 0, 0, 0.15), 
+               0 0 0 1px rgba(255, 255, 255, 0.4),
+               inset 0 1px 0 rgba(255, 255, 255, 0.6)`
+            : `0 8px 32px rgba(0, 0, 0, 0.08),
+               0 0 0 1px rgba(255, 255, 255, 0.2)`
         }}
       >
-        {/* Smooth glow effect overlay */}
+        {/* Primary focused glow effect with bright core */}
         {isHovered && (
           <div
-            className="absolute inset-0 pointer-events-none opacity-60 transition-opacity duration-700 ease-out"
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-out"
             style={{
-              background: `radial-gradient(circle 300px at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0.04) 40%, transparent 70%)`,
-              filter: 'blur(1px)',
+              background: `radial-gradient(circle 120px at ${mousePosition.x}px ${mousePosition.y}px, 
+                rgba(59, 130, 246, 0.4) 0%, 
+                rgba(99, 102, 241, 0.25) 25%, 
+                rgba(139, 92, 246, 0.15) 50%, 
+                transparent 70%)`,
+              opacity: 1,
             }}
           />
         )}
 
-        {/* Enhanced step number with better contrast */}
+        {/* Secondary ambient glow for depth */}
+        {isHovered && (
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-500 ease-out"
+            style={{
+              background: `radial-gradient(circle 200px at ${mousePosition.x}px ${mousePosition.y}px, 
+                rgba(59, 130, 246, 0.08) 0%, 
+                rgba(99, 102, 241, 0.04) 40%, 
+                transparent 70%)`,
+              opacity: 0.8,
+            }}
+          />
+        )}
+
+        {/* Bright spotlight effect at mouse position */}
+        {isHovered && (
+          <div
+            className="absolute pointer-events-none transition-opacity duration-200 ease-out"
+            style={{
+              left: mousePosition.x - 30,
+              top: mousePosition.y - 30,
+              width: 60,
+              height: 60,
+              background: `radial-gradient(circle, 
+                rgba(255, 255, 255, 0.8) 0%, 
+                rgba(59, 130, 246, 0.6) 30%, 
+                rgba(99, 102, 241, 0.3) 60%, 
+                transparent 100%)`,
+              borderRadius: '50%',
+              filter: 'blur(8px)',
+              opacity: 0.7,
+            }}
+          />
+        )}
+
+        {/* Glassmorphism overlay for enhanced depth */}
+        {isHovered && (
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-out"
+            style={{
+              background: `linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%, 
+                rgba(255, 255, 255, 0.1) 100%)`,
+              opacity: 0.6,
+            }}
+          />
+        )}
+
+        {/* Content with enhanced contrast and depth */}
         <div className="relative z-20 p-8">
           <div 
-            className={`w-12 h-12 rounded-xl bg-gradient-to-r ${step.color} flex items-center justify-center text-white font-bold text-lg mb-6 shadow-lg transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}
+            className={`w-12 h-12 rounded-xl bg-gradient-to-r ${step.color} flex items-center justify-center text-white font-bold text-lg mb-6 shadow-lg transition-all duration-300 ${
+              isHovered ? 'scale-110 shadow-2xl shadow-primary/25' : ''
+            }`}
+            style={{
+              boxShadow: isHovered 
+                ? `0 10px 25px rgba(0, 0, 0, 0.15), 0 0 20px rgba(59, 130, 246, 0.3)`
+                : '0 4px 15px rgba(0, 0, 0, 0.1)'
+            }}
           >
             {step.number}
           </div>
           
-          {/* Icon with hover effect */}
-          <div className={`text-primary mb-4 transition-transform duration-300 ${isHovered ? 'scale-105' : ''}`}>
+          {/* Icon with enhanced hover effect */}
+          <div className={`text-primary mb-4 transition-all duration-300 ${
+            isHovered ? 'scale-105 text-blue-600' : ''
+          }`}>
             {step.icon}
           </div>
           
-          <h3 className="text-xl font-bold text-neutral-dark mb-4 transition-colors duration-300">
+          <h3 className={`text-xl font-bold mb-4 transition-all duration-300 ${
+            isHovered ? 'text-gray-900' : 'text-neutral-dark'
+          }`}>
             {step.title}
           </h3>
           
           <div className="flex-grow">
-            <p className="text-neutral-dark/70 leading-relaxed transition-colors duration-300">
+            <p className={`leading-relaxed transition-all duration-300 ${
+              isHovered ? 'text-gray-700' : 'text-neutral-dark/70'
+            }`}>
               {step.description}
             </p>
           </div>
         </div>
+
+        {/* Inner border highlight on hover */}
+        {isHovered && (
+          <div 
+            className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300"
+            style={{
+              border: '1px solid rgba(59, 130, 246, 0.2)',
+              opacity: 0.8,
+            }}
+          />
+        )}
       </div>
       
       <ConnectionLine index={index} totalSteps={totalSteps} />
