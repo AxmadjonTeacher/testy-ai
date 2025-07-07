@@ -3,17 +3,23 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 
 const ReadyToTrySection: React.FC = () => {
   const navigate = useNavigate();
+
+  const scrollToAdminRequest = () => {
+    const element = document.getElementById('admin-request');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section className="py-20 px-4 relative overflow-hidden">
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-accent"></div>
       
-      {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-4 -right-4 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
         <div className="absolute top-1/3 -left-8 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
@@ -82,9 +88,12 @@ const ReadyToTrySection: React.FC = () => {
               size="lg"
               variant="outline"
               className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg rounded-xl transition-all duration-300 font-semibold backdrop-blur-sm"
-              onClick={() => navigate('/admin/upload')}
+              onClick={scrollToAdminRequest}
             >
-              Admin Access
+              <span className="flex items-center gap-2">
+                <ShieldCheck size={20} />
+                Request Admin Access
+              </span>
             </Button>
           </motion.div>
 
