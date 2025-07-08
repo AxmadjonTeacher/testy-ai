@@ -13,6 +13,7 @@ import LibraryPage from "./pages/LibraryPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import AdminUploadPage from "./pages/AdminUploadPage";
 import AuthPage from "./pages/AuthPage";
+import './i18n';
 
 const queryClient = new QueryClient();
 

@@ -3,12 +3,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShieldCheck } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface DesktopNavigationProps {
   isAdmin: boolean;
 }
 
 const DesktopNavigation = ({ isAdmin }: DesktopNavigationProps) => {
+  const { t } = useTranslation();
+  
   const navVariants = {
     hidden: { opacity: 0, y: -10 },
     visible: { 
@@ -33,30 +36,30 @@ const DesktopNavigation = ({ isAdmin }: DesktopNavigationProps) => {
       <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full px-2 py-2 shadow-sm border border-gray-100">
         <motion.div variants={itemVariants}>
           <Link to="/dashboard" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
-            Dashboard
+            {t('nav.dashboard')}
           </Link>
         </motion.div>
         <motion.div variants={itemVariants}>
           <Link to="/generate" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
-            Generate
+            {t('nav.generate')}
           </Link>
         </motion.div>
         <motion.div variants={itemVariants}>
           <Link to="/library" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
-            Library
+            {t('nav.library')}
           </Link>
         </motion.div>
         {isAdmin && (
           <motion.div variants={itemVariants}>
             <Link to="/admin/upload" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium flex items-center gap-2 text-sm">
               <ShieldCheck className="h-4 w-4" />
-              Admin
+              {t('nav.admin')}
             </Link>
           </motion.div>
         )}
         <motion.div variants={itemVariants}>
           <Link to="/privacy-policy#data-retention" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
-            Help
+            {t('nav.help')}
           </Link>
         </motion.div>
       </div>

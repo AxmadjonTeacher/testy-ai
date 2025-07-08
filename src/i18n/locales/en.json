@@ -1,0 +1,87 @@
+
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "generate": "Generate",
+    "library": "Library",
+    "admin": "Admin",
+    "help": "Help",
+    "signIn": "Sign In",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "AI-Powered Test Generator for English Teachers",
+    "subtitle": "Create customized tests in minutes with our intelligent platform. Generate questions, export to Word, and save time while improving student assessment.",
+    "startGenerating": "Start Generating Tests",
+    "learnMore": "Learn More"
+  },
+  "features": {
+    "title": "Key Features",
+    "aiPowered": {
+      "title": "AI-Powered Generation",
+      "description": "Advanced algorithms create contextually relevant questions"
+    },
+    "customizable": {
+      "title": "Fully Customizable",
+      "description": "Adjust difficulty, topics, and question types to match your needs"
+    },
+    "export": {
+      "title": "Easy Export",
+      "description": "Download tests as Word documents ready for printing"
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "steps": {
+      "1": {
+        "title": "Choose Your Parameters",
+        "description": "Select subject, level, topics, and number of questions"
+      },
+      "2": {
+        "title": "AI Generates Questions",
+        "description": "Our AI creates relevant questions based on your criteria"
+      },
+      "3": {
+        "title": "Review & Download",
+        "description": "Preview your test and export as Word document"
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions"
+  },
+  "cta": {
+    "title": "Ready to Create Your First AI-Generated Test?",
+    "subtitle": "Join thousands of educators who are saving time and creating better assessments with our AI-powered platform. Start your free trial today.",
+    "startGenerating": "Start Generating Tests",
+    "requestAdmin": "Request Admin Access",
+    "trustIndicators": {
+      "noCard": "No credit card required",
+      "quickSetup": "Setup in 2 minutes",
+      "cancelAnytime": "Cancel anytime"
+    }
+  },
+  "adminRequest": {
+    "title": "Request Admin Access",
+    "subtitle": "Need administrative privileges? Fill out the form below and we'll review your request.",
+    "form": {
+      "name": "First Name",
+      "surname": "Last Name",
+      "email": "Email Address",
+      "message": "Why do you need admin access?",
+      "submit": "Send Request",
+      "submitting": "Sending...",
+      "success": "Your admin access request has been sent successfully!",
+      "error": "Failed to send request. Please try again."
+    }
+  },
+  "dashboard": {
+    "title": "My Tests",
+    "generateNew": "Generate New Test",
+    "signInRequired": "Please sign in to view your tests"
+  },
+  "library": {
+    "title": "Community Test Library",
+    "subtitle": "Upload and share test files with the community. Browse tests by subject, level, grade, and topics."
+  }
+}

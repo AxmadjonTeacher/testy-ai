@@ -1,0 +1,87 @@
+
+{
+  "nav": {
+    "dashboard": "Boshqaruv paneli",
+    "generate": "Yaratish",
+    "library": "Kutubxona",
+    "admin": "Admin",
+    "help": "Yordam",
+    "signIn": "Kirish",
+    "contact": "Aloqa"
+  },
+  "hero": {
+    "title": "Ingliz tili o'qituvchilari uchun AI-powered test generatori",
+    "subtitle": "Bizning aqlli platformamiz bilan bir necha daqiqada moslashtirilgan testlar yarating. Savollar yarating, Word formatiga eksport qiling va vaqt tejab, talabalar baholashni yaxshilang.",
+    "startGenerating": "Testlar yaratishni boshlash",
+    "learnMore": "Batafsil"
+  },
+  "features": {
+    "title": "Asosiy xususiyatlar",
+    "aiPowered": {
+      "title": "AI-powered generatsiya",
+      "description": "Ilg'or algoritmlar kontekstga mos savollar yaratadi"
+    },
+    "customizable": {
+      "title": "To'liq sozlanishi",
+      "description": "Qiyinlik darajasi, mavzular va savol turlarini ehtiyojlaringizga moslang"
+    },
+    "export": {
+      "title": "Oson eksport",
+      "description": "Testlarni Word hujjati sifatida yuklab oling va chop etishga tayyor"
+    }
+  },
+  "howItWorks": {
+    "title": "Qanday ishlaydi",
+    "steps": {
+      "1": {
+        "title": "Parametrlaringizni tanlang",
+        "description": "Fan, daraja, mavzular va savollar sonini tanlang"
+      },
+      "2": {
+        "title": "AI savollar yaratadi",
+        "description": "Bizning AI sizning mezonlaringiz asosida tegishli savollar yaratadi"
+      },
+      "3": {
+        "title": "Ko'rib chiqing va yuklab oling",
+        "description": "Testingizni ko'rib chiqing va Word hujjati sifatida eksport qiling"
+      }
+    }
+  },
+  "faq": {
+    "title": "Tez-tez beriladigan savollar"
+  },
+  "cta": {
+    "title": "Birinchi AI-generated testingizni yaratishga tayyormisiz?",
+    "subtitle": "Bizning AI-powered platformamiz bilan vaqt tejaydigan va yaxshiroq baholash yaratayotgan minglab o'qituvchilarga qo'shiling. Bugun bepul sinovingizni boshlang.",
+    "startGenerating": "Testlar yaratishni boshlash",
+    "requestAdmin": "Admin ruxsatini so'rash",
+    "trustIndicators": {
+      "noCard": "Kredit karta talab qilinmaydi",
+      "quickSetup": "2 daqiqada sozlash",
+      "cancelAnytime": "Istalgan vaqtda bekor qilish"
+    }
+  },
+  "adminRequest": {
+    "title": "Admin ruxsatini so'rash",
+    "subtitle": "Administrativ huquqlar kerakmi? Quyidagi formani to'ldiring va biz sizning so'rovingizni ko'rib chiqamiz.",
+    "form": {
+      "name": "Ism",
+      "surname": "Familiya",
+      "email": "Email manzil",
+      "message": "Nima uchun admin ruxsati kerak?",
+      "submit": "So'rov yuborish",
+      "submitting": "Yuborilmoqda...",
+      "success": "Admin ruxsati so'rovingiz muvaffaqiyatli yuborildi!",
+      "error": "So'rovni yuborishda xatolik. Iltimos, qayta urinib ko'ring."
+    }
+  },
+  "dashboard": {
+    "title": "Mening testlarim",
+    "generateNew": "Yangi test yaratish",
+    "signInRequired": "Testlaringizni ko'rish uchun iltimos kiring"
+  },
+  "library": {
+    "title": "Jamiyat test kutubxonasi",
+    "subtitle": "Jamiyat bilan test fayllarini yuklang va baham ko'ring. Testlarni fan, daraja, sinf va mavzular bo'yicha ko'ring."
+  }
+}

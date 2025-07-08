@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,6 +8,7 @@ import MobileMenuButton from './header/MobileMenuButton';
 import DesktopNavigation from './header/DesktopNavigation';
 import UserActions from './header/UserActions';
 import MobileNavigation from './header/MobileNavigation';
+import LanguageSwitcher from './header/LanguageSwitcher';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -60,16 +60,19 @@ const Header = () => {
           {/* Desktop Navigation */}
           <DesktopNavigation isAdmin={isAdmin} />
 
-          {/* User Actions */}
-          <UserActions 
-            user={user}
-            isAdmin={isAdmin}
-            isMenuOpen={isMenuOpen}
-            handleUserMenuToggle={handleUserMenuToggle}
-            handleSignOut={handleSignOut}
-            handleSignIn={handleSignIn}
-            handleContact={handleContact}
-          />
+          {/* User Actions and Language Switcher */}
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <UserActions 
+              user={user}
+              isAdmin={isAdmin}
+              isMenuOpen={isMenuOpen}
+              handleUserMenuToggle={handleUserMenuToggle}
+              handleSignOut={handleSignOut}
+              handleSignIn={handleSignIn}
+              handleContact={handleContact}
+            />
+          </div>
         </div>
 
         {/* Mobile Navigation Menu */}
