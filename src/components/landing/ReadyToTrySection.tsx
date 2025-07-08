@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const ReadyToTrySection: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const scrollToAdminRequest = () => {
     const element = document.getElementById('admin-request');
@@ -42,7 +44,7 @@ const ReadyToTrySection: React.FC = () => {
             viewport={{ once: true }}
           >
             <Sparkles size={16} />
-            Transform Your Teaching Today
+            {t('cta.transformTeaching')}
           </motion.div>
 
           <motion.h2
@@ -52,8 +54,7 @@ const ReadyToTrySection: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            Ready to Create Your First
-            <span className="block">AI-Generated Test?</span>
+            {t('cta.title')}
           </motion.h2>
 
           <motion.p 
@@ -63,7 +64,7 @@ const ReadyToTrySection: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            Join thousands of educators who are saving time and creating better assessments with our AI-powered platform. Start your free trial today.
+            {t('cta.subtitle')}
           </motion.p>
 
           <motion.div
@@ -79,7 +80,7 @@ const ReadyToTrySection: React.FC = () => {
               onClick={() => navigate('/generate')}
             >
               <span className="flex items-center gap-2">
-                Start Generating Tests
+                {t('cta.startGenerating')}
                 <ArrowRight size={20} />
               </span>
             </Button>
@@ -92,7 +93,7 @@ const ReadyToTrySection: React.FC = () => {
             >
               <span className="flex items-center gap-2">
                 <ShieldCheck size={20} />
-                Request Admin Access
+                {t('cta.requestAdmin')}
               </span>
             </Button>
           </motion.div>
@@ -107,15 +108,15 @@ const ReadyToTrySection: React.FC = () => {
           >
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span className="text-sm">No credit card required</span>
+              <span className="text-sm">{t('cta.trustIndicators.noCard')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span className="text-sm">Setup in 2 minutes</span>
+              <span className="text-sm">{t('cta.trustIndicators.quickSetup')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span className="text-sm">Cancel anytime</span>
+              <span className="text-sm">{t('cta.trustIndicators.cancelAnytime')}</span>
             </div>
           </motion.div>
         </motion.div>

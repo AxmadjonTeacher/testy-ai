@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User, ShieldCheck, Plus } from "lucide-react";
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface UserActionsProps {
   user: any;
@@ -33,6 +34,7 @@ const UserActions = ({
   handleContact 
 }: UserActionsProps) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const getUserInitials = () => {
     if (!user?.email) return 'U';
@@ -74,7 +76,7 @@ const UserActions = ({
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate('/dashboard')} className="cursor-pointer">
               <User className="mr-2 h-4 w-4" />
-              <span>My Tests</span>
+              <span>{t('dashboard.title')}</span>
             </DropdownMenuItem>
             {isAdmin && (
               <DropdownMenuItem onClick={() => navigate('/admin/upload')} className="cursor-pointer">
@@ -93,7 +95,7 @@ const UserActions = ({
         <div className="hidden sm:flex items-center space-x-3">
           <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
             <Button variant="ghost" className="text-neutral-dark hover:bg-neutral-dark/5 font-medium" onClick={handleSignIn}>
-              Sign In
+              {t('nav.signIn')}
             </Button>
           </motion.div>
           <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
@@ -102,7 +104,7 @@ const UserActions = ({
               onClick={handleContact}
             >
               <Plus className="h-4 w-4" />
-              Contact
+              {t('nav.contact')}
             </Button>
           </motion.div>
         </div>

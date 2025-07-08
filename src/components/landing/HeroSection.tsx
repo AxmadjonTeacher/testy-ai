@@ -1,11 +1,12 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   const containerVariants = {
     hidden: {
@@ -156,27 +157,14 @@ const HeroSection: React.FC = () => {
           variants={itemVariants}
           style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
         >
-          Create Unique Tests and
-          <motion.span 
-            className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-            animate={{
-              backgroundPosition: ["0%", "100%", "0%"],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            Craft Smart Classes
-          </motion.span>
+          {t('hero.title')}
         </motion.h1>
         
         <motion.p 
           className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-3xl mx-auto leading-relaxed"
           variants={itemVariants}
         >
-          Transform your teaching with AI-powered test generation. Upload sample tests, organize by level, and automatically create unique assessments that engage your students and save you time.
+          {t('hero.subtitle')}
         </motion.p>
         
         <motion.div 
@@ -192,7 +180,7 @@ const HeroSection: React.FC = () => {
               className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={() => navigate('/generate')}
             >
-              Start Creating Tests
+              {t('hero.startCreating')}
             </Button>
           </motion.div>
           <motion.div
@@ -205,7 +193,7 @@ const HeroSection: React.FC = () => {
               className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
               onClick={() => navigate('/admin/upload')}
             >
-              Admin Upload
+              {t('hero.adminUpload')}
             </Button>
           </motion.div>
         </motion.div>
@@ -216,9 +204,9 @@ const HeroSection: React.FC = () => {
           variants={itemVariants}
         >
           {[
-            { number: "1000+", label: "Tests Generated" },
-            { number: "50+", label: "Happy Teachers" },
-            { number: "5★", label: "User Rating" }
+            { number: "1000+", label: t('hero.stats.testsGenerated') },
+            { number: "50+", label: t('hero.stats.happyTeachers') },
+            { number: "5★", label: t('hero.stats.userRating') }
           ].map((stat, index) => (
             <motion.div 
               key={index}

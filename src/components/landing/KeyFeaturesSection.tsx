@@ -2,43 +2,46 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Shuffle, Upload, Settings, Zap, Shield, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const KeyFeaturesSection: React.FC = () => {
+  const { t } = useTranslation();
+
   const features = [
     {
       icon: <Shuffle size={28} />,
-      title: "Intelligent Question Shuffling",
-      description: "Our AI automatically combines and randomizes questions from your uploaded content, ensuring every test is unique and prevents memorization.",
+      title: t('features.intelligentShuffling.title'),
+      description: t('features.intelligentShuffling.description'),
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: <Upload size={28} />,
-      title: "Seamless Content Upload",
-      description: "Upload your existing tests in Excel or CSV format. Our smart parsing technology organizes questions by topic and difficulty automatically.",
+      title: t('features.seamlessUpload.title'),
+      description: t('features.seamlessUpload.description'),
       color: "from-purple-500 to-pink-500"
     },
     {
       icon: <Settings size={28} />,
-      title: "Advanced Customization",
-      description: "Fine-tune every aspect: select topics, set question counts, choose difficulty levels, and customize teacher information to match your needs.",
+      title: t('features.advancedCustomization.title'),
+      description: t('features.advancedCustomization.description'),
       color: "from-green-500 to-emerald-500"
     },
     {
       icon: <Zap size={28} />,
-      title: "Lightning Fast Generation",
-      description: "Generate professional tests in seconds, not hours. Our optimized AI processes your requirements instantly.",
+      title: t('features.lightningFast.title'),
+      description: t('features.lightningFast.description'),
       color: "from-orange-500 to-red-500"
     },
     {
       icon: <Shield size={28} />,
-      title: "Quality Assurance",
-      description: "Built-in validation ensures grammatical accuracy and appropriate difficulty progression in every generated test.",
+      title: t('features.qualityAssurance.title'),
+      description: t('features.qualityAssurance.description'),
       color: "from-indigo-500 to-blue-500"
     },
     {
       icon: <Clock size={28} />,
-      title: "Time-Saving Workflow",
-      description: "Reduce test preparation time by 90%. Focus on teaching while our AI handles the repetitive task of test creation.",
+      title: t('features.timeSaving.title'),
+      description: t('features.timeSaving.description'),
       color: "from-teal-500 to-cyan-500"
     }
   ];
@@ -161,13 +164,13 @@ const KeyFeaturesSection: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            Why Choose Our Platform
+            {t('features.whyChoose')}
           </motion.div>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
-            Powerful Features for Modern Educators
+            {t('features.title')}
           </h2>
           <p className="text-lg text-neutral-dark/70 max-w-2xl mx-auto">
-            Everything you need to create engaging, unique tests that challenge your students and streamline your workflow.
+            {t('features.subtitle')}
           </p>
         </motion.div>
         

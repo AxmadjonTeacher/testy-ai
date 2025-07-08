@@ -4,9 +4,11 @@ import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const FAQSection: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const faqItems = [
     {
@@ -126,13 +128,13 @@ const FAQSection: React.FC = () => {
             >
               <HelpCircle size={16} />
             </motion.div>
-            FAQ
+            {t('faq.faqLabel')}
           </motion.div>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
-            Questions & Answers
+            {t('faq.title')}
           </h2>
           <p className="text-lg text-neutral-dark/70 max-w-2xl mx-auto">
-            Find answers to common questions about our AI-powered test generation platform. Can't find what you're looking for? Contact our support team.
+            {t('faq.subtitle')}
           </p>
         </motion.div>
         
@@ -188,7 +190,7 @@ const FAQSection: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          <p className="text-neutral-dark/70 mb-4">Still have questions?</p>
+          <p className="text-neutral-dark/70 mb-4">{t('faq.stillHaveQuestions')}</p>
           <motion.button 
             onClick={handleContactClick}
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors cursor-pointer"
@@ -199,7 +201,7 @@ const FAQSection: React.FC = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
           >
-            Get in touch with our team
+            {t('faq.getInTouch')}
             <motion.div
               animate={{ x: [0, 5, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}

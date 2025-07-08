@@ -10,49 +10,61 @@
     "contact": "Aloqa"
   },
   "hero": {
-    "title": "Ingliz tili o'qituvchilari uchun AI-powered test generatori",
-    "subtitle": "Bizning aqlli platformamiz bilan bir necha daqiqada moslashtirilgan testlar yarating. Savollar yarating, Word formatiga eksport qiling va vaqt tejab, talabalar baholashni yaxshilang.",
-    "startGenerating": "Testlar yaratishni boshlash",
-    "learnMore": "Batafsil"
+    "title": "Noyob testlar yarating va aqlli darslar tashkil eting",
+    "subtitle": "AI-powered test generatsiyasi bilan o'qitishingizni o'zgartiring. Namunaviy testlar yuklang, darajalar bo'yicha tartibga soling va talabalaringizni jalb qiladigan va vaqtingizni tejaydigan noyob baholashlar yarating.",
+    "startCreating": "Testlar yaratishni boshlash",
+    "adminUpload": "Admin yuklash",
+    "stats": {
+      "testsGenerated": "Yaratilgan testlar",
+      "happyTeachers": "Mamnun o'qituvchilar",
+      "userRating": "Foydalanuvchi reytingi"
+    }
   },
   "features": {
-    "title": "Asosiy xususiyatlar",
-    "aiPowered": {
-      "title": "AI-powered generatsiya",
-      "description": "Ilg'or algoritmlar kontekstga mos savollar yaratadi"
+    "title": "Zamonaviy o'qituvchilar uchun kuchli xususiyatlar",
+    "subtitle": "Talabalaringizni qiziqtiradigan va ish jarayonini soddalashtiradigu noyob testlar yaratish uchun kerak bo'lgan hamma narsa.",
+    "whyChoose": "Nima uchun bizning platformamizni tanlash kerak",
+    "intelligentShuffling": {
+      "title": "Aqlli savollarni aralashtirish",
+      "description": "Bizning AI avtomatik ravishda yuklangan kontentingizdan savollarni birlashtiradi va tasodifiy tartibga keltiradi, har bir testning noyobligini ta'minlaydi va yodlashning oldini oladi."
     },
-    "customizable": {
-      "title": "To'liq sozlanishi",
-      "description": "Qiyinlik darajasi, mavzular va savol turlarini ehtiyojlaringizga moslang"
+    "seamlessUpload": {
+      "title": "Muammosiz kontent yuklash",
+      "description": "Mavjud testlaringizni Excel yoki CSV formatida yuklang. Bizning aqlli tahlil texnologiyamiz savollarni mavzu va qiyinlik darajasi bo'yicha avtomatik tartibga keltiradi."
     },
-    "export": {
-      "title": "Oson eksport",
-      "description": "Testlarni Word hujjati sifatida yuklab oling va chop etishga tayyor"
+    "advancedCustomization": {
+      "title": "Ilg'or sozlash",
+      "description": "Har bir jihatni sozlang: mavzularni tanlang, savollar sonini belgilang, qiyinlik darajasini tanlang va o'qituvchi ma'lumotlarini ehtiyojlaringizga moslang."
+    },
+    "lightningFast": {
+      "title": "Chaqmoq tezligida yaratish",
+      "description": "Professional testlarni soatlar emas, soniyalarda yarating. Bizning optimallashtirilgan AI talablaringizni bir zumda qayta ishlaydi."
+    },
+    "qualityAssurance": {
+      "title": "Sifat kafolati",
+      "description": "Ichki tekshiruv har bir yaratilgan testda grammatik aniqlik va tegishli qiyinlik progressiyasini ta'minlaydi."
+    },
+    "timeSaving": {
+      "title": "Vaqt tejovchi ish jarayoni",
+      "description": "Test tayyorlash vaqtini 90% ga qisqartiring. O'qitishga e'tibor bering, AI esa takroriy test yaratish vazifasini bajaradi."
     }
   },
   "howItWorks": {
-    "title": "Qanday ishlaydi",
-    "steps": {
-      "1": {
-        "title": "Parametrlaringizni tanlang",
-        "description": "Fan, daraja, mavzular va savollar sonini tanlang"
-      },
-      "2": {
-        "title": "AI savollar yaratadi",
-        "description": "Bizning AI sizning mezonlaringiz asosida tegishli savollar yaratadi"
-      },
-      "3": {
-        "title": "Ko'rib chiqing va yuklab oling",
-        "description": "Testingizni ko'rib chiqing va Word hujjati sifatida eksport qiling"
-      }
-    }
+    "title": "Qanday ishlaydi: Muvaffaqiyatga oddiy qadamlar",
+    "subtitle": "Yuklashdan yuklab olishgacha atigi to'rtta oson qadam. Bizning soddalashtirilgan jarayonimiz har safar professional natijalarni ta'minlaydi.",
+    "ourProcess": "Bizning jarayonimiz"
   },
   "faq": {
-    "title": "Tez-tez beriladigan savollar"
+    "title": "Savollar va javoblar",
+    "subtitle": "AI-powered test generatsiya platformamiz haqida tez-tez beriladigan savollarga javoblar toping. Qidirayotgan narsangizni topa olmayapsizmi? Yordam xizmatimiz bilan bog'laning.",
+    "faqLabel": "Tez-tez beriladigan savollar",
+    "stillHaveQuestions": "Yana savollaringiz bormi?",
+    "getInTouch": "Bizning jamoa bilan bog'laning"
   },
   "cta": {
-    "title": "Birinchi AI-generated testingizni yaratishga tayyormisiz?",
-    "subtitle": "Bizning AI-powered platformamiz bilan vaqt tejaydigan va yaxshiroq baholash yaratayotgan minglab o'qituvchilarga qo'shiling. Bugun bepul sinovingizni boshlang.",
+    "title": "Birinchi AI-yaratilgan testingizni yaratishga tayyormisiz?",
+    "subtitle": "Bizning AI-powered platformamiz bilan vaqt tejaydigan va yaxshiroq baholashlar yaratayotgan minglab o'qituvchilarga qo'shiling. Bugun bepul sinovingizni boshlang.",
+    "transformTeaching": "Bugun o'qitishingizni o'zgartiring",
     "startGenerating": "Testlar yaratishni boshlash",
     "requestAdmin": "Admin ruxsatini so'rash",
     "trustIndicators": {

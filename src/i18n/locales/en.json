@@ -10,49 +10,61 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "AI-Powered Test Generator for English Teachers",
-    "subtitle": "Create customized tests in minutes with our intelligent platform. Generate questions, export to Word, and save time while improving student assessment.",
-    "startGenerating": "Start Generating Tests",
-    "learnMore": "Learn More"
+    "title": "Create Unique Tests and Craft Smart Classes",
+    "subtitle": "Transform your teaching with AI-powered test generation. Upload sample tests, organize by level, and automatically create unique assessments that engage your students and save you time.",
+    "startCreating": "Start Creating Tests",
+    "adminUpload": "Admin Upload",
+    "stats": {
+      "testsGenerated": "Tests Generated",
+      "happyTeachers": "Happy Teachers",
+      "userRating": "User Rating"
+    }
   },
   "features": {
-    "title": "Key Features",
-    "aiPowered": {
-      "title": "AI-Powered Generation",
-      "description": "Advanced algorithms create contextually relevant questions"
+    "title": "Powerful Features for Modern Educators",
+    "subtitle": "Everything you need to create engaging, unique tests that challenge your students and streamline your workflow.",
+    "whyChoose": "Why Choose Our Platform",
+    "intelligentShuffling": {
+      "title": "Intelligent Question Shuffling",
+      "description": "Our AI automatically combines and randomizes questions from your uploaded content, ensuring every test is unique and prevents memorization."
     },
-    "customizable": {
-      "title": "Fully Customizable",
-      "description": "Adjust difficulty, topics, and question types to match your needs"
+    "seamlessUpload": {
+      "title": "Seamless Content Upload",
+      "description": "Upload your existing tests in Excel or CSV format. Our smart parsing technology organizes questions by topic and difficulty automatically."
     },
-    "export": {
-      "title": "Easy Export",
-      "description": "Download tests as Word documents ready for printing"
+    "advancedCustomization": {
+      "title": "Advanced Customization",
+      "description": "Fine-tune every aspect: select topics, set question counts, choose difficulty levels, and customize teacher information to match your needs."
+    },
+    "lightningFast": {
+      "title": "Lightning Fast Generation",
+      "description": "Generate professional tests in seconds, not hours. Our optimized AI processes your requirements instantly."
+    },
+    "qualityAssurance": {
+      "title": "Quality Assurance",
+      "description": "Built-in validation ensures grammatical accuracy and appropriate difficulty progression in every generated test."
+    },
+    "timeSaving": {
+      "title": "Time-Saving Workflow",
+      "description": "Reduce test preparation time by 90%. Focus on teaching while our AI handles the repetitive task of test creation."
     }
   },
   "howItWorks": {
-    "title": "How It Works",
-    "steps": {
-      "1": {
-        "title": "Choose Your Parameters",
-        "description": "Select subject, level, topics, and number of questions"
-      },
-      "2": {
-        "title": "AI Generates Questions",
-        "description": "Our AI creates relevant questions based on your criteria"
-      },
-      "3": {
-        "title": "Review & Download",
-        "description": "Preview your test and export as Word document"
-      }
-    }
+    "title": "How It Works: Simple Steps to Success",
+    "subtitle": "From upload to download in just four easy steps. Our streamlined process ensures you get professional results every time.",
+    "ourProcess": "Our Process"
   },
   "faq": {
-    "title": "Frequently Asked Questions"
+    "title": "Questions & Answers",
+    "subtitle": "Find answers to common questions about our AI-powered test generation platform. Can't find what you're looking for? Contact our support team.",
+    "faqLabel": "FAQ",
+    "stillHaveQuestions": "Still have questions?",
+    "getInTouch": "Get in touch with our team"
   },
   "cta": {
     "title": "Ready to Create Your First AI-Generated Test?",
     "subtitle": "Join thousands of educators who are saving time and creating better assessments with our AI-powered platform. Start your free trial today.",
+    "transformTeaching": "Transform Your Teaching Today",
     "startGenerating": "Start Generating Tests",
     "requestAdmin": "Request Admin Access",
     "trustIndicators": {

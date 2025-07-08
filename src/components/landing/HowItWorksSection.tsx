@@ -1,12 +1,15 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import BackgroundAnimations from './how-it-works/BackgroundAnimations';
 import StepCard from './how-it-works/StepCard';
 import AnimatedConnectionLine from './how-it-works/AnimatedConnectionLine';
 import { steps } from './how-it-works/stepsData';
 
 const HowItWorksSection: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-20 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <BackgroundAnimations />
@@ -24,13 +27,13 @@ const HowItWorksSection: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            Our Process
+            {t('howItWorks.ourProcess')}
           </motion.div>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-dark mb-6">
-            How It Works: Simple Steps to Success
+            {t('howItWorks.title')}
           </h2>
           <p className="text-lg text-neutral-dark/70 max-w-2xl mx-auto">
-            From upload to download in just four easy steps. Our streamlined process ensures you get professional results every time.
+            {t('howItWorks.subtitle')}
           </p>
         </motion.div>
 
