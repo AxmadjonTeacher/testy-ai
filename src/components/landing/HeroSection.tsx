@@ -63,7 +63,8 @@ const HeroSection: React.FC = () => {
 
   return (
     <motion.section 
-      className="relative py-20 lg:py-32 overflow-hidden min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+      className="relative py-20 lg:py-32 overflow-hidden min-h-screen"
+      style={{ backgroundColor: '#E3E3E3' }}
       initial="hidden" 
       animate="visible" 
       variants={containerVariants}
@@ -161,7 +162,7 @@ const HeroSection: React.FC = () => {
             variants={leftItemVariants}
           >
             <motion.div 
-              className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
+              className="inline-block px-4 py-2 bg-white backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20 shadow-md"
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 10px 25px -5px rgba(0, 150, 136, 0.3)"
@@ -172,14 +173,14 @@ const HeroSection: React.FC = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight"
               style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
             >
               Interactive Tests
             </motion.h1>
             
             <motion.p 
-              className="text-lg md:text-xl text-white/80 mb-12 max-w-2xl leading-relaxed"
+              className="text-lg md:text-xl text-gray-700 mb-12 max-w-2xl leading-relaxed"
             >
               {t('hero.subtitle')}
             </motion.p>
@@ -206,7 +207,7 @@ const HeroSection: React.FC = () => {
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
+                  className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300 bg-white"
                   onClick={() => navigate('/admin/upload')}
                 >
                   {t('hero.adminUpload')}
@@ -221,7 +222,7 @@ const HeroSection: React.FC = () => {
             className="relative h-[600px] lg:h-[700px] flex items-center justify-center"
             variants={rightItemVariants}
           >
-            <div className="w-full h-full relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5 backdrop-blur-sm border border-white/20 shadow-2xl">
+            <div className="w-full h-full relative rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm border border-gray-200 shadow-2xl">
               <SplineScene 
                 scene="https://prod.spline.design/4QGVSBNgtfAq99YD/scene.splinecode"
                 className="w-full h-full"
@@ -229,7 +230,7 @@ const HeroSection: React.FC = () => {
               
               {/* Interactive overlay hint */}
               <motion.div 
-                className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg text-sm text-neutral-dark/70 font-medium shadow-lg"
+                className="absolute bottom-4 left-4 bg-white backdrop-blur-sm px-3 py-2 rounded-lg text-sm text-gray-700 font-medium shadow-lg border border-gray-200"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2 }}
