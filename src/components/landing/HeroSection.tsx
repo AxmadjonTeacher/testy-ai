@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { SplineScene } from '@/components/ui/splite';
 
 const HeroSection: React.FC = () => {
   const navigate = useNavigate();
@@ -22,16 +23,30 @@ const HeroSection: React.FC = () => {
     }
   };
   
-  const itemVariants = {
+  const leftItemVariants = {
     hidden: {
-      y: 30,
+      x: -50,
       opacity: 0
     },
     visible: {
-      y: 0,
+      x: 0,
       opacity: 1,
       transition: {
         duration: 0.6
+      }
+    }
+  };
+
+  const rightItemVariants = {
+    hidden: {
+      x: 50,
+      opacity: 0
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8
       }
     }
   };
@@ -48,7 +63,7 @@ const HeroSection: React.FC = () => {
 
   return (
     <motion.section 
-      className="relative py-20 lg:py-32 overflow-hidden"
+      className="relative py-20 lg:py-32 overflow-hidden min-h-screen"
       style={{
         background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%)'
       }}
@@ -139,94 +154,122 @@ const HeroSection: React.FC = () => {
         />
       </div>
 
-      <div className="container mx-auto max-w-6xl text-center relative z-10 px-4">
-        <motion.div 
-          className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
-          variants={itemVariants}
-          whileHover={{ 
-            scale: 1.05,
-            boxShadow: "0 10px 25px -5px rgba(0, 150, 136, 0.3)"
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          ✨ AI-Powered Test Generation
-        </motion.div>
-        
-        <motion.h1 
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
-          variants={itemVariants}
-          style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
-        >
-          {t('hero.title')}
-        </motion.h1>
-        
-        <motion.p 
-          className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-3xl mx-auto leading-relaxed"
-          variants={itemVariants}
-        >
-          {t('hero.subtitle')}
-        </motion.p>
-        
-        <motion.div 
-          className="flex flex-col sm:flex-row justify-center gap-4 mb-16"
-          variants={itemVariants}
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+      <div className="container mx-auto max-w-7xl relative z-10 px-4">
+        {/* Two-column grid layout */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          
+          {/* Left Column - Content */}
+          <motion.div 
+            className="text-left space-y-8"
+            variants={leftItemVariants}
           >
-            <Button 
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-              onClick={() => navigate('/generate')}
-            >
-              {t('hero.startCreating')}
-            </Button>
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Button 
-              size="lg"
-              variant="outline"
-              className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
-              onClick={() => navigate('/admin/upload')}
-            >
-              {t('hero.adminUpload')}
-            </Button>
-          </motion.div>
-        </motion.div>
-
-        {/* Enhanced stats with hover effects */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
-          variants={itemVariants}
-        >
-          {[
-            { number: "1000+", label: t('hero.stats.testsGenerated') },
-            { number: "50+", label: t('hero.stats.happyTeachers') },
-            { number: "5★", label: t('hero.stats.userRating') }
-          ].map((stat, index) => (
             <motion.div 
-              key={index}
-              className="text-center"
+              className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-primary mb-6 border border-primary/20"
               whileHover={{ 
-                scale: 1.1,
-                y: -5,
+                scale: 1.05,
+                boxShadow: "0 10px 25px -5px rgba(0, 150, 136, 0.3)"
               }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
             >
-              <motion.div 
-                className="text-3xl font-bold text-primary mb-2"
-                whileHover={{ color: "#004D40" }}
-              >
-                {stat.number}
-              </motion.div>
-              <div className="text-neutral-dark/60">{stat.label}</div>
+              ✨ AI-Powered Test Generation
             </motion.div>
-          ))}
-        </motion.div>
+            
+            <motion.h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
+              style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
+            >
+              {t('hero.title')}
+            </motion.h1>
+            
+            <motion.p 
+              className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-2xl leading-relaxed"
+            >
+              {t('hero.subtitle')}
+            </motion.p>
+            
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 mb-16"
+            >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => navigate('/generate')}
+                >
+                  {t('hero.startCreating')}
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-accent text-accent hover:bg-accent hover:text-white px-8 py-4 text-lg rounded-xl transition-all duration-300"
+                  onClick={() => navigate('/admin/upload')}
+                >
+                  {t('hero.adminUpload')}
+                </Button>
+              </motion.div>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl"
+            >
+              {[
+                { number: "1000+", label: t('hero.stats.testsGenerated') },
+                { number: "50+", label: t('hero.stats.happyTeachers') },
+                { number: "5★", label: t('hero.stats.userRating') }
+              ].map((stat, index) => (
+                <motion.div 
+                  key={index}
+                  className="text-left"
+                  whileHover={{ 
+                    scale: 1.1,
+                    y: -5,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.div 
+                    className="text-3xl font-bold text-primary mb-2"
+                    whileHover={{ color: "#004D40" }}
+                  >
+                    {stat.number}
+                  </motion.div>
+                  <div className="text-neutral-dark/60">{stat.label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Right Column - 3D Robot */}
+          <motion.div 
+            className="relative h-[600px] lg:h-[700px] flex items-center justify-center"
+            variants={rightItemVariants}
+          >
+            <div className="w-full h-full relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5 backdrop-blur-sm border border-white/20 shadow-2xl">
+              <SplineScene 
+                scene="https://my.spline.design/nexbotrobotcharacterconcept-n43sUaXvLRdE5ffibjg8dLxq/"
+                className="w-full h-full"
+              />
+              
+              {/* Interactive overlay hint */}
+              <motion.div 
+                className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg text-sm text-neutral-dark/70 font-medium shadow-lg"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2 }}
+              >
+                🖱️ Click and drag to interact
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </motion.section>
   );
