@@ -254,7 +254,7 @@ const HeroSection: React.FC = () => {
           >
             <div className="w-full h-full relative rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5 backdrop-blur-sm border border-white/20 shadow-2xl">
               <SplineScene 
-                scene="https://my.spline.design/nexbotrobotcharacterconcept-n43sUaXvLRdE5ffibjg8dLxq/"
+                scene="https://prod.spline.design/4QGVSBNgtfAq99YD/scene.splinecode"
                 className="w-full h-full"
               />
               
