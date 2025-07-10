@@ -16,19 +16,17 @@ export function useTestDelete() {
   const deleteTest = async (test: UploadedTest) => {
     try {
       setIsDeleting(true);
-      console.log("Deleting test:", test.id);
 
-      // First, delete the file from storage
+      // Delete the file from storage
       const { error: storageError } = await supabase.storage
         .from('uploaded-tests')
         .remove([test.file_path]);
 
       if (storageError) {
         console.error('Storage deletion error:', storageError);
-        // Continue with database deletion even if storage fails
       }
 
-      // Then delete the database record
+      // Delete the database record
       const { error: dbError } = await supabase
         .from('uploaded_tests')
         .delete()
@@ -36,7 +34,6 @@ export function useTestDelete() {
 
       if (dbError) throw dbError;
 
-      console.log("Test deleted successfully");
       toast.success('Test deleted successfully');
       return true;
     } catch (error) {

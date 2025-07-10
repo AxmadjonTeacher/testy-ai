@@ -20,7 +20,6 @@ export function useUploadHistory() {
   const fetchUploadHistory = useCallback(async () => {
     try {
       setIsLoading(true);
-      console.log("Fetching upload history");
       const { data, error } = await supabase
         .from("questions")
         .select("level, topic, created_at, subject")
@@ -28,12 +27,10 @@ export function useUploadHistory() {
       
       if (error) throw error;
       
-      console.log("Raw data from Supabase:", data);
-      
       // Group by subject, level, topic and date (same day)
       const groupedData = data.reduce((acc: any, item) => {
         const date = new Date(item.created_at).toLocaleDateString();
-        const subject = item.subject || 'English'; // Default to English for backward compatibility
+        const subject = item.subject || 'English';
         const key = `${subject}-${item.level}-${item.topic}-${date}`;
         
         if (!acc[key]) {
@@ -53,7 +50,6 @@ export function useUploadHistory() {
       }, {});
       
       const result = Object.values(groupedData) as UploadHistoryItem[];
-      console.log("Processed upload history:", result);
       setUploadedFiles(result);
     } catch (error) {
       console.error("Error fetching upload history:", error);

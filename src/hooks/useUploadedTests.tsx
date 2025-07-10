@@ -26,7 +26,6 @@ export function useUploadedTests() {
   const fetchUploadedTests = useCallback(async () => {
     try {
       setIsLoading(true);
-      console.log("Fetching uploaded tests");
       const { data, error } = await supabase
         .from("uploaded_tests")
         .select("*")
@@ -34,7 +33,6 @@ export function useUploadedTests() {
       
       if (error) throw error;
       
-      console.log("Fetched uploaded tests:", data);
       setUploadedTests(data || []);
     } catch (error) {
       console.error("Error fetching uploaded tests:", error);

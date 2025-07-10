@@ -16,10 +16,8 @@ export function useQuestionEdit() {
 
   const handleEditItem = async (itemId: string) => {
     try {
-      // Parse the composite id to get level, topic, and date
       const [level, topic, date] = itemId.split('-');
       
-      // Fetch questions for editing
       const { data, error } = await supabase
         .from("questions")
         .select("id, question_text, option_a, option_b, option_c, option_d, correct_answer")
@@ -29,7 +27,6 @@ export function useQuestionEdit() {
       if (error) throw error;
       
       if (data && data.length > 0) {
-        // Map the database fields to the form fields
         const formattedQuestions = data.map(q => ({
           id: q.id,
           question_text: q.question_text,
