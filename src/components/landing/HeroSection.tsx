@@ -63,10 +63,7 @@ const HeroSection: React.FC = () => {
 
   return (
     <motion.section 
-      className="relative py-20 lg:py-32 overflow-hidden min-h-screen"
-      style={{
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%)'
-      }}
+      className="relative py-20 lg:py-32 overflow-hidden min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
       initial="hidden" 
       animate="visible" 
       variants={containerVariants}
@@ -175,14 +172,14 @@ const HeroSection: React.FC = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-dark mb-8 leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight"
               style={{ letterSpacing: '0.01em', lineHeight: '1.1' }}
             >
-              {t('hero.title')}
+              Interactive Tests
             </motion.h1>
             
             <motion.p 
-              className="text-lg md:text-xl text-neutral-dark/70 mb-12 max-w-2xl leading-relaxed"
+              className="text-lg md:text-xl text-white/80 mb-12 max-w-2xl leading-relaxed"
             >
               {t('hero.subtitle')}
             </motion.p>
@@ -217,34 +214,6 @@ const HeroSection: React.FC = () => {
               </motion.div>
             </motion.div>
 
-            {/* Stats */}
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl"
-            >
-              {[
-                { number: "1000+", label: t('hero.stats.testsGenerated') },
-                { number: "50+", label: t('hero.stats.happyTeachers') },
-                { number: "5★", label: t('hero.stats.userRating') }
-              ].map((stat, index) => (
-                <motion.div 
-                  key={index}
-                  className="text-left"
-                  whileHover={{ 
-                    scale: 1.1,
-                    y: -5,
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.div 
-                    className="text-3xl font-bold text-primary mb-2"
-                    whileHover={{ color: "#004D40" }}
-                  >
-                    {stat.number}
-                  </motion.div>
-                  <div className="text-neutral-dark/60">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
 
           {/* Right Column - 3D Robot */}
