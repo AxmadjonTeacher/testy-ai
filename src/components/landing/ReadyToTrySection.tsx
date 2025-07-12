@@ -97,7 +97,7 @@ const ReadyToTrySection: React.FC = () => {
         }} viewport={{
           once: true
         }}>
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 px-8 py-4 text-lg rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold" onClick={() => navigate('/generate')}>
+            <Button size="lg" onClick={() => navigate('/generate')} className="bg-white text-primary hover:bg-white/90 text-lg rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold mx-[11px] px-[44px] py-[18px] my-0">
               <span className="flex items-center gap-2">
                 {t('cta.startGenerating')}
                 <ArrowRight size={20} />
