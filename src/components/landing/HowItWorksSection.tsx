@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 import BackgroundAnimations from './how-it-works/BackgroundAnimations';
 import StepCard from './how-it-works/StepCard';
 import AnimatedConnectionLine from './how-it-works/AnimatedConnectionLine';
-import { steps } from './how-it-works/stepsData';
+import { useStepsData } from './how-it-works/stepsData';
 
 const HowItWorksSection: React.FC = () => {
   const { t } = useTranslation();
+  const steps = useStepsData();
 
   return (
     <section className="py-20 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">

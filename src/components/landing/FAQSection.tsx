@@ -12,24 +12,24 @@ const FAQSection: React.FC = () => {
 
   const faqItems = [
     {
-      question: "What types of questions can I upload?",
-      answer: "You can upload multiple choice questions, fill-in-the-blank, true/false, and short answer questions. Our system supports Excel (.xlsx) and CSV formats with proper question formatting. The AI recognizes different question types and maintains their structure when generating new tests."
+      question: t('faqQuestions.q1'),
+      answer: t('faqQuestions.a1')
     },
     {
-      question: "How does the question shuffling work?",
-      answer: "Our advanced AI intelligently selects questions from your uploaded content based on the topics and difficulty level you choose. It ensures variety by mixing questions while maintaining educational coherence and avoiding repetition across different test generations. The algorithm also balances question types for optimal learning assessment."
+      question: t('faqQuestions.q2'),
+      answer: t('faqQuestions.a2')
     },
     {
-      question: "Can I customize the difficulty level?",
-      answer: "Absolutely! You can organize your questions by English proficiency levels (Beginner, Intermediate, Advanced) and select the appropriate level when generating tests. You can also mix different levels in a single test to create progressive difficulty or accommodate diverse classroom needs."
+      question: t('faqQuestions.q3'),
+      answer: t('faqQuestions.a3')
     },
     {
-      question: "Is my content secure and private?",
-      answer: "Yes, we take data security seriously. All uploaded content is encrypted and stored securely. Your test materials remain private and are only used to generate tests for your account. We never share or use your content for any other purpose."
+      question: t('faqQuestions.q4'),
+      answer: t('faqQuestions.a4')
     },
     {
-      question: "How quickly can I generate a test?",
-      answer: "Test generation is nearly instantaneous! Once you've uploaded your content and selected your preferences, our AI can generate a complete, formatted test in under 10 seconds. The system is optimized for speed without compromising quality."
+      question: t('faqQuestions.q5'),
+      answer: t('faqQuestions.a5')
     }
   ];
 

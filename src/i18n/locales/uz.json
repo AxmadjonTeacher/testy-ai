@@ -95,5 +95,75 @@
   "library": {
     "title": "Jamiyat test kutubxonasi",
     "subtitle": "Jamiyat bilan test fayllarini yuklang va baham ko'ring. Testlarni fan, daraja, sinf va mavzular bo'yicha ko'ring."
+  },
+  "steps": {
+    "step1": {
+      "title": "Kontentingizni yuklang",
+      "description": "Barcha grammatika mavzulari uchun minglab test savollari va mashqlarni Excel yoki CSV formatida yuklang. Bizning tizimimiz ularni fan va qiyinlik bo'yicha aqlli tarzda tartibga soylaydi."
+    },
+    "step2": {
+      "title": "Testingizni sozlang",
+      "description": "Maxsus mavzularni tanlang, savollar sonini belgilang, o'qituvchi ismini, sinf darajasini va ingliz tili darajasini o'quv rejangizga mos ravishda tanlang."
+    },
+    "step3": {
+      "title": "AI noyob testlar yaratadi",
+      "description": "Bizning ilg'or AI algoritm aqlli tarzda savollarni tanlaydi va birlashtiradi, ta'lim sifati va uyg'unligini saqlaydigan butunlay noyob test yaratadi."
+    },
+    "step4": {
+      "title": "Yuklab oling va foydalaning",
+      "description": "Professional formatlangan testingizni DOCX formatida oling, chop etish yoki talabalaringiz bilan raqamli baham ko'rish uchun tayyor. Qo'shimcha formatlash kerak emas."
+    }
+  },
+  "faqQuestions": {
+    "q1": "Qanday turdagi savollarni yuklay olaman?",
+    "a1": "Ko'p tanlovli savollar, bo'sh joylarni to'ldirish, to'g'ri/noto'g'ri va qisqa javobli savollarni yuklashingiz mumkin. Bizning tizimimiz to'g'ri savol formatlash bilan Excel (.xlsx) va CSV formatlarini qo'llab-quvvatlaydi. AI turli savol turlarini taniydi va yangi testlar yaratishda ularning tuzilishini saqlaydi.",
+    "a2": "Bizning ilg'or AI siz tanlagan mavzular va qiyinlik darajasiga asoslanib, yuklangan kontentingizdan aqlli tarzda savollarni tanlaydi. U savollarni aralashtirib xilma-xillikni ta'minlaydi, ta'lim uyg'unligini saqlaydi va turli test yaratishlarda takrorlanishning oldini oladi. Algoritm optimal o'rganish baholashi uchun savol turlarini muvozanatlashtiradi.",
+    "q3": "Qiyinlik darajasini sozlay olaman?",
+    "a3": "Albatta! Savollaringizni ingliz tili malaka darajasi bo'yicha (Boshlang'ich, O'rta, Ilg'or) tartibga solishingiz va test yaratishda tegishli darajani tanlashingiz mumkin. Shuningdek, progressiv qiyinlik yaratish yoki turli sinf ehtiyojlarini qondirish uchun bir testda turli darajalarni aralashtira olasiz.",
+    "q4": "Mening kontentim xavfsiz va shaxsiymi?",
+    "a4": "Ha, biz ma'lumotlar xavfsizligini jiddiy qabul qilamiz. Barcha yuklangan kontent shifrlangan va xavfsiz saqlanadi. Test materiallaringiz shaxsiy bo'lib qoladi va faqat sizning hisobingiz uchun testlar yaratishda ishlatiladi. Biz hech qachon kontentingizni boshqa maqsadlarda baham ko'rmaymiz yoki ishlatmaymiz.",
+    "q5": "Qanchalik tez test yarata olaman?",
+    "a5": "Test yaratish deyarli bir zumda! Kontentingizni yuklagan va afzalliklaringizni tanlaganingizdan so'ng, bizning AI 10 soniyadan kamroq vaqt ichida to'liq, formatlangan testni yaratishi mumkin. Tizim sifatni buzmasdan tezlik uchun optimallashtirilgan."
+  },
+  "footer": {
+    "description": "Ingliz tili o'qituvchilari uchun AI-powered test generatori. Noyob testlarni samarali yarating va qimmatli vaqtni tejang.",
+    "quickLinks": "Tezkor havolalar",
+    "support": "Yordam",
+    "home": "Bosh sahifa",
+    "dashboard": "Boshqaruv paneli",
+    "generate": "Yaratish",
+    "helpCenter": "Yordam markazi",
+    "contactUs": "Biz bilan bog'laning",
+    "rights": "Barcha huquqlar himoyalangan."
+  },
+  "generate": {
+    "title": "Yangi test yaratish",
+    "subject": "Fan",
+    "selectSubject": "Fanni tanlang",
+    "englishLevel": "Ingliz tili darajasi",
+    "gradeLevel": "Sinf darajasi",
+    "selectLevel": "Darajani tanlang", 
+    "teacherName": "O'qituvchining to'liq ismi",
+    "enterTeacherName": "O'qituvchi ismini kiriting",
+    "grade": "Sinf",
+    "selectGrade": "Sinf oralig'ini tanlang",
+    "numQuestions": "Savollar soni",
+    "selectTopics": "Mavzularni tanlang",
+    "pleaseSelect": "Iltimos, avval fan va darajani tanlang",
+    "generateButton": "Yangi test yaratish",
+    "updateButton": "Testni yangilash",
+    "generating": "Yaratilmoqda...",
+    "grades": {
+      "5-6": "5-6 sinflar",
+      "7-8": "7-8 sinflar",
+      "9-11": "9-11 sinflar"
+    },
+    "questions": {
+      "10": "10 ta savol",
+      "15": "15 ta savol", 
+      "20": "20 ta savol",
+      "25": "25 ta savol",
+      "30": "30 ta savol"
+    }
   }
 }

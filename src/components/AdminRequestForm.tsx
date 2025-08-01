@@ -9,8 +9,10 @@ import { toast } from 'sonner';
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from 'framer-motion';
 import { ShieldCheck, Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const AdminRequestForm: React.FC = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -45,11 +47,11 @@ const AdminRequestForm: React.FC = () => {
         throw error;
       }
 
-      toast.success('Admin access request sent successfully! We will review your request and get back to you soon.');
+      toast.success(t('adminRequest.form.success'));
       setFormData({ name: '', surname: '', email: '', message: '' });
     } catch (error) {
       console.error('Error sending admin request:', error);
-      toast.error('Failed to send request. Please try again.');
+      toast.error(t('adminRequest.form.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -72,17 +74,17 @@ const AdminRequestForm: React.FC = () => {
                 </div>
               </div>
               <CardTitle className="text-2xl font-bold text-neutral-dark">
-                Request Admin Access
+                {t('adminRequest.title')}
               </CardTitle>
               <CardDescription className="text-lg text-neutral-dark/70">
-                Need administrative privileges? Tell us why you need admin access and we'll review your request.
+                {t('adminRequest.subtitle')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">First Name</Label>
+                    <Label htmlFor="name">{t('adminRequest.form.name')}</Label>
                     <Input
                       id="name"
                       name="name"
@@ -94,7 +96,7 @@ const AdminRequestForm: React.FC = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="surname">Last Name</Label>
+                    <Label htmlFor="surname">{t('adminRequest.form.surname')}</Label>
                     <Input
                       id="surname"
                       name="surname"
@@ -108,7 +110,7 @@ const AdminRequestForm: React.FC = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email">{t('adminRequest.form.email')}</Label>
                   <Input
                     id="email"
                     name="email"
@@ -121,7 +123,7 @@ const AdminRequestForm: React.FC = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="message">Why do you need admin access?</Label>
+                  <Label htmlFor="message">{t('adminRequest.form.message')}</Label>
                   <Textarea
                     id="message"
                     name="message"
@@ -139,11 +141,11 @@ const AdminRequestForm: React.FC = () => {
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    "Sending Request..."
+                    t('adminRequest.form.submitting')
                   ) : (
                     <span className="flex items-center gap-2">
                       <Send size={20} />
-                      Send Admin Request
+                      {t('adminRequest.form.submit')}
                     </span>
                   )}
                 </Button>

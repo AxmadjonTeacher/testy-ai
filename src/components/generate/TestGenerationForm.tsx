@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import TopicSelector from './TopicSelector';
 import { TestParams } from '@/services/testGenerationService';
 import { subjects, getLevelsForSubject } from '@/utils/subjectTopics';
+import { useTranslation } from 'react-i18next';
 
 interface TestGenerationFormProps {
   onGenerate: (params: TestParams) => Promise<boolean>;
@@ -21,6 +22,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
   isEditMode = false,
   editTestId = null
 }) => {
+  const { t } = useTranslation();
   const [subject, setSubject] = useState("");
   const [englishLevel, setEnglishLevel] = useState("");
   const [teacherName, setTeacherName] = useState("");
@@ -86,13 +88,13 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
       <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
         <div className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="subject">Subject</Label>
+            <Label htmlFor="subject">{t('generate.subject')}</Label>
             <Select 
               value={subject} 
               onValueChange={setSubject}
             >
               <SelectTrigger id="subject">
-                <SelectValue placeholder="Select a subject" />
+                <SelectValue placeholder={t('generate.selectSubject')} />
               </SelectTrigger>
               <SelectContent>
                 {subjects.map((subj) => (
@@ -107,7 +109,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="level">
-                {subject === "Math" ? "Grade Level" : "English Level"}
+                {subject === "Math" ? t('generate.gradeLevel') : t('generate.englishLevel')}
               </Label>
               <Select 
                 value={englishLevel} 
@@ -115,7 +117,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
                 disabled={!subject}
               >
                 <SelectTrigger id="level">
-                  <SelectValue placeholder="Select a level" />
+                  <SelectValue placeholder={t('generate.selectLevel')} />
                 </SelectTrigger>
                 <SelectContent>
                   {availableLevels.map((level) => (
@@ -128,10 +130,10 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="teacher-name">Teacher's full name</Label>
+              <Label htmlFor="teacher-name">{t('generate.teacherName')}</Label>
               <Input
                 id="teacher-name"
-                placeholder="Enter teacher's name"
+                placeholder={t('generate.enterTeacherName')}
                 value={teacherName}
                 onChange={(e) => setTeacherName(e.target.value)}
               />
@@ -140,24 +142,24 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="grade">Grade</Label>
+              <Label htmlFor="grade">{t('generate.grade')}</Label>
               <Select 
                 value={grade} 
                 onValueChange={setGrade}
               >
                 <SelectTrigger id="grade">
-                  <SelectValue placeholder="Select grade range" />
+                  <SelectValue placeholder={t('generate.selectGrade')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="5-6">Grades 5-6</SelectItem>
-                  <SelectItem value="7-8">Grades 7-8</SelectItem>
-                  <SelectItem value="9-11">Grades 9-11</SelectItem>
+                  <SelectItem value="5-6">{t('generate.grades.5-6')}</SelectItem>
+                  <SelectItem value="7-8">{t('generate.grades.7-8')}</SelectItem>
+                  <SelectItem value="9-11">{t('generate.grades.9-11')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="num-questions">Number of Questions</Label>
+              <Label htmlFor="num-questions">{t('generate.numQuestions')}</Label>
               <Select 
                 value={numQuestions} 
                 onValueChange={setNumQuestions}
@@ -166,11 +168,11 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
                   <SelectValue placeholder="Select number" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="10">10 questions</SelectItem>
-                  <SelectItem value="15">15 questions</SelectItem>
-                  <SelectItem value="20">20 questions</SelectItem>
-                  <SelectItem value="25">25 questions</SelectItem>
-                  <SelectItem value="30">30 questions</SelectItem>
+                  <SelectItem value="10">{t('generate.questions.10')}</SelectItem>
+                  <SelectItem value="15">{t('generate.questions.15')}</SelectItem>
+                  <SelectItem value="20">{t('generate.questions.20')}</SelectItem>
+                  <SelectItem value="25">{t('generate.questions.25')}</SelectItem>
+                  <SelectItem value="30">{t('generate.questions.30')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -188,7 +190,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
             disabled={isGenerating || selectedTopics.length === 0 || !subject}
             onClick={handleGenerate}
           >
-            {isGenerating ? "Generating..." : isEditMode ? "Update test" : "Generate a new test"}
+            {isGenerating ? t('generate.generating') : isEditMode ? t('generate.updateButton') : t('generate.generateButton')}
           </Button>
         </div>
       </div>

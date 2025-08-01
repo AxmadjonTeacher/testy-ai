@@ -95,5 +95,76 @@
   "library": {
     "title": "Community Test Library",
     "subtitle": "Upload and share test files with the community. Browse tests by subject, level, grade, and topics."
+  },
+  "steps": {
+    "step1": {
+      "title": "Upload Your Content",
+      "description": "Upload thousands of test questions and exercises for all grammar topics in Excel or CSV format. Our system intelligently organizes them by subject and difficulty."
+    },
+    "step2": {
+      "title": "Customize Your Test",
+      "description": "Choose specific topics, set the number of questions, select teacher's name, grade level, and English proficiency level to match your curriculum requirements."
+    },
+    "step3": {
+      "title": "AI Generates Unique Tests",
+      "description": "Our advanced AI algorithm intelligently selects and combines questions to create a completely unique test that maintains educational quality and coherence."
+    },
+    "step4": {
+      "title": "Download & Use",
+      "description": "Get your professionally formatted test in DOCX format, ready to print or share digitally with your students. No additional formatting required."
+    }
+  },
+  "faqQuestions": {
+    "q1": "What types of questions can I upload?",
+    "a1": "You can upload multiple choice questions, fill-in-the-blank, true/false, and short answer questions. Our system supports Excel (.xlsx) and CSV formats with proper question formatting. The AI recognizes different question types and maintains their structure when generating new tests.",
+    "q2": "How does the question shuffling work?",
+    "a2": "Our advanced AI intelligently selects questions from your uploaded content based on the topics and difficulty level you choose. It ensures variety by mixing questions while maintaining educational coherence and avoiding repetition across different test generations. The algorithm also balances question types for optimal learning assessment.",
+    "q3": "Can I customize the difficulty level?",
+    "a3": "Absolutely! You can organize your questions by English proficiency levels (Beginner, Intermediate, Advanced) and select the appropriate level when generating tests. You can also mix different levels in a single test to create progressive difficulty or accommodate diverse classroom needs.",
+    "q4": "Is my content secure and private?",
+    "a4": "Yes, we take data security seriously. All uploaded content is encrypted and stored securely. Your test materials remain private and are only used to generate tests for your account. We never share or use your content for any other purpose.",
+    "q5": "How quickly can I generate a test?",
+    "a5": "Test generation is nearly instantaneous! Once you've uploaded your content and selected your preferences, our AI can generate a complete, formatted test in under 10 seconds. The system is optimized for speed without compromising quality."
+  },
+  "footer": {
+    "description": "AI-powered test generator for English language teachers. Create unique tests efficiently and save valuable time.",
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "generate": "Generate",
+    "helpCenter": "Help Center",
+    "contactUs": "Contact Us",
+    "rights": "All rights reserved."
+  },
+  "generate": {
+    "title": "Generate a new test",
+    "subject": "Subject",
+    "selectSubject": "Select a subject",
+    "englishLevel": "English Level",
+    "gradeLevel": "Grade Level", 
+    "selectLevel": "Select a level",
+    "teacherName": "Teacher's full name",
+    "enterTeacherName": "Enter teacher's name",
+    "grade": "Grade",
+    "selectGrade": "Select grade range",
+    "numQuestions": "Number of Questions",
+    "selectTopics": "Select Topics",
+    "pleaseSelect": "Please select a subject and level first",
+    "generateButton": "Generate a new test",
+    "updateButton": "Update test",
+    "generating": "Generating...",
+    "grades": {
+      "5-6": "Grades 5-6",
+      "7-8": "Grades 7-8", 
+      "9-11": "Grades 9-11"
+    },
+    "questions": {
+      "10": "10 questions",
+      "15": "15 questions",
+      "20": "20 questions",
+      "25": "25 questions",
+      "30": "30 questions"
+    }
   }
 }

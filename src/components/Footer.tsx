@@ -2,8 +2,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
   const columnVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -40,34 +42,33 @@ const Footer: React.FC = () => {
               <h3 className="text-xl font-semibold text-white">Testy</h3>
             </div>
             <p className="text-sm text-white/80">
-              AI-powered test generator for English language teachers.
-              Create unique tests efficiently and save valuable time.
+              {t('footer.description')}
             </p>
           </motion.div>
           
           <motion.div variants={columnVariants}>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-semibold mb-4">{t('footer.quickLinks')}</h4>
             <ul className="space-y-2 text-sm">
               <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/" className="text-white/80 hover:text-white">Home</Link>
+                <Link to="/" className="text-white/80 hover:text-white">{t('footer.home')}</Link>
               </motion.li>
               <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/dashboard" className="text-white/80 hover:text-white">Dashboard</Link>
+                <Link to="/dashboard" className="text-white/80 hover:text-white">{t('footer.dashboard')}</Link>
               </motion.li>
               <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/generate" className="text-white/80 hover:text-white">Generate</Link>
+                <Link to="/generate" className="text-white/80 hover:text-white">{t('footer.generate')}</Link>
               </motion.li>
             </ul>
           </motion.div>
           
           <motion.div variants={columnVariants}>
-            <h4 className="font-semibold mb-4">Support</h4>
+            <h4 className="font-semibold mb-4">{t('footer.support')}</h4>
             <ul className="space-y-2 text-sm">
               <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/privacy-policy#data-retention" className="text-white/80 hover:text-white">Help Center</Link>
+                <Link to="/privacy-policy#data-retention" className="text-white/80 hover:text-white">{t('footer.helpCenter')}</Link>
               </motion.li>
               <motion.li whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/privacy-policy#contact" className="text-white/80 hover:text-white">Contact Us</Link>
+                <Link to="/privacy-policy#contact" className="text-white/80 hover:text-white">{t('footer.contactUs')}</Link>
               </motion.li>
             </ul>
           </motion.div>
@@ -80,7 +81,7 @@ const Footer: React.FC = () => {
           transition={{ delay: 0.5, duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <p>&copy; {new Date().getFullYear()} Testy. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Testy. {t('footer.rights')}</p>
         </motion.div>
       </div>
     </footer>
