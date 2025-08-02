@@ -135,7 +135,8 @@
     "generate": "Generate",
     "helpCenter": "Help Center",
     "contactUs": "Contact Us",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "designedWith": "Designed with love by"
   },
   "generate": {
     "title": "Generate a new test",

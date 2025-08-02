@@ -75,13 +75,25 @@ const Footer: React.FC = () => {
         </motion.div>
         
         <motion.div 
-          className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/60"
+          className="border-t border-white/20 mt-8 pt-8 text-sm text-white/60"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <p>&copy; {new Date().getFullYear()} Testy. {t('footer.rights')}</p>
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>&copy; {new Date().getFullYear()} Testy. {t("footer.rights")}</p>
+            <div className="flex items-center gap-2">
+              <span>{t("footer.designedWith")}</span>
+              <motion.img 
+                src="/lovable-uploads/3d35e2e5-0245-4ec2-847f-b0ab4b7ddcc3.png" 
+                alt="Logo" 
+                className="h-6 w-6 object-contain"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ duration: 0.2 }}
+              />
+            </div>
+          </div>
         </motion.div>
       </div>
     </footer>

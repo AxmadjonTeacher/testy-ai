@@ -135,7 +135,8 @@
     "generate": "Yaratish",
     "helpCenter": "Yordam markazi",
     "contactUs": "Biz bilan bog'laning",
-    "rights": "Barcha huquqlar himoyalangan."
+    "rights": "Barcha huquqlar himoyalangan.",
+    "designedWith": "Muhabbat bilan yaratilgan"
   },
   "generate": {
     "title": "Yangi test yaratish",
