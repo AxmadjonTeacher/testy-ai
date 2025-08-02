@@ -85,17 +85,20 @@ const Footer: React.FC = () => {
             <p>&copy; {new Date().getFullYear()} Testy. {t("footer.rights")}</p>
             <div className="flex items-center gap-3">
               <span>{t("footer.designedWith")}</span>
-              <motion.div
-                className="flex items-center justify-center p-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20"
-                whileHover={{ scale: 1.05, y: -2 }}
-                transition={{ duration: 0.2 }}
-              >
-                <img 
-                  src="/lovable-uploads/c88b6761-8732-46a8-bec9-8a4e4a7200bb.png" 
-                  alt="Logo" 
-                  className="h-8 w-8 object-contain filter brightness-0 invert"
-                />
-              </motion.div>
+              <Link to="/privacy-policy#contact">
+                <motion.div
+                  className="flex items-center justify-center p-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 cursor-pointer hover:bg-white/20 transition-colors duration-200"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  transition={{ duration: 0.2 }}
+                  title="Get Help"
+                >
+                  <img 
+                    src="/lovable-uploads/c88b6761-8732-46a8-bec9-8a4e4a7200bb.png" 
+                    alt="Logo" 
+                    className="h-8 w-8 object-contain filter brightness-0 invert"
+                  />
+                </motion.div>
+              </Link>
             </div>
           </div>
         </motion.div>
