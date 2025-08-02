@@ -83,15 +83,19 @@ const Footer: React.FC = () => {
         >
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p>&copy; {new Date().getFullYear()} Testy. {t("footer.rights")}</p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <span>{t("footer.designedWith")}</span>
-              <motion.img 
-                src="/lovable-uploads/3d35e2e5-0245-4ec2-847f-b0ab4b7ddcc3.png" 
-                alt="Logo" 
-                className="h-6 w-6 object-contain"
-                whileHover={{ scale: 1.1, rotate: 5 }}
+              <motion.div
+                className="flex items-center justify-center p-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20"
+                whileHover={{ scale: 1.05, y: -2 }}
                 transition={{ duration: 0.2 }}
-              />
+              >
+                <img 
+                  src="/lovable-uploads/c88b6761-8732-46a8-bec9-8a4e4a7200bb.png" 
+                  alt="Logo" 
+                  className="h-8 w-8 object-contain filter brightness-0 invert"
+                />
+              </motion.div>
             </div>
           </div>
         </motion.div>
