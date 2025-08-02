@@ -47,17 +47,114 @@ const HeroSection: React.FC = () => {
       animate="visible" 
       variants={containerVariants}
     >
-      {/* Simplified background with fewer animations */}
+      {/* Enhanced background with teal bubbles */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Large floating teal bubbles */}
         <motion.div 
-          className="absolute -top-4 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.2, 1] }}
+          className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-teal-400/20 to-cyan-500/20 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            x: [0, 30, 0],
+            y: [0, -20, 0]
+          }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div 
-          className="absolute top-1/3 -left-8 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 0.8, 1] }}
+          className="absolute top-1/3 -left-8 w-96 h-96 bg-gradient-to-tr from-teal-300/15 to-emerald-400/15 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 0.8, 1],
+            x: [0, -25, 0],
+            y: [0, 15, 0]
+          }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        {/* Medium teal bubbles */}
+        <motion.div
+          className="absolute top-20 left-1/4 w-40 h-40 bg-gradient-to-r from-teal-500/25 to-cyan-400/25 rounded-full blur-2xl"
+          animate={{
+            y: [0, -40, 40, 0],
+            x: [0, 20, -20, 0],
+            scale: [1, 1.3, 0.7, 1],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+        <motion.div
+          className="absolute bottom-32 right-1/3 w-32 h-32 bg-gradient-to-bl from-emerald-400/30 to-teal-600/20 rounded-full blur-xl"
+          animate={{
+            y: [0, 25, -25, 0],
+            x: [0, -15, 15, 0],
+            scale: [1, 0.8, 1.2, 1],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
+        
+        {/* Small floating teal particles */}
+        <motion.div
+          className="absolute top-1/2 left-1/6 w-16 h-16 bg-teal-400/40 rounded-full blur-lg"
+          animate={{
+            y: [0, -20, 20, 0],
+            opacity: [0.4, 0.8, 0.4],
+            scale: [1, 1.5, 1],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 3
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 left-2/3 w-20 h-20 bg-cyan-300/35 rounded-full blur-lg"
+          animate={{
+            y: [0, 30, -30, 0],
+            x: [0, 10, -10, 0],
+            opacity: [0.3, 0.7, 0.3],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4
+          }}
+        />
+        
+        {/* Tiny teal sparkles */}
+        <motion.div
+          className="absolute top-3/4 right-1/4 w-8 h-8 bg-teal-300/60 rounded-full blur-sm"
+          animate={{
+            scale: [0, 1, 0],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 5
+          }}
+        />
+        <motion.div
+          className="absolute top-1/4 right-1/6 w-6 h-6 bg-emerald-400/70 rounded-full blur-sm"
+          animate={{
+            scale: [0, 1.2, 0],
+            opacity: [0, 0.8, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 7
+          }}
         />
       </div>
 
