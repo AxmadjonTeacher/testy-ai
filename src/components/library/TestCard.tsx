@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download, Calendar, HardDrive, User, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface UploadedTest {
   id: string;
@@ -29,6 +30,8 @@ interface TestCardProps {
 }
 
 const TestCard: React.FC<TestCardProps> = ({ test, index, onDownload, onDelete }) => {
+  const { user } = useAuth();
+  const canDelete = user?.id === test.user_id;
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0B';
     const k = 1024;
@@ -65,18 +68,20 @@ const TestCard: React.FC<TestCardProps> = ({ test, index, onDownload, onDelete }
               <Badge variant="outline" className="text-xs px-2 py-0.5">
                 {test.file_type.toUpperCase()}
               </Badge>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(test);
-                }}
-                className="h-6 w-6 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                title="Delete test"
-              >
-                <Trash2 className="h-3 w-3" />
-              </Button>
+              {canDelete && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(test);
+                  }}
+                  className="h-6 w-6 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                  title="Delete test"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              )}
             </div>
           </div>
           

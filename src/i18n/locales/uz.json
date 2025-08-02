@@ -117,6 +117,7 @@
   "faqQuestions": {
     "q1": "Qanday turdagi savollarni yuklay olaman?",
     "a1": "Ko'p tanlovli savollar, bo'sh joylarni to'ldirish, to'g'ri/noto'g'ri va qisqa javobli savollarni yuklashingiz mumkin. Bizning tizimimiz to'g'ri savol formatlash bilan Excel (.xlsx) va CSV formatlarini qo'llab-quvvatlaydi. AI turli savol turlarini taniydi va yangi testlar yaratishda ularning tuzilishini saqlaydi.",
+    "q2": "Savollarni aralashtirish qanday ishlaydi?",
     "a2": "Bizning ilg'or AI siz tanlagan mavzular va qiyinlik darajasiga asoslanib, yuklangan kontentingizdan aqlli tarzda savollarni tanlaydi. U savollarni aralashtirib xilma-xillikni ta'minlaydi, ta'lim uyg'unligini saqlaydi va turli test yaratishlarda takrorlanishning oldini oladi. Algoritm optimal o'rganish baholashi uchun savol turlarini muvozanatlashtiradi.",
     "q3": "Qiyinlik darajasini sozlay olaman?",
     "a3": "Albatta! Savollaringizni ingliz tili malaka darajasi bo'yicha (Boshlang'ich, O'rta, Ilg'or) tartibga solishingiz va test yaratishda tegishli darajani tanlashingiz mumkin. Shuningdek, progressiv qiyinlik yaratish yoki turli sinf ehtiyojlarini qondirish uchun bir testda turli darajalarni aralashtira olasiz.",
