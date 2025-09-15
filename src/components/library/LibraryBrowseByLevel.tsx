@@ -81,9 +81,10 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
   const getSubjectTests = () => filterTestsBySubject(filteredTests);
   const getDisplayTests = () => {
     const subjectTests = getSubjectTests();
-    return filterTestsByLevel(subjectTests, selectedLevel);
+    const byLevel = filterTestsByLevel(subjectTests, selectedLevel);
+    // Exclude Primary Grades entirely from Browse by Level view
+    return byLevel.filter(test => test.level !== 'Primary Grades');
   };
-
   const subjectTests = getSubjectTests();
   const displayTests = getDisplayTests();
 
