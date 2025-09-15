@@ -1,9 +1,7 @@
 
 import React, { useState } from 'react';
 import LibrarySearch from './LibrarySearch';
-import CompactTestGrid from './CompactTestGrid';
 import TestListView from './TestListView';
-import ViewSwitcher from './ViewSwitcher';
 import LibraryFilters from './LibraryFilters';
 import LevelFilterGrid from './LevelFilterGrid';
 import TestListHeader from './TestListHeader';
@@ -41,7 +39,6 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
 }) => {
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
   const [selectedLevel, setSelectedLevel] = useState<string>('all');
-  const [view, setView] = useState<"grid" | "list">("grid");
 
   const handleDownload = async (test: UploadedTest) => {
     try {
@@ -109,16 +106,10 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-        <LibrarySearch 
-          onSearch={onSearch} 
-          placeholder="Search by subject, level, topic, grade, or keywords..."
-          className="md:flex-grow"
-        />
-        <div className="flex mt-2 md:mt-0 justify-end">
-          <ViewSwitcher view={view} onViewChange={setView} />
-        </div>
-      </div>
+      <LibrarySearch 
+        onSearch={onSearch} 
+        placeholder="Search by subject, level, topic, grade, or keywords..."
+      />
 
       <LibraryFilters
         testCount={displayTests.length}
@@ -141,20 +132,12 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
 
       <TestListHeader selectedSubject={selectedSubject} selectedLevel={selectedLevel} />
 
-      {view === "grid" ? (
-        <CompactTestGrid 
-          tests={displayTests} 
-          isLoading={isLoading} 
-          onTestDeleted={onTestDeleted}
-        />
-      ) : (
-        <TestListView 
-          tests={displayTests}
-          isLoading={isLoading}
-          onDownload={handleDownload}
-          onTestDeleted={onTestDeleted}
-        />
-      )}
+      <TestListView 
+        tests={displayTests}
+        isLoading={isLoading}
+        onDownload={handleDownload}
+        onTestDeleted={onTestDeleted}
+      />
     </div>
   );
 };
