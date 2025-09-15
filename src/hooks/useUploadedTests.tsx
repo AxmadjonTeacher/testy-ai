@@ -29,7 +29,7 @@ export function useUploadedTests() {
       const { data, error } = await supabase
         .from("uploaded_tests")
         .select("*")
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
       
       if (error) throw error;
       
