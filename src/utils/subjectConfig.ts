@@ -13,7 +13,7 @@ export const subjects: Subject[] = [
   { value: 'IT', label: 'IT' }
 ];
 
-export const englishLevels = ['0', '1', '2', '3', '4', 'IELTS'];
+export const englishLevels = ['0', '1', '2', '3', '4', 'IELTS', 'Primary Grades'];
 export const mathLevels = Array.from({ length: 10 }, (_, i) => `${i + 1}`);
 
 export const requiresLevel = (subject: string): boolean => {

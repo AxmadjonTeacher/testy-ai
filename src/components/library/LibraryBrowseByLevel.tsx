@@ -74,7 +74,8 @@ const LibraryBrowseByLevel: React.FC<LibraryBrowseByLevelProps> = ({
 
   const filterTestsByLevel = (tests: UploadedTest[], level: string) => {
     if (level === 'all') return tests;
-    return tests.filter(test => test.level === level);
+    // Exclude Primary Grades from browse by level - they only appear in All Tests
+    return tests.filter(test => test.level === level && test.level !== 'Primary Grades');
   };
 
   const getSubjectTests = () => filterTestsBySubject(filteredTests);
