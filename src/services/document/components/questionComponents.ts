@@ -21,11 +21,23 @@ export function createQuestionParagraph(question: Question, index: number): Para
       },
     }),
     
-    // Option A
+    // All options on one line with spacing
     new Paragraph({
       children: [
         new TextRun({
-          text: `A) ${question.option_a}`,
+          text: `a) ${question.option_a}`,
+          ...textStyles.normal,
+        }),
+        new TextRun({
+          text: `     b) ${question.option_b}`,
+          ...textStyles.normal,
+        }),
+        new TextRun({
+          text: `     c) ${question.option_c}`,
+          ...textStyles.normal,
+        }),
+        new TextRun({
+          text: `     d) ${question.option_d}`,
           ...textStyles.normal,
         }),
       ],
@@ -33,55 +45,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
         left: 720, // 0.5 inch indentation
       },
       spacing: {
-        after: spacingConfig.betweenOptions,
-      },
-    }),
-    
-    // Option B
-    new Paragraph({
-      children: [
-        new TextRun({
-          text: `B) ${question.option_b}`,
-          ...textStyles.normal,
-        }),
-      ],
-      indent: {
-        left: 720, // 0.5 inch indentation
-      },
-      spacing: {
-        after: spacingConfig.betweenOptions,
-      },
-    }),
-    
-    // Option C
-    new Paragraph({
-      children: [
-        new TextRun({
-          text: `C) ${question.option_c}`,
-          ...textStyles.normal,
-        }),
-      ],
-      indent: {
-        left: 720, // 0.5 inch indentation
-      },
-      spacing: {
-        after: spacingConfig.betweenOptions,
-      },
-    }),
-    
-    // Option D
-    new Paragraph({
-      children: [
-        new TextRun({
-          text: `D) ${question.option_d}`,
-          ...textStyles.normal,
-        }),
-      ],
-      indent: {
-        left: 720, // 0.5 inch indentation
-      },
-      spacing: {
-        after: spacingConfig.betweenQuestions, // More spacing after the last option
+        after: spacingConfig.betweenQuestions,
       },
     }),
   ];
