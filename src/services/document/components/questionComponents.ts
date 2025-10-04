@@ -89,7 +89,7 @@ export function createAnswerKeySection(questions: Question[]): Paragraph[] {
     );
   });
   
-  // Add empty line before name
+  // Add empty line before teacher name
   answerKeyParagraphs.push(
     new Paragraph({
       children: [new TextRun({ text: "" })],
@@ -99,16 +99,17 @@ export function createAnswerKeySection(questions: Question[]): Paragraph[] {
     })
   );
   
-  // Add name in bold
+  // Add "Prepared by Teacher" text
   answerKeyParagraphs.push(
     new Paragraph({
       children: [
         new TextRun({
-          text: "Yodgorov Axmadjon",
+          text: "Prepared by Teacher: Yodgorov Axmadjon",
           bold: true,
           size: 24, // 12pt
         }),
       ],
+      alignment: AlignmentType.LEFT,
     })
   );
   
