@@ -89,6 +89,29 @@ export function createAnswerKeySection(questions: Question[]): Paragraph[] {
     );
   });
   
+  // Add empty line before name
+  answerKeyParagraphs.push(
+    new Paragraph({
+      children: [new TextRun({ text: "" })],
+      spacing: {
+        after: 240, // One empty line
+      },
+    })
+  );
+  
+  // Add name in bold
+  answerKeyParagraphs.push(
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: "Yodgorov Axmadjon",
+          bold: true,
+          size: 24, // 12pt
+        }),
+      ],
+    })
+  );
+  
   return answerKeyParagraphs;
 }
 
