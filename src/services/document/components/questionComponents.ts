@@ -8,7 +8,7 @@ import type { Question } from '../../documentTypes';
  */
 export function createQuestionParagraph(question: Question, index: number): Paragraph[] {
   return [
-    // Question text (bold)
+    // Question text (bold) - no spacing after so options appear on next line
     new Paragraph({
       children: [
         new TextRun({
@@ -17,7 +17,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
         }),
       ],
       spacing: {
-        after: spacingConfig.afterQuestionText,
+        after: 0, // No spacing between question and options
       },
     }),
     
@@ -45,7 +45,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
         left: 720, // 0.5 inch indentation
       },
       spacing: {
-        after: spacingConfig.betweenQuestions,
+        after: spacingConfig.betweenQuestions, // Empty line after options before next question
       },
     }),
   ];
