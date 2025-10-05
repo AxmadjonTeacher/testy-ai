@@ -1,5 +1,5 @@
 
-import { Document, Paragraph } from 'docx';
+import { Document, Paragraph, Table } from 'docx';
 import { Packer } from 'docx';
 import { documentStyles, pageMargins } from './documentConfig';
 import { 
@@ -8,7 +8,8 @@ import {
   createStudentInfoParagraph,
   createInstructionsParagraph,
   createQuestionParagraph,
-  createAnswerKeySection
+  createAnswerKeySection,
+  createAnswerSheetSection
 } from './documentComponents';
 import { fetchImageData } from './documentUtils';
 import type { TestExportData, Question } from '../documentTypes';
@@ -20,7 +21,7 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   const { title, teacher, level, grade, questions, includeAnswers } = testData;
   
   // Create document sections
-  const documentChildren: Paragraph[] = [];
+  const documentChildren: (Paragraph | Table)[] = [];
   
   // Add enhanced header with logo
   const headerParagraphs = await createEnhancedHeader();
@@ -46,6 +47,12 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   });
   
   console.log(`Creating document with ${questions.length} questions`);
+  
+  // Add answer sheet for 15-question tests
+  if (questions.length === 15) {
+    const answerSheetSections = createAnswerSheetSection();
+    documentChildren.push(...answerSheetSections);
+  }
   
   // Add answer key if requested
   if (includeAnswers) {
