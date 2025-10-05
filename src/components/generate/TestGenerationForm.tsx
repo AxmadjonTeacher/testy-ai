@@ -135,7 +135,8 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
                 id="teacher-name"
                 placeholder={t('generate.enterTeacherName')}
                 value={teacherName}
-                onChange={(e) => setTeacherName(e.target.value)}
+                onChange={(e) => setTeacherName(e.target.value.toUpperCase())}
+                style={{ textTransform: 'uppercase' }}
               />
             </div>
           </div>
