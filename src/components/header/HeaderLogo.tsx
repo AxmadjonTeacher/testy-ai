@@ -9,7 +9,7 @@ const HeaderLogo = () => {
       <motion.img 
         src="/testy-logo.png" 
         alt="Testy Logo" 
-        className="h-10 w-10"
+        className="h-14 w-14"
         whileHover={{ rotate: 10, scale: 1.05 }}
         transition={{ duration: 0.2 }}
       />
