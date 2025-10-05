@@ -50,7 +50,7 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   
   // Add answer sheet for 15-question tests
   if (questions.length === 15) {
-    const answerSheetSections = createAnswerSheetSection();
+    const answerSheetSections = await createAnswerSheetSection();
     documentChildren.push(...answerSheetSections);
   }
   

@@ -1,7 +1,8 @@
 
-import { Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, VerticalAlign } from 'docx';
+import { Paragraph, TextRun, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, VerticalAlign, ImageRun } from 'docx';
 import { textStyles, spacingConfig } from '../documentConfig';
 import type { Question } from '../../documentTypes';
+import { fetchImageData } from '../documentUtils';
 
 /**
  * Creates a question paragraph with options
@@ -119,8 +120,8 @@ export function createAnswerKeySection(questions: Question[]): Paragraph[] {
 /**
  * Creates the answer sheet section for 15-question tests
  */
-export function createAnswerSheetSection(): (Paragraph | Table)[] {
-  const sections: (Paragraph | Table)[] = [];
+export async function createAnswerSheetSection(): Promise<Paragraph[]> {
+  const sections: Paragraph[] = [];
   
   // Add page break
   sections.push(
@@ -130,109 +131,25 @@ export function createAnswerSheetSection(): (Paragraph | Table)[] {
     })
   );
   
-  // Header text box
+  // Add the answer sheet image
   sections.push(
     new Paragraph({
       children: [
-        new TextRun({
-          text: "Ism va familiya (To`rtburchak tashqarisiga yozmang)",
-          size: 20, // 10pt
+        new ImageRun({
+          data: await fetchImageData('/answer-sheet-15.jpeg'),
+          transformation: {
+            width: 550, // Adjust width as needed
+            height: 700, // Adjust height as needed
+          },
+          type: "jpg",
         }),
       ],
       alignment: AlignmentType.CENTER,
-      spacing: { after: 240 },
+      spacing: {
+        after: 480,
+      },
     })
   );
-  
-  // Create the answer sheet table with 15 questions (2 columns: 1-13 on left, 14-15 on right)
-  const rows: TableRow[] = [];
-  
-  // Questions 1-13 on the left, 14-15 on the right
-  for (let i = 0; i < 13; i++) {
-    const leftQuestionNum = i + 1;
-    const rightQuestionNum = i + 14;
-    
-    const leftCells = [
-      new TableCell({
-        children: [
-          new Paragraph({
-            children: [new TextRun({ text: leftQuestionNum.toString(), size: 20 })],
-            alignment: AlignmentType.CENTER,
-          }),
-        ],
-        width: { size: 8, type: WidthType.PERCENTAGE },
-        verticalAlign: VerticalAlign.CENTER,
-      }),
-      ...['A', 'B', 'C', 'D'].map(
-        (option) =>
-          new TableCell({
-            children: [
-              new Paragraph({
-                children: [new TextRun({ text: option, size: 18 })],
-                alignment: AlignmentType.CENTER,
-              }),
-            ],
-            width: { size: 8, type: WidthType.PERCENTAGE },
-            verticalAlign: VerticalAlign.CENTER,
-          })
-      ),
-    ];
-    
-    const rightCells = rightQuestionNum <= 15
-      ? [
-          new TableCell({
-            children: [
-              new Paragraph({
-                children: [new TextRun({ text: rightQuestionNum.toString(), size: 20 })],
-                alignment: AlignmentType.CENTER,
-              }),
-            ],
-            width: { size: 8, type: WidthType.PERCENTAGE },
-            verticalAlign: VerticalAlign.CENTER,
-          }),
-          ...['A', 'B', 'C', 'D'].map(
-            (option) =>
-              new TableCell({
-                children: [
-                  new Paragraph({
-                    children: [new TextRun({ text: option, size: 18 })],
-                    alignment: AlignmentType.CENTER,
-                  }),
-                ],
-                width: { size: 8, type: WidthType.PERCENTAGE },
-                verticalAlign: VerticalAlign.CENTER,
-              })
-          ),
-        ]
-      : Array(5).fill(
-          new TableCell({
-            children: [new Paragraph({ children: [new TextRun({ text: "" })] })],
-            width: { size: 8, type: WidthType.PERCENTAGE },
-          })
-        );
-    
-    rows.push(
-      new TableRow({
-        children: [...leftCells, ...rightCells],
-        height: { value: 400, rule: "exact" },
-      })
-    );
-  }
-  
-  const answerTable = new Table({
-    rows,
-    width: { size: 60, type: WidthType.PERCENTAGE },
-    borders: {
-      top: { style: BorderStyle.SINGLE, size: 1 },
-      bottom: { style: BorderStyle.SINGLE, size: 1 },
-      left: { style: BorderStyle.SINGLE, size: 1 },
-      right: { style: BorderStyle.SINGLE, size: 1 },
-      insideHorizontal: { style: BorderStyle.SINGLE, size: 1 },
-      insideVertical: { style: BorderStyle.SINGLE, size: 1 },
-    },
-  });
-  
-  sections.push(answerTable);
   
   return sections;
 }
