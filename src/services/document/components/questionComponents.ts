@@ -138,8 +138,8 @@ export async function createAnswerSheetSection(): Promise<Paragraph[]> {
         new ImageRun({
           data: await fetchImageData('/answer-sheet-15.jpeg'),
           transformation: {
-            width: 550, // Adjust width as needed
-            height: 700, // Adjust height as needed
+            width: 384, // 4 inches (4 * 96 DPI)
+            height: 537, // 5.59 inches (5.59 * 96 DPI)
           },
           type: "jpg",
         }),
