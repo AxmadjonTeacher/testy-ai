@@ -59,7 +59,7 @@ export function createStudentInfoParagraph(): Paragraph {
         ...textStyles.normal,
       }),
       new TextRun({
-        text: "_".repeat(18),
+        text: "_".repeat(5),
         ...textStyles.normal,
       }),
     ],

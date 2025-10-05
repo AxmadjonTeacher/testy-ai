@@ -46,7 +46,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
         left: 720, // 0.5 inch indentation
       },
       spacing: {
-        after: 480, // One full empty line after options before next question
+        after: 720, // Increased spacing for clear separation between questions
       },
     }),
   ];
