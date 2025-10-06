@@ -31,8 +31,41 @@ const AdminRequestForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.surname || !formData.email || !formData.message) {
+    // Client-side validation
+    const trimmedData = {
+      name: formData.name.trim(),
+      surname: formData.surname.trim(),
+      email: formData.email.trim(),
+      message: formData.message.trim()
+    };
+
+    if (!trimmedData.name || !trimmedData.surname || !trimmedData.email || !trimmedData.message) {
       toast.error('Please fill in all fields');
+      return;
+    }
+
+    if (trimmedData.name.length > 100) {
+      toast.error('Name must be less than 100 characters');
+      return;
+    }
+
+    if (trimmedData.surname.length > 100) {
+      toast.error('Surname must be less than 100 characters');
+      return;
+    }
+
+    if (trimmedData.email.length > 255) {
+      toast.error('Email must be less than 255 characters');
+      return;
+    }
+
+    if (trimmedData.message.length < 10) {
+      toast.error('Message must be at least 10 characters');
+      return;
+    }
+
+    if (trimmedData.message.length > 2000) {
+      toast.error('Message must be less than 2000 characters');
       return;
     }
 
@@ -40,7 +73,7 @@ const AdminRequestForm: React.FC = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke('send-admin-request', {
-        body: formData
+        body: trimmedData
       });
 
       if (error) {
@@ -49,9 +82,15 @@ const AdminRequestForm: React.FC = () => {
 
       toast.success(t('adminRequest.form.success'));
       setFormData({ name: '', surname: '', email: '', message: '' });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending admin request:', error);
-      toast.error(t('adminRequest.form.error'));
+      
+      // Display server validation errors if available
+      if (error.message && error.message.includes('Invalid input')) {
+        toast.error('Please check your input and try again');
+      } else {
+        toast.error(t('adminRequest.form.error'));
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -92,6 +131,7 @@ const AdminRequestForm: React.FC = () => {
                       placeholder="Enter your first name"
                       value={formData.name}
                       onChange={handleChange}
+                      maxLength={100}
                       required
                     />
                   </div>
@@ -104,6 +144,7 @@ const AdminRequestForm: React.FC = () => {
                       placeholder="Enter your last name"
                       value={formData.surname}
                       onChange={handleChange}
+                      maxLength={100}
                       required
                     />
                   </div>
@@ -118,6 +159,7 @@ const AdminRequestForm: React.FC = () => {
                     placeholder="Enter your email address"
                     value={formData.email}
                     onChange={handleChange}
+                    maxLength={255}
                     required
                   />
                 </div>
@@ -131,8 +173,12 @@ const AdminRequestForm: React.FC = () => {
                     value={formData.message}
                     onChange={handleChange}
                     className="min-h-[120px]"
+                    maxLength={2000}
                     required
                   />
+                  <p className="text-xs text-muted-foreground">
+                    {formData.message.length}/2000 characters
+                  </p>
                 </div>
                 
                 <Button 
