@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_requests_log: {
+        Row: {
+          created_at: string | null
+          id: string
+          ip_address: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          ip_address: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          ip_address?: string
+        }
+        Relationships: []
+      }
       generated_tests: {
         Row: {
           created_at: string
@@ -199,6 +217,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_old_admin_request_logs: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       has_role: {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
         Returns: boolean

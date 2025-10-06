@@ -1,8 +1,45 @@
-
 import * as XLSX from 'xlsx';
 import { supabase } from "@/integrations/supabase/client";
 
+// HTML sanitization function to prevent XSS
+const sanitizeText = (text: string | undefined | null): string => {
+  if (!text) return '';
+  
+  // Remove all HTML tags and special characters that could be malicious
+  return String(text)
+    .replace(/<[^>]*>/g, '') // Remove HTML tags
+    .replace(/[<>"'`]/g, '') // Remove potentially dangerous characters
+    .replace(/javascript:/gi, '') // Remove javascript: protocol
+    .replace(/on\w+\s*=/gi, '') // Remove event handlers
+    .trim();
+};
+
+// Validate text length to prevent excessive data
+const validateLength = (text: string, maxLength: number = 5000): string => {
+  if (text.length > maxLength) {
+    throw new Error(`Text exceeds maximum length of ${maxLength} characters`);
+  }
+  return text;
+};
+
 export const parseFileContent = async (file: File): Promise<any[]> => {
+  // Validate file size (max 5MB)
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error('File size exceeds 5MB limit');
+  }
+
+  // Validate file type
+  const validTypes = [
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel',
+    'text/csv'
+  ];
+  
+  if (!validTypes.includes(file.type) && !file.name.match(/\.(xlsx|xls|csv)$/i)) {
+    throw new Error('Invalid file type. Please upload an Excel or CSV file');
+  }
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
@@ -16,65 +53,76 @@ export const parseFileContent = async (file: File): Promise<any[]> => {
         
         console.log("Raw Excel data:", json);
         
-        // Transform the data to match our expected format
+        // Transform the data to match our expected format with sanitization
         // This handles different possible column formats
         const transformedData = json.map((row: any) => {
+          let questionText = '';
+          let optionA = '';
+          let optionB = '';
+          let optionC = '';
+          let optionD = '';
+          let correctAnswer = '';
+
           // Check if we have the Question, A, B, C, D format
           if (row.Question && row.A !== undefined && row.B !== undefined) {
-            return {
-              question_text: row.Question,
-              option_a: row.A,
-              option_b: row.B,
-              option_c: row.C || "No option C provided",
-              option_d: row.D || "No option D provided",
-              correct_answer: row['Correct Answer'] || 'A' // Default to A if missing
-            };
+            questionText = sanitizeText(row.Question);
+            optionA = sanitizeText(row.A);
+            optionB = sanitizeText(row.B);
+            optionC = sanitizeText(row.C) || "No option C provided";
+            optionD = sanitizeText(row.D) || "No option D provided";
+            correctAnswer = sanitizeText(row['Correct Answer']) || 'A';
           }
-          
           // Check if we have the older format with Option A, Option B, etc.
           else if (row.Question && row['Option A'] !== undefined) {
-            return {
-              question_text: row.Question,
-              option_a: row['Option A'],
-              option_b: row['Option B'],
-              option_c: row['Option C'] || "No option C provided",
-              option_d: row['Option D'] || "No option D provided",
-              correct_answer: row['Correct Answer'] || row['Answer'] || 'A' // Try multiple fields
-            };
+            questionText = sanitizeText(row.Question);
+            optionA = sanitizeText(row['Option A']);
+            optionB = sanitizeText(row['Option B']);
+            optionC = sanitizeText(row['Option C']) || "No option C provided";
+            optionD = sanitizeText(row['Option D']) || "No option D provided";
+            correctAnswer = sanitizeText(row['Correct Answer'] || row['Answer']) || 'A';
           }
-          
           // Check for number format (1, 2, 3, 4)
           else if (row.Question && row['1'] !== undefined) {
-            return {
-              question_text: row.Question,
-              option_a: row['1'],
-              option_b: row['2'],
-              option_c: row['3'] || "No option C provided",
-              option_d: row['4'] || "No option D provided",
-              correct_answer: row['Correct Answer'] || row['Answer'] || 'A'
-            };
+            questionText = sanitizeText(row.Question);
+            optionA = sanitizeText(row['1']);
+            optionB = sanitizeText(row['2']);
+            optionC = sanitizeText(row['3']) || "No option C provided";
+            optionD = sanitizeText(row['4']) || "No option D provided";
+            correctAnswer = sanitizeText(row['Correct Answer'] || row['Answer']) || 'A';
           }
-          
           // Support for question_text format (likely from database export)
           else if (row.question_text && row.option_a && row.option_b) {
-            return {
-              question_text: row.question_text,
-              option_a: row.option_a,
-              option_b: row.option_b,
-              option_c: row.option_c || "No option C provided",
-              option_d: row.option_d || "No option D provided",
-              correct_answer: row.correct_answer || 'A'
-            };
+            questionText = sanitizeText(row.question_text);
+            optionA = sanitizeText(row.option_a);
+            optionB = sanitizeText(row.option_b);
+            optionC = sanitizeText(row.option_c) || "No option C provided";
+            optionD = sanitizeText(row.option_d) || "No option D provided";
+            correctAnswer = sanitizeText(row.correct_answer) || 'A';
           }
-          
           // Return a standardized object based on the available data
+          else {
+            questionText = sanitizeText(row.Question || row.question_text || row.question) || "Missing question text";
+            optionA = sanitizeText(row.A || row['Option A'] || row['1'] || row.option_a) || "Missing option A";
+            optionB = sanitizeText(row.B || row['Option B'] || row['2'] || row.option_b) || "Missing option B";
+            optionC = sanitizeText(row.C || row['Option C'] || row['3'] || row.option_c) || "No option C provided";
+            optionD = sanitizeText(row.D || row['Option D'] || row['4'] || row.option_d) || "No option D provided";
+            correctAnswer = sanitizeText(row['Correct Answer'] || row.correct_answer || row['Answer'] || row.answer) || 'A';
+          }
+
+          // Validate lengths
+          questionText = validateLength(questionText, 5000);
+          optionA = validateLength(optionA, 500);
+          optionB = validateLength(optionB, 500);
+          optionC = validateLength(optionC, 500);
+          optionD = validateLength(optionD, 500);
+
           return {
-            question_text: row.Question || row.question_text || row.question || "Missing question text",
-            option_a: row.A || row['Option A'] || row['1'] || row.option_a || "Missing option A",
-            option_b: row.B || row['Option B'] || row['2'] || row.option_b || "Missing option B",
-            option_c: row.C || row['Option C'] || row['3'] || row.option_c || "No option C provided",
-            option_d: row.D || row['Option D'] || row['4'] || row.option_d || "No option D provided",
-            correct_answer: row['Correct Answer'] || row.correct_answer || row['Answer'] || row.answer || 'A'
+            question_text: questionText,
+            option_a: optionA,
+            option_b: optionB,
+            option_c: optionC,
+            option_d: optionD,
+            correct_answer: correctAnswer
           };
         });
         
@@ -143,6 +191,10 @@ export const validateQuestionData = (data: any[]): { valid: boolean; errors: str
 export const formatQuestionsForDatabase = (data: any[], level: string, topic: string, subject: string = 'English') => {
   console.log(`Formatting ${data.length} questions for database with subject: ${subject}, level: ${level}, topic: ${topic}`);
   
+  // Sanitize level, topic, and subject
+  const safeTopic = sanitizeText(topic);
+  const safeSubject = sanitizeText(subject);
+  
   return data.map(row => {
     // Ensure we get the correct answer in the expected format
     let correctAnswer = row['Correct Answer'] || row.correct_answer;
@@ -168,15 +220,15 @@ export const formatQuestionsForDatabase = (data: any[], level: string, topic: st
     }
     
     const formattedQuestion = {
-      question_text: row.question_text || row.Question || row.question,
-      option_a: row.option_a || row.A || row['Option A'] || row['1'],
-      option_b: row.option_b || row.B || row['Option B'] || row['2'],
-      option_c: row.option_c || row.C || row['Option C'] || row['3'] || "No option C provided",
-      option_d: row.option_d || row.D || row['Option D'] || row['4'] || "No option D provided",
+      question_text: sanitizeText(row.question_text || row.Question || row.question),
+      option_a: sanitizeText(row.option_a || row.A || row['Option A'] || row['1']),
+      option_b: sanitizeText(row.option_b || row.B || row['Option B'] || row['2']),
+      option_c: sanitizeText(row.option_c || row.C || row['Option C'] || row['3']) || "No option C provided",
+      option_d: sanitizeText(row.option_d || row.D || row['Option D'] || row['4']) || "No option D provided",
       correct_answer: correctAnswer,
       level,
-      topic,
-      subject // Now properly including the subject
+      topic: safeTopic,
+      subject: safeSubject
     };
     
     console.log("Formatted question:", formattedQuestion);

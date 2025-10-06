@@ -1,8 +1,21 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
+// Initialize Supabase client with service role for rate limiting
+const supabaseAdmin = createClient(
+  Deno.env.get("SUPABASE_URL") ?? "",
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  }
+);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -39,6 +52,37 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Rate limiting: Get client IP address
+    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                     req.headers.get('x-real-ip') || 
+                     'unknown';
+
+    // Check rate limit: max 5 requests per hour per IP
+    const oneHourAgo = new Date(Date.now() - 3600000).toISOString();
+    const { count, error: countError } = await supabaseAdmin
+      .from('admin_requests_log')
+      .select('*', { count: 'exact', head: true })
+      .eq('ip_address', clientIP)
+      .gte('created_at', oneHourAgo);
+
+    if (countError) {
+      console.error("Rate limit check error:", countError);
+    }
+
+    if (count && count >= 5) {
+      console.warn(`Rate limit exceeded for IP: ${clientIP}`);
+      return new Response(
+        JSON.stringify({ 
+          error: "Too many requests. Please try again later.",
+          retryAfter: "1 hour"
+        }),
+        {
+          status: 429,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
     const body = await req.json();
     
     // Validate input with Zod schema
@@ -82,6 +126,16 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     console.log("Admin request email sent successfully:", emailResponse);
+
+    // Log the request for rate limiting
+    const { error: logError } = await supabaseAdmin
+      .from('admin_requests_log')
+      .insert({ ip_address: clientIP });
+
+    if (logError) {
+      console.error("Failed to log admin request:", logError);
+      // Don't fail the request if logging fails
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
