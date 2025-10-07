@@ -22,7 +22,7 @@ export function createQuestionParagraph(question: Question, index: number): Para
       },
     }),
     
-    // All options on one line with spacing
+    // All options on one line
     new Paragraph({
       children: [
         new TextRun({
@@ -45,9 +45,11 @@ export function createQuestionParagraph(question: Question, index: number): Para
       indent: {
         left: 720, // 0.5 inch indentation
       },
-      spacing: {
-        after: 720, // Increased spacing for clear separation between questions
-      },
+    }),
+    
+    // Empty paragraph for spacing between questions (like Python's doc.add_paragraph(""))
+    new Paragraph({
+      children: [new TextRun({ text: "" })],
     }),
   ];
 }
