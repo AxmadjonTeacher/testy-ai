@@ -2,6 +2,7 @@
 /**
  * Document utility functions
  */
+import { nextSaturday, format } from 'date-fns';
 
 /**
  * Fetches image data from a URL and returns it as Uint8Array (browser-compatible)
@@ -21,4 +22,14 @@ export async function fetchImageData(imageUrl: string): Promise<Uint8Array> {
     // Return an empty array in case of error
     return new Uint8Array();
   }
+}
+
+/**
+ * Gets the next Saturday from today and formats it as "DD MMMM YYYY"
+ * Example: "11 October 2025"
+ */
+export function getNextSaturdayFormatted(): string {
+  const today = new Date();
+  const saturday = nextSaturday(today);
+  return format(saturday, 'd MMMM yyyy');
 }
