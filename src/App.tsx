@@ -8,10 +8,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import GeneratePage from "./pages/GeneratePage";
 import DashboardPage from "./pages/DashboardPage";
 import LibraryPage from "./pages/LibraryPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import AdminUploadPage from "./pages/AdminUploadPage";
 import AuthPage from "./pages/AuthPage";
 import './i18n';
@@ -27,10 +25,8 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/generate" element={<ProtectedRoute><GeneratePage /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/library" element={<ProtectedRoute><LibraryPage /></ProtectedRoute>} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/admin/upload" element={<ProtectedRoute><AdminUploadPage /></ProtectedRoute>} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="*" element={<NotFound />} />
