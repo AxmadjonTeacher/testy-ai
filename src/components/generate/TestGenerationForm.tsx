@@ -1,13 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import TopicSelector from './TopicSelector';
 import { TestParams } from '@/services/testGenerationService';
 import { subjects, getLevelsForSubject } from '@/utils/subjectTopics';
-import { useTranslation } from 'react-i18next';
 
 interface TestGenerationFormProps {
   onGenerate: (params: TestParams) => Promise<boolean>;
@@ -22,61 +17,31 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
   isEditMode = false,
   editTestId = null
 }) => {
-  const { t } = useTranslation();
-  const [subject, setSubject] = useState("");
-  const [englishLevel, setEnglishLevel] = useState("");
+  const [subject, setSubject] = useState("English");
+  const [level, setLevel] = useState("");
   const [teacherName, setTeacherName] = useState("");
   const [grade, setGrade] = useState("");
-  const [numQuestions, setNumQuestions] = useState("15");
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [availableLevels, setAvailableLevels] = useState<Array<{value: string, label: string}>>([]);
 
-  // Update available levels when subject changes
   useEffect(() => {
     if (subject) {
       const levels = getLevelsForSubject(subject);
       setAvailableLevels(levels);
-      setEnglishLevel(""); // Reset level when subject changes
-      setSelectedTopics([]); // Reset topics when subject changes
+      setLevel("");
+      setSelectedTopics([]);
     } else {
       setAvailableLevels([]);
     }
   }, [subject]);
 
-  // If in edit mode, we would load the test data here
-  useEffect(() => {
-    if (isEditMode && editTestId) {
-      // This would be an API call in a real implementation
-      // For now, let's just simulate with some mock data
-      console.log(`Loading test data for ID: ${editTestId}`);
-      
-      // Mock data - in a real app would come from an API
-      const mockData = {
-        subject: "English",
-        level: "1",
-        teacherName: "Yodgorov Axmadjon",
-        grade: "5-6",
-        numQuestions: "15",
-        topics: ["Present Simple", "Past Simple"]
-      };
-      
-      // Set form values
-      setSubject(mockData.subject);
-      setEnglishLevel(mockData.level);
-      setTeacherName(mockData.teacherName);
-      setGrade(mockData.grade);
-      setNumQuestions(mockData.numQuestions);
-      setSelectedTopics(mockData.topics);
-    }
-  }, [isEditMode, editTestId]);
-
   const handleGenerate = async () => {
     const params: TestParams = {
       subject,
-      level: englishLevel,
+      level: level,
       teacherName: teacherName || undefined,
       grade: grade || undefined,
-      numQuestions: parseInt(numQuestions),
+      numQuestions: 15,
       topics: selectedTopics
     };
     
@@ -84,116 +49,101 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="subject">{t('generate.subject')}</Label>
-            <Select 
-              value={subject} 
-              onValueChange={setSubject}
-            >
-              <SelectTrigger id="subject">
-                <SelectValue placeholder={t('generate.selectSubject')} />
-              </SelectTrigger>
-              <SelectContent>
-                {subjects.map((subj) => (
-                  <SelectItem key={subj.value} value={subj.value}>
-                    {subj.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+    <div className="space-y-8">
+      {/* Row 1: Subject and Teacher's name */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-3">
+          <label className="block text-center text-base font-medium">
+            Subject
+          </label>
+          <select
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            {subjects.map((subj) => (
+              <option key={subj.value} value={subj.value}>
+                {subj.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="level">
-                {subject === "Math" ? t('generate.gradeLevel') : t('generate.englishLevel')}
-              </Label>
-              <Select 
-                value={englishLevel} 
-                onValueChange={setEnglishLevel}
-                disabled={!subject}
-              >
-                <SelectTrigger id="level">
-                  <SelectValue placeholder={t('generate.selectLevel')} />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableLevels.map((level) => (
-                    <SelectItem key={level.value} value={level.value}>
-                      {level.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="teacher-name">{t('generate.teacherName')}</Label>
-              <Input
-                id="teacher-name"
-                placeholder={t('generate.enterTeacherName')}
-                value={teacherName}
-                onChange={(e) => setTeacherName(e.target.value.toUpperCase())}
-                style={{ textTransform: 'uppercase' }}
-              />
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="grade">{t('generate.grade')}</Label>
-              <Select 
-                value={grade} 
-                onValueChange={setGrade}
-              >
-                <SelectTrigger id="grade">
-                  <SelectValue placeholder={t('generate.selectGrade')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5-6">{t('generate.grades.5-6')}</SelectItem>
-                  <SelectItem value="7-8">{t('generate.grades.7-8')}</SelectItem>
-                  <SelectItem value="9-11">{t('generate.grades.9-11')}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="num-questions">{t('generate.numQuestions')}</Label>
-              <Select 
-                value={numQuestions} 
-                onValueChange={setNumQuestions}
-              >
-                <SelectTrigger id="num-questions">
-                  <SelectValue placeholder="Select number" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10">{t('generate.questions.10')}</SelectItem>
-                  <SelectItem value="15">{t('generate.questions.15')}</SelectItem>
-                  <SelectItem value="20">{t('generate.questions.20')}</SelectItem>
-                  <SelectItem value="25">{t('generate.questions.25')}</SelectItem>
-                  <SelectItem value="30">{t('generate.questions.30')}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          
-          <TopicSelector 
+        <div className="space-y-3">
+          <label className="block text-center text-base font-medium">
+            Teacher's name
+          </label>
+          <input
+            type="text"
+            value={teacherName}
+            onChange={(e) => setTeacherName(e.target.value.toUpperCase())}
+            placeholder="Enter teacher's name"
+            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary uppercase"
+          />
+        </div>
+      </div>
+
+      {/* Row 2: Level and Grades */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-3">
+          <label className="block text-center text-base font-medium">
+            Level
+          </label>
+          <select
+            value={level}
+            onChange={(e) => setLevel(e.target.value)}
+            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="">Select level</option>
+            {availableLevels.map((lvl) => (
+              <option key={lvl.value} value={lvl.value}>
+                {lvl.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-3">
+          <label className="block text-center text-base font-medium">
+            Grades
+          </label>
+          <select
+            value={grade}
+            onChange={(e) => setGrade(e.target.value)}
+            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="">Select grade</option>
+            <option value="5-6">5-6</option>
+            <option value="7-8">7-8</option>
+            <option value="9-11">9-11</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Topics - Large area */}
+      <div className="space-y-3">
+        <label className="block text-center text-base font-medium">
+          Topics
+        </label>
+        <div className="border-2 border-border rounded-2xl p-6 bg-background min-h-[320px]">
+          <TopicSelector
             subject={subject}
-            level={englishLevel}
+            level={level}
             selectedTopics={selectedTopics}
             onChange={setSelectedTopics}
           />
-          
-          <Button 
-            className="w-full bg-primary hover:bg-primary/90 text-white"
-            disabled={isGenerating || selectedTopics.length === 0 || !subject}
-            onClick={handleGenerate}
-          >
-            {isGenerating ? t('generate.generating') : isEditMode ? t('generate.updateButton') : t('generate.generateButton')}
-          </Button>
         </div>
+      </div>
+
+      {/* Generate button */}
+      <div className="flex justify-center pt-4">
+        <Button 
+          onClick={handleGenerate}
+          disabled={isGenerating || !subject || !level || selectedTopics.length === 0}
+          className="rounded-2xl px-20 h-14 text-base"
+        >
+          {isGenerating ? 'Generating...' : 'Generate'}
+        </Button>
       </div>
     </div>
   );
