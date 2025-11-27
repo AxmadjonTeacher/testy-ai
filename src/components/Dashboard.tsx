@@ -126,8 +126,6 @@ const Dashboard: React.FC = () => {
       ) : (
         <TestList 
           tests={tests}
-          onDeleteTest={handleDeleteTest}
-          onDownloadTest={handleDownloadTest}
         />
       )}
     </div>

@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import TopicSelector from './TopicSelector';
-import { TestParams } from '@/services/testGenerationService';
 import { subjects, getLevelsForSubject } from '@/utils/subjectTopics';
 
 interface TestGenerationFormProps {
-  onGenerate: (params: TestParams) => Promise<boolean>;
+  onGenerate: (params: any) => Promise<boolean>;
   isGenerating: boolean;
-  isEditMode?: boolean;
-  editTestId?: string | null;
 }
 
-const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
-  onGenerate,
-  isGenerating,
-  isEditMode = false,
-  editTestId = null
-}) => {
-  const [subject, setSubject] = useState("English");
-  const [level, setLevel] = useState("");
-  const [teacherName, setTeacherName] = useState("");
-  const [grade, setGrade] = useState("");
+const TestGenerationForm: React.FC<TestGenerationFormProps> = ({ onGenerate, isGenerating }) => {
+  const [subject, setSubject] = useState('English');
+  const [level, setLevel] = useState('');
+  const [teacherName, setTeacherName] = useState('');
+  const [grade, setGrade] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [availableLevels, setAvailableLevels] = useState<Array<{value: string, label: string}>>([]);
 
@@ -28,38 +22,40 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
     if (subject) {
       const levels = getLevelsForSubject(subject);
       setAvailableLevels(levels);
-      setLevel("");
+      setLevel('');
       setSelectedTopics([]);
     } else {
       setAvailableLevels([]);
     }
   }, [subject]);
 
-  const handleGenerate = async () => {
-    const params: TestParams = {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!level || selectedTopics.length === 0) {
+      return;
+    }
+
+    await onGenerate({
       subject,
-      level: level,
+      level,
       teacherName: teacherName || undefined,
       grade: grade || undefined,
       numQuestions: 15,
-      topics: selectedTopics
-    };
-    
-    await onGenerate(params);
+      topics: selectedTopics,
+    });
   };
 
   return (
-    <div className="space-y-8">
-      {/* Row 1: Subject and Teacher's name */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-3">
-          <label className="block text-center text-base font-medium">
-            Subject
-          </label>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="subject" className="font-bold text-base">Subject</Label>
           <select
+            id="subject"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
           >
             {subjects.map((subj) => (
               <option key={subj.value} value={subj.value}>
@@ -69,30 +65,25 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
           </select>
         </div>
 
-        <div className="space-y-3">
-          <label className="block text-center text-base font-medium">
-            Teacher's name
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="teacherName" className="font-bold text-base">Teacher's name</Label>
+          <Input
+            id="teacherName"
             type="text"
             value={teacherName}
             onChange={(e) => setTeacherName(e.target.value.toUpperCase())}
-            placeholder="Enter teacher's name"
-            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary uppercase"
+            placeholder="Enter teacher name"
+            className="border-4 border-foreground neo-shadow font-medium focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm uppercase"
           />
         </div>
-      </div>
 
-      {/* Row 2: Level and Grades */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-3">
-          <label className="block text-center text-base font-medium">
-            Level
-          </label>
+        <div className="space-y-2">
+          <Label htmlFor="level" className="font-bold text-base">Level</Label>
           <select
+            id="level"
             value={level}
             onChange={(e) => setLevel(e.target.value)}
-            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
           >
             <option value="">Select level</option>
             {availableLevels.map((lvl) => (
@@ -103,14 +94,13 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
           </select>
         </div>
 
-        <div className="space-y-3">
-          <label className="block text-center text-base font-medium">
-            Grades
-          </label>
+        <div className="space-y-2">
+          <Label htmlFor="grades" className="font-bold text-base">Grades</Label>
           <select
+            id="grades"
             value={grade}
             onChange={(e) => setGrade(e.target.value)}
-            className="w-full h-14 rounded-2xl border-2 border-border bg-background px-4 text-center text-base focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
           >
             <option value="">Select grade</option>
             <option value="5-6">5-6</option>
@@ -120,12 +110,9 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
         </div>
       </div>
 
-      {/* Topics - Large area */}
-      <div className="space-y-3">
-        <label className="block text-center text-base font-medium">
-          Topics
-        </label>
-        <div className="border-2 border-border rounded-2xl p-6 bg-background min-h-[320px]">
+      <div className="space-y-2">
+        <Label className="font-bold text-base">Topics</Label>
+        <div className="border-4 border-foreground p-4 min-h-[200px] bg-card neo-shadow">
           <TopicSelector
             subject={subject}
             level={level}
@@ -135,17 +122,16 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({
         </div>
       </div>
 
-      {/* Generate button */}
-      <div className="flex justify-center pt-4">
-        <Button 
-          onClick={handleGenerate}
-          disabled={isGenerating || !subject || !level || selectedTopics.length === 0}
-          className="rounded-2xl px-20 h-14 text-base"
+      <div className="flex justify-center">
+        <Button
+          type="submit"
+          disabled={isGenerating || !level || selectedTopics.length === 0}
+          className="px-12 h-14 text-lg font-bold border-4 border-foreground neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isGenerating ? 'Generating...' : 'Generate'}
         </Button>
       </div>
-    </div>
+    </form>
   );
 };
 

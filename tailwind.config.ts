@@ -26,20 +26,16 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#009688', // Teal Green
-					foreground: '#FFFFFF'
+					DEFAULT: 'hsl(var(--primary))',
+					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: '#B2DFDB', // Light Teal
-					foreground: '#333333'
+					DEFAULT: 'hsl(var(--secondary))',
+					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				accent: {
-					DEFAULT: '#004D40', // Deep Blue
-					foreground: '#FFFFFF'
-				},
-				neutral: {
-					light: '#F5F5F5', // Light Gray
-					dark: '#333333',  // Charcoal
+					DEFAULT: 'hsl(var(--accent))',
+					foreground: 'hsl(var(--accent-foreground))'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -69,12 +65,17 @@ export default {
 				}
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				lg: '0',
+				md: '0',
+				sm: '0'
 			},
 			fontFamily: {
 				sans: ['Poppins', 'sans-serif'],
+			},
+			boxShadow: {
+				'neo': '4px 4px 0px 0px hsl(var(--foreground))',
+				'neo-sm': '2px 2px 0px 0px hsl(var(--foreground))',
+				'neo-lg': '6px 6px 0px 0px hsl(var(--foreground))',
 			},
 			keyframes: {
 				'accordion-down': {
