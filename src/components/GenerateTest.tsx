@@ -87,8 +87,6 @@ const GenerateTest: React.FC = () => {
         <TestGenerationForm
           onGenerate={generateTest}
           isGenerating={isGenerating}
-          isEditMode={isEditMode}
-          editTestId={editTestId}
         />
       ) : (
         <TestPreview 

@@ -4,19 +4,13 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTestGeneration } from '@/hooks/useTestGeneration';
 import TestGenerationForm from '@/components/generate/TestGenerationForm';
-import { useAdminCheck } from '@/hooks/useAdminCheck';
 
 const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isAdmin } = useAdminCheck();
   const { isGenerating, generateTest } = useTestGeneration();
 
   const handleGenerate = async (testParams: any) => {
-    if (!user) {
-      navigate('/auth', { state: { from: '/' } });
-      return false;
-    }
     const success = await generateTest(testParams);
     if (success) {
       navigate('/dashboard');
@@ -33,48 +27,37 @@ const Index = () => {
   };
 
   const handleAdminUpload = () => {
-    if (!user) {
-      navigate('/auth', { state: { from: '/admin/upload' } });
-      return;
-    }
-    if (!isAdmin) {
-      return;
-    }
-    navigate('/admin/upload');
+    navigate('/auth', { state: { from: '/admin/upload' } });
   };
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b-2 border-border">
-        <div className="container mx-auto px-4 py-6 flex items-center justify-between max-w-6xl">
+      <header className="border-b-4 border-foreground bg-card">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
           <Button 
             variant="outline" 
             onClick={handleMyTests}
-            className="rounded-full px-8 h-12 border-2 text-base"
+            className="px-6 h-12 border-4 border-foreground text-base font-bold neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all"
           >
             My Tests
           </Button>
           
-          <h1 className="text-3xl font-bold">Testy</h1>
+          <h1 className="text-3xl font-black">Testy</h1>
           
-          {isAdmin ? (
-            <Button 
-              variant="outline" 
-              onClick={handleAdminUpload}
-              className="rounded-full px-8 h-12 border-2 text-base"
-            >
-              Admin upload
-            </Button>
-          ) : (
-            <div className="w-40" />
-          )}
+          <Button 
+            variant="outline" 
+            onClick={handleAdminUpload}
+            className="px-6 h-12 border-4 border-foreground text-base font-bold neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all"
+          >
+            Admin upload
+          </Button>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12 max-w-6xl">
-        <div className="border-2 border-border rounded-3xl p-8 md:p-12 bg-card">
+        <div className="border-4 border-foreground p-8 md:p-12 bg-card neo-shadow">
           <TestGenerationForm 
             onGenerate={handleGenerate}
             isGenerating={isGenerating}
