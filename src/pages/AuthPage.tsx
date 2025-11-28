@@ -15,7 +15,7 @@ const AuthPage: React.FC = () => {
   useEffect(() => {
     const checkAccess = async () => {
       if (user && !loading) {
-        const from = (location.state as any)?.from?.pathname;
+        const from = (location.state as any)?.from;
         
         // If trying to access admin upload, check email
         if (from === '/admin/upload') {
