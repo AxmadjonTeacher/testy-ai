@@ -33,22 +33,22 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b-4 border-foreground bg-card">
+      <header className="border-b-4 border-foreground bg-primary">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
           <Button 
             variant="outline" 
             onClick={handleMyTests}
-            className="px-6 h-12 border-4 border-foreground text-base font-bold neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all"
+            className="h-12 text-base font-black bg-card"
           >
             My Tests
           </Button>
           
-          <h1 className="text-3xl font-black">Testy</h1>
+          <h1 className="text-3xl font-black text-primary-foreground absolute left-1/2 transform -translate-x-1/2">Testy</h1>
           
           <Button 
             variant="outline" 
             onClick={handleAdminUpload}
-            className="px-6 h-12 border-4 border-foreground text-base font-bold neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all"
+            className="h-12 text-base font-black bg-card"
           >
             Admin upload
           </Button>

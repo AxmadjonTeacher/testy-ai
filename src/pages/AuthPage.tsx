@@ -83,9 +83,9 @@ const AuthPage: React.FC = () => {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
           <h1 className="text-3xl font-black">Sign In</h1>
           <Button 
-            variant="outline" 
+            variant="accent" 
             onClick={() => navigate('/')}
-            className="px-6 h-12 border-4 border-foreground text-base font-bold neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all flex items-center gap-2"
+            className="px-6 h-12 text-base font-black flex items-center gap-2"
           >
             <ArrowLeft className="h-5 w-5" />
             Back

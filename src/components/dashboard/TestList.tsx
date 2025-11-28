@@ -104,22 +104,18 @@ const TestList: React.FC<TestListProps> = ({ tests }) => {
             
             <div className="flex gap-2">
               <Button
-                variant="outline"
-                size="sm"
                 onClick={() => handleDelete(test.id)}
                 disabled={deletingId === test.id}
-                className="border-4 border-foreground font-bold neo-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                variant="destructive"
+                className="h-12 text-base font-black"
               >
-                <Trash2 className="h-4 w-4" />
-                Delete
+                {deletingId === test.id ? "Deleting..." : "Delete"}
               </Button>
               <Button
-                variant="default"
-                size="sm"
                 onClick={() => handleDownload(test)}
-                className="border-4 border-foreground font-bold neo-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
+                variant="accent"
+                className="h-12 text-base font-black"
               >
-                <Download className="h-4 w-4" />
                 Download
               </Button>
             </div>

@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 0 0% 85%;
     --foreground: 0 0% 0%;
 
     --card: 0 0% 100%;
@@ -19,17 +19,17 @@
     --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 60 100% 80%;
+    --secondary: 55 100% 55%;
     --secondary-foreground: 0 0% 0%;
 
-    --accent: 280 100% 70%;
-    --accent-foreground: 0 0% 0%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
 
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 40%;
-
-    --destructive: 0 100% 50%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
+
+    --muted: 0 0% 75%;
+    --muted-foreground: 0 0% 35%;
 
     --border: 0 0% 0%;
     --input: 0 0% 0%;
@@ -37,18 +37,18 @@
 
     --radius: 0rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 85%;
     --sidebar-foreground: 0 0% 0%;
     --sidebar-primary: 0 0% 0%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 60 100% 80%;
+    --sidebar-accent: 55 100% 55%;
     --sidebar-accent-foreground: 0 0% 0%;
     --sidebar-border: 0 0% 0%;
     --sidebar-ring: 0 0% 0%;
   }
 
   .dark {
-    --background: 0 0% 98%;
+    --background: 0 0% 85%;
     --foreground: 0 0% 0%;
 
     --card: 0 0% 100%;
@@ -60,26 +60,27 @@
     --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 60 100% 80%;
+    --secondary: 55 100% 55%;
     --secondary-foreground: 0 0% 0%;
 
-    --accent: 280 100% 70%;
-    --accent-foreground: 0 0% 0%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
 
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 40%;
-
-    --destructive: 0 100% 50%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
+
+    --muted: 0 0% 75%;
+    --muted-foreground: 0 0% 35%;
 
     --border: 0 0% 0%;
     --input: 0 0% 0%;
     --ring: 0 0% 0%;
-    --sidebar-background: 0 0% 98%;
+    
+    --sidebar-background: 0 0% 85%;
     --sidebar-foreground: 0 0% 0%;
     --sidebar-primary: 0 0% 0%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 60 100% 80%;
+    --sidebar-accent: 55 100% 55%;
     --sidebar-accent-foreground: 0 0% 0%;
     --sidebar-border: 0 0% 0%;
     --sidebar-ring: 0 0% 0%;
@@ -94,6 +95,9 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Poppins', sans-serif;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 2px, hsl(0 0% 0% / 0.03) 2px, hsl(0 0% 0% / 0.03) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, hsl(0 0% 0% / 0.03) 2px, hsl(0 0% 0% / 0.03) 4px);
   }
 }
 
