@@ -15,6 +15,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({ onGenerate, isG
   const [level, setLevel] = useState('');
   const [teacherName, setTeacherName] = useState('');
   const [grade, setGrade] = useState('');
+  const [numQuestions, setNumQuestions] = useState(15);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [availableLevels, setAvailableLevels] = useState<Array<{value: string, label: string}>>([]);
 
@@ -41,7 +42,7 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({ onGenerate, isG
       level,
       teacherName: teacherName || undefined,
       grade: grade || undefined,
-      numQuestions: 15,
+      numQuestions,
       topics: selectedTopics,
     });
   };
@@ -106,6 +107,22 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({ onGenerate, isG
             <option value="5-6">5-6</option>
             <option value="7-8">7-8</option>
             <option value="9-11">9-11</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="numQuestions" className="font-bold text-base">Number of Questions</Label>
+          <select
+            id="numQuestions"
+            value={numQuestions}
+            onChange={(e) => setNumQuestions(parseInt(e.target.value))}
+            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
+          >
+            <option value="10">10 Questions</option>
+            <option value="15">15 Questions</option>
+            <option value="20">20 Questions</option>
+            <option value="25">25 Questions</option>
+            <option value="30">30 Questions</option>
           </select>
         </div>
       </div>
