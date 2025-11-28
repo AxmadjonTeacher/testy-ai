@@ -22,9 +22,10 @@ interface Test {
 
 interface TestListProps {
   tests: Test[];
+  onTestDeleted?: () => void;
 }
 
-const TestList: React.FC<TestListProps> = ({ tests }) => {
+const TestList: React.FC<TestListProps> = ({ tests, onTestDeleted }) => {
   const [deletingId, setDeletingId] = React.useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
@@ -42,8 +43,8 @@ const TestList: React.FC<TestListProps> = ({ tests }) => {
       toast.dismiss();
       toast.success("Test deleted successfully!");
       
-      // Refresh the page to update the list
-      window.location.reload();
+      // Call the callback to refetch tests
+      onTestDeleted?.();
     } catch (error) {
       toast.dismiss();
       console.error("Error deleting test:", error);

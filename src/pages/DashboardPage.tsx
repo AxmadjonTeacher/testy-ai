@@ -13,7 +13,7 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
 
-  const { data: tests, isLoading } = useQuery({
+  const { data: tests, isLoading, refetch } = useQuery({
     queryKey: ['generated-tests', user?.id],
     queryFn: async () => {
       if (!user) return [];
@@ -64,7 +64,7 @@ const DashboardPage = () => {
               <p className="mt-4 font-bold">Loading...</p>
             </div>
           ) : tests && tests.length > 0 ? (
-            <TestList tests={tests} />
+            <TestList tests={tests} onTestDeleted={() => refetch()} />
           ) : (
             <div className="text-center py-12">
               <p className="text-xl font-bold text-muted-foreground">No tests generated yet</p>
