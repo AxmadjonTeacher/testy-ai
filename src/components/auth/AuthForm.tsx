@@ -64,12 +64,13 @@ const AuthForm: React.FC = () => {
             />
           </div>
 
-          <Button
-            type="submit"
+          <Button 
+            type="submit" 
+            variant="secondary"
+            className="w-full h-12 text-base font-black"
             disabled={loading}
-            className="w-full h-12 text-base font-bold border-4 border-foreground neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all disabled:opacity-50"
           >
-            {loading ? 'Processing...' : isSignUp ? 'Create Account' : 'Sign In'}
+            {loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
           </Button>
         </form>
 

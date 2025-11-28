@@ -71,13 +71,12 @@ const AdminUploadPage = () => {
     <div className="min-h-screen bg-background">
       <header className="border-b-4 border-foreground bg-card">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
-          <h1 className="text-3xl font-black">Admin upload</h1>
+          <h1 className="text-3xl font-black">Admin Upload</h1>
           <Button 
-            variant="outline" 
+            variant="accent" 
             onClick={() => navigate('/')}
-            className="px-6 h-12 border-4 border-foreground text-base font-bold neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all flex items-center gap-2"
+            className="h-12 text-base font-black"
           >
-            <ArrowLeft className="h-5 w-5" />
             Back
           </Button>
         </div>

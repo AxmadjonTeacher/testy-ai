@@ -122,15 +122,14 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({ onGenerate, isG
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <Button
-          type="submit"
-          disabled={isGenerating || !level || selectedTopics.length === 0}
-          className="px-12 h-14 text-lg font-bold border-4 border-foreground neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isGenerating ? 'Generating...' : 'Generate'}
-        </Button>
-      </div>
+      <Button 
+        type="submit" 
+        disabled={!level || selectedTopics.length === 0 || isGenerating}
+        variant="secondary"
+        className="w-full h-14 text-xl font-black"
+      >
+        {isGenerating ? "Generating..." : "Generate"}
+      </Button>
     </form>
   );
 };

@@ -12,7 +12,8 @@ const UploadButton: React.FC<UploadButtonProps> = ({ isUploading, isEditMode = f
   return (
     <Button 
       type="submit" 
-      className="w-full bg-primary hover:bg-primary/90 text-white"
+      variant="accent"
+      className="w-full h-12 text-base font-black"
       disabled={isUploading}
     >
       {isUploading ? (

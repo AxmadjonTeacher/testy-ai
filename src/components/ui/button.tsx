@@ -5,25 +5,23 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-bold transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-4 border-foreground",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-base font-black transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border-4 border-foreground neo-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-neo-sm active:translate-x-2 active:translate-y-2 active:shadow-none",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground neo-shadow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-neo-sm",
-        destructive:
-          "bg-destructive text-destructive-foreground neo-shadow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-neo-sm",
-        outline:
-          "bg-card hover:bg-accent hover:text-accent-foreground neo-shadow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-neo-sm",
-        secondary:
-          "bg-secondary text-secondary-foreground neo-shadow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-neo-sm",
-        ghost: "border-0 shadow-none hover:bg-accent hover:text-accent-foreground",
-        link: "border-0 shadow-none text-primary underline-offset-4 hover:underline",
+        default: "bg-primary text-primary-foreground",
+        destructive: "bg-destructive text-destructive-foreground",
+        outline: "bg-card text-foreground",
+        secondary: "bg-secondary text-secondary-foreground",
+        accent: "bg-accent text-accent-foreground",
+        ghost: "border-0 shadow-none hover:shadow-none hover:bg-muted",
+        link: "border-0 shadow-none hover:shadow-none text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 px-3",
-        lg: "h-11 px-8",
-        icon: "h-10 w-10",
+        default: "h-12 px-6 py-3",
+        sm: "h-9 px-4",
+        lg: "h-14 px-8",
+        icon: "h-12 w-12",
       },
     },
     defaultVariants: {
