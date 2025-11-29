@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Download, Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
+import QuestionSeparatorTool from './QuestionSeparatorTool';
 
 const TextToExcelConverter = () => {
   const [questionsText, setQuestionsText] = useState('');
@@ -136,6 +137,11 @@ const TextToExcelConverter = () => {
 
   return (
     <div className="space-y-6">
+      {/* Separator Tool Button */}
+      <div className="flex justify-end">
+        <QuestionSeparatorTool />
+      </div>
+
       {/* Required Format Info */}
       <div className="border-4 border-foreground bg-muted p-4 neo-shadow">
         <h3 className="font-black text-lg mb-2">Required File Format:</h3>
