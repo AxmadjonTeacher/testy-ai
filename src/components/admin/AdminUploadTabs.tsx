@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminUploadForm from './AdminUploadForm';
 import AdminUploadHistory from './AdminUploadHistory';
+import TextToExcelConverter from './TextToExcelConverter';
 import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import { useUploadHistory } from '@/hooks/useUploadHistory';
 import { useQuestionDelete } from '@/hooks/useQuestionDelete';
@@ -88,6 +89,7 @@ const AdminUploadTabs = () => {
         <Tabs value={activeTab} className="w-full" onValueChange={handleTabChange}>
           <TabsList>
             <TabsTrigger value="upload">{editItemId ? "Edit Questions" : "Upload Questions"}</TabsTrigger>
+            <TabsTrigger value="text-to-excel">Text to Excel</TabsTrigger>
             <TabsTrigger value="history">Upload History</TabsTrigger>
           </TabsList>
           
@@ -99,6 +101,10 @@ const AdminUploadTabs = () => {
               onEditComplete={handleEditComplete}
               onUploadComplete={handleUploadComplete}
             />
+          </TabsContent>
+          
+          <TabsContent value="text-to-excel">
+            <TextToExcelConverter />
           </TabsContent>
           
           <TabsContent value="history">
