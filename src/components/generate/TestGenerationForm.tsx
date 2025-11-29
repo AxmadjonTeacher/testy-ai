@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import TopicSelector from './TopicSelector';
 import { subjects, getLevelsForSubject } from '@/utils/subjectTopics';
 
@@ -52,18 +53,18 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({ onGenerate, isG
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="subject" className="font-bold text-base">Subject</Label>
-          <select
-            id="subject"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
-          >
-            {subjects.map((subj) => (
-              <option key={subj.value} value={subj.value}>
-                {subj.label}
-              </option>
-            ))}
-          </select>
+          <Select value={subject} onValueChange={setSubject}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select subject" />
+            </SelectTrigger>
+            <SelectContent>
+              {subjects.map((subj) => (
+                <SelectItem key={subj.value} value={subj.value}>
+                  {subj.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2">
@@ -80,50 +81,48 @@ const TestGenerationForm: React.FC<TestGenerationFormProps> = ({ onGenerate, isG
 
         <div className="space-y-2">
           <Label htmlFor="level" className="font-bold text-base">Level</Label>
-          <select
-            id="level"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
-          >
-            <option value="">Select level</option>
-            {availableLevels.map((lvl) => (
-              <option key={lvl.value} value={lvl.value}>
-                {lvl.label}
-              </option>
-            ))}
-          </select>
+          <Select value={level} onValueChange={setLevel}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select level" />
+            </SelectTrigger>
+            <SelectContent>
+              {availableLevels.map((lvl) => (
+                <SelectItem key={lvl.value} value={lvl.value}>
+                  {lvl.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="grades" className="font-bold text-base">Grades</Label>
-          <select
-            id="grades"
-            value={grade}
-            onChange={(e) => setGrade(e.target.value)}
-            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
-          >
-            <option value="">Select grade</option>
-            <option value="5-6">5-6</option>
-            <option value="7-8">7-8</option>
-            <option value="9-11">9-11</option>
-          </select>
+          <Select value={grade} onValueChange={setGrade}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select grade" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="5-6">5-6</SelectItem>
+              <SelectItem value="7-8">7-8</SelectItem>
+              <SelectItem value="9-11">9-11</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="numQuestions" className="font-bold text-base">Number of Questions</Label>
-          <select
-            id="numQuestions"
-            value={numQuestions}
-            onChange={(e) => setNumQuestions(parseInt(e.target.value))}
-            className="w-full px-4 py-3 border-4 border-foreground bg-card font-medium neo-shadow focus:translate-x-0.5 focus:translate-y-0.5 focus:shadow-neo-sm transition-all"
-          >
-            <option value="10">10 Questions</option>
-            <option value="15">15 Questions</option>
-            <option value="20">20 Questions</option>
-            <option value="25">25 Questions</option>
-            <option value="30">30 Questions</option>
-          </select>
+          <Select value={numQuestions.toString()} onValueChange={(val) => setNumQuestions(parseInt(val))}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select number of questions" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10 Questions</SelectItem>
+              <SelectItem value="15">15 Questions</SelectItem>
+              <SelectItem value="20">20 Questions</SelectItem>
+              <SelectItem value="25">25 Questions</SelectItem>
+              <SelectItem value="30">30 Questions</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
