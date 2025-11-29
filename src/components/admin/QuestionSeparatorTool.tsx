@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,33 +10,66 @@ const QuestionSeparatorTool = () => {
   const [separatedQuestions, setSeparatedQuestions] = useState('');
   const [separatedOptions, setSeparatedOptions] = useState('');
 
-  const separateQuestionsAndOptions = () => {
+  // Real-time parsing with useEffect
+  useEffect(() => {
     if (!combinedText.trim()) {
-      toast.error('Please paste some text first');
+      setSeparatedQuestions('');
+      setSeparatedOptions('');
       return;
     }
 
     try {
-      const lines = combinedText.split('\n').filter(line => line.trim());
+      const lines = combinedText.split('\n');
       const questions: string[] = [];
       const options: string[] = [];
+      let currentId = '';
 
       lines.forEach(line => {
         const trimmedLine = line.trim();
+        if (!trimmedLine) return;
+
+        // Pattern Recognition: ^(\d+)[.\)]\s*(.*)
+        // Looks for lines starting with a number followed by . or )
+        const questionMatch = trimmedLine.match(/^(\d+)[\.\)]\s*(.+)/);
         
-        // Match pattern: "1. Question text a) option b) option c) option d) option"
-        const match = trimmedLine.match(/^(\d+)\.\s*(.+?)(?=\s*[a-d]\))/i);
-        
-        if (match) {
-          const questionNum = match[1];
-          const questionText = match[2].trim();
+        if (questionMatch) {
+          // This is a Question line
+          currentId = questionMatch[1];
+          const questionText = questionMatch[2].trim();
           
-          // Extract question
-          questions.push(`${questionNum}. ${questionText}`);
+          // Check if this line also contains options
+          const hasOptions = /[a-d]\)/i.test(questionText);
           
-          // Extract options
-          const optionsText = trimmedLine.substring(match[0].length).trim();
-          const optionMatches = optionsText.matchAll(/([a-d])\)\s*([^a-d)]+?)(?=\s*[a-d]\)|$)/gi);
+          if (hasOptions) {
+            // Split question from options
+            const optionStartMatch = questionText.match(/^(.+?)(?=\s*[a-d]\))/i);
+            if (optionStartMatch) {
+              const pureQuestion = optionStartMatch[1].trim();
+              questions.push(`${currentId}. ${pureQuestion}`);
+              
+              // Extract options
+              const optionsText = questionText.substring(optionStartMatch[1].length).trim();
+              const optionMatches = optionsText.matchAll(/([a-d])\)\s*([^a-d)]+?)(?=\s*[a-d]\)|$)/gi);
+              
+              const optionsList: string[] = [];
+              for (const optMatch of optionMatches) {
+                const optionLetter = optMatch[1].toLowerCase();
+                const optionText = optMatch[2].trim();
+                optionsList.push(`${optionLetter}) ${optionText}`);
+              }
+              
+              if (optionsList.length > 0) {
+                options.push(`${currentId}. ${optionsList.join('  ')}`);
+              }
+            }
+          } else {
+            // Pure question line without options
+            questions.push(`${currentId}. ${questionText}`);
+          }
+        } else if (currentId && /[a-d]\)/i.test(trimmedLine)) {
+          // This is an Options line (doesn't start with a number)
+          // Associate it with the last found question ID
+          const optionMatches = trimmedLine.matchAll(/([a-d])\)\s*([^a-d)]+?)(?=\s*[a-d]\)|$)/gi);
           
           const optionsList: string[] = [];
           for (const optMatch of optionMatches) {
@@ -46,24 +79,17 @@ const QuestionSeparatorTool = () => {
           }
           
           if (optionsList.length > 0) {
-            options.push(`${questionNum}. ${optionsList.join('  ')}`);
+            options.push(`${currentId}. ${optionsList.join('  ')}`);
           }
         }
       });
 
-      if (questions.length === 0) {
-        toast.error('No valid questions found. Please check the format.');
-        return;
-      }
-
       setSeparatedQuestions(questions.join('\n'));
       setSeparatedOptions(options.join('\n'));
-      toast.success(`Separated ${questions.length} questions!`);
     } catch (error) {
-      console.error('Error separating text:', error);
-      toast.error('Failed to separate text. Please check the format.');
+      console.error('Error parsing text:', error);
     }
-  };
+  }, [combinedText]); // Reactive parsing - happens automatically when input changes
 
   const copyToClipboard = (text: string, label: string) => {
     if (!text) {
@@ -90,9 +116,9 @@ const QuestionSeparatorTool = () => {
       </DialogTrigger>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto border-4 border-foreground bg-card neo-shadow">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-black">Separate Tool</DialogTitle>
-          <p className="text-sm font-bold text-muted-foreground mt-2">
-            This tool can separate text into questions and options sections with corresponding numbers.
+          <DialogTitle className="text-2xl font-black">SEPARATE TOOL</DialogTitle>
+          <p className="text-sm font-bold text-muted-foreground mt-1">
+            SPLIT MIXED TEXT INTO SECTIONS
           </p>
         </DialogHeader>
 
@@ -100,6 +126,9 @@ const QuestionSeparatorTool = () => {
           {/* Input Section */}
           <div className="border-4 border-foreground bg-background p-4 neo-shadow">
             <h3 className="font-black text-lg mb-3">Paste the questions and options here:</h3>
+            <p className="text-sm font-bold text-muted-foreground mb-2">
+              The text will be separated automatically as you type or paste.
+            </p>
             <Textarea
               value={combinedText}
               onChange={(e) => setCombinedText(e.target.value)}
@@ -107,14 +136,6 @@ const QuestionSeparatorTool = () => {
               className="min-h-[200px] font-mono text-sm"
             />
             <div className="flex gap-3 mt-4">
-              <Button
-                onClick={separateQuestionsAndOptions}
-                variant="accent"
-                className="font-black"
-              >
-                <Scissors className="h-4 w-4 mr-2" />
-                Separate Text
-              </Button>
               <Button
                 onClick={resetTool}
                 variant="outline"
@@ -175,7 +196,7 @@ const QuestionSeparatorTool = () => {
             <h4 className="font-black mb-2">How to use:</h4>
             <ul className="text-sm font-bold space-y-1 list-disc list-inside">
               <li>Paste questions with options in the format: "1. Question text a) option b) option c) option d) option"</li>
-              <li>Click "Separate Text" to split into questions and options</li>
+              <li>The tool will automatically separate them in real-time</li>
               <li>Copy each section separately using the copy buttons</li>
               <li>Paste them into the main Text to Excel converter above</li>
             </ul>
