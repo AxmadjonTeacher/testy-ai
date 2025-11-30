@@ -47,14 +47,15 @@ const QuestionSeparatorTool = () => {
               const pureQuestion = optionStartMatch[1].trim();
               questions.push(`${currentId}. ${pureQuestion}`);
               
-              // Extract options
+              // Extract options using improved regex
               const optionsText = questionText.substring(optionStartMatch[1].length).trim();
-              const optionMatches = optionsText.matchAll(/([a-d])\)\s*([^a-d)]+?)(?=\s*[a-d]\)|$)/gi);
-              
               const optionsList: string[] = [];
-              for (const optMatch of optionMatches) {
-                const optionLetter = optMatch[1].toLowerCase();
-                const optionText = optMatch[2].trim();
+              const optionRegex = /([a-d])\)\s*([^)]+?)(?=\s+[a-d]\)|$)/gi;
+              let match;
+              
+              while ((match = optionRegex.exec(optionsText)) !== null) {
+                const optionLetter = match[1].toLowerCase();
+                const optionText = match[2].trim();
                 optionsList.push(`${optionLetter}) ${optionText}`);
               }
               
@@ -69,12 +70,13 @@ const QuestionSeparatorTool = () => {
         } else if (currentId && /[a-d]\)/i.test(trimmedLine)) {
           // This is an Options line (doesn't start with a number)
           // Associate it with the last found question ID
-          const optionMatches = trimmedLine.matchAll(/([a-d])\)\s*([^a-d)]+?)(?=\s*[a-d]\)|$)/gi);
-          
           const optionsList: string[] = [];
-          for (const optMatch of optionMatches) {
-            const optionLetter = optMatch[1].toLowerCase();
-            const optionText = optMatch[2].trim();
+          const optionRegex = /([a-d])\)\s*([^)]+?)(?=\s+[a-d]\)|$)/gi;
+          let match;
+          
+          while ((match = optionRegex.exec(trimmedLine)) !== null) {
+            const optionLetter = match[1].toLowerCase();
+            const optionText = match[2].trim();
             optionsList.push(`${optionLetter}) ${optionText}`);
           }
           
