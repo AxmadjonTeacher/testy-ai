@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTestGeneration } from '@/hooks/useTestGeneration';
 import TestGenerationForm from '@/components/generate/TestGenerationForm';
-import testyLogoFull from '@/assets/testy-logo-full.png';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -44,11 +43,12 @@ const Index = () => {
             My Tests
           </Button>
           
-          <img 
-            src={testyLogoFull} 
-            alt="Testy" 
-            className="h-12 absolute left-1/2 transform -translate-x-1/2"
-          />
+          <Button 
+            variant="outline" 
+            className="h-12 text-xl font-black bg-[#d4ff00] text-black border-4 border-black absolute left-1/2 transform -translate-x-1/2 px-8 hover:bg-[#c5f000] pointer-events-none"
+          >
+            TESTY
+          </Button>
           
           <Button 
             variant="outline" 
