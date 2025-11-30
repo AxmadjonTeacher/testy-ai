@@ -33,7 +33,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b-4 border-foreground bg-primary">
+      <header className="border-b-4 border-foreground bg-card">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
           <Button 
             variant="outline" 
@@ -43,7 +43,7 @@ const Index = () => {
             My Tests
           </Button>
           
-          <h1 className="text-3xl font-black text-primary-foreground absolute left-1/2 transform -translate-x-1/2">Testy</h1>
+          <h1 className="text-3xl font-black text-foreground absolute left-1/2 transform -translate-x-1/2">Testy</h1>
           
           <Button 
             variant="outline" 
