@@ -41,12 +41,13 @@ const TextToExcelConverter = () => {
       // Remove question number if present
       const cleanLine = line.replace(/^\d+\.\s*/, '');
       
-      // Extract options (a), b), c), d))
+      // Extract options (a), b), c), d)) using improved regex
       const options: string[] = [];
-      const optionMatches = cleanLine.matchAll(/[a-d]\)\s*([^a-d)]+?)(?=\s*[a-d]\)|$)/gi);
+      const optionRegex = /([a-d])\)\s*([^)]+?)(?=\s+[a-d]\)|$)/gi;
+      let match;
       
-      for (const match of optionMatches) {
-        options.push(match[1].trim());
+      while ((match = optionRegex.exec(cleanLine)) !== null) {
+        options.push(match[2].trim());
       }
       
       if (options.length === 4) {
