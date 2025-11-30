@@ -144,37 +144,37 @@ const TextToExcelConverter = () => {
       </div>
 
       {/* Required Format Info */}
-      <div className="border-4 border-foreground bg-muted p-4 neo-shadow">
-        <h3 className="font-black text-lg mb-2">Required File Format:</h3>
-        <p className="text-sm font-bold mb-2">Your file should contain these columns:</p>
-        <div className="bg-background border-2 border-foreground p-3 font-mono text-xs overflow-x-auto">
+      <div className="bg-muted/50 p-6">
+        <h3 className="font-black text-xl mb-3">Required File Format:</h3>
+        <p className="text-base font-bold mb-4">Your file should contain these columns:</p>
+        <div className="border-4 border-foreground bg-background overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="bg-foreground text-background">
-                <th className="px-2 py-1 text-left">Question</th>
-                <th className="px-2 py-1 text-left">A</th>
-                <th className="px-2 py-1 text-left">B</th>
-                <th className="px-2 py-1 text-left">C</th>
-                <th className="px-2 py-1 text-left">D</th>
-                <th className="px-2 py-1 text-left">Correct Answer</th>
+              <tr className="bg-black text-white">
+                <th className="px-4 py-3 text-left font-mono font-bold">Question</th>
+                <th className="px-4 py-3 text-left font-mono font-bold">A</th>
+                <th className="px-4 py-3 text-left font-mono font-bold">B</th>
+                <th className="px-4 py-3 text-left font-mono font-bold">C</th>
+                <th className="px-4 py-3 text-left font-mono font-bold">D</th>
+                <th className="px-4 py-3 text-left font-mono font-bold">Correct Answer</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td className="px-2 py-1 border-t border-foreground">She ____ to school every day.</td>
-                <td className="px-2 py-1 border-t border-foreground">go</td>
-                <td className="px-2 py-1 border-t border-foreground">goes</td>
-                <td className="px-2 py-1 border-t border-foreground">going</td>
-                <td className="px-2 py-1 border-t border-foreground">gone</td>
-                <td className="px-2 py-1 border-t border-foreground">B</td>
+            <tbody className="font-mono text-sm">
+              <tr className="border-b-2 border-foreground">
+                <td className="px-4 py-3">She ____ to school every day.</td>
+                <td className="px-4 py-3">go</td>
+                <td className="px-4 py-3">goes</td>
+                <td className="px-4 py-3">going</td>
+                <td className="px-4 py-3">gone</td>
+                <td className="px-4 py-3">B</td>
               </tr>
               <tr>
-                <td className="px-2 py-1 border-t border-foreground">This is ____ apple.</td>
-                <td className="px-2 py-1 border-t border-foreground">a</td>
-                <td className="px-2 py-1 border-t border-foreground">an</td>
-                <td className="px-2 py-1 border-t border-foreground">the</td>
-                <td className="px-2 py-1 border-t border-foreground">no</td>
-                <td className="px-2 py-1 border-t border-foreground">B</td>
+                <td className="px-4 py-3">This is ____ apple.</td>
+                <td className="px-4 py-3">a</td>
+                <td className="px-4 py-3">an</td>
+                <td className="px-4 py-3">the</td>
+                <td className="px-4 py-3">no</td>
+                <td className="px-4 py-3">B</td>
               </tr>
             </tbody>
           </table>
