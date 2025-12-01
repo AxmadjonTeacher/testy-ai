@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import HeaderLogo from '../header/HeaderLogo';
 import { useAuth } from '@/contexts/AuthContext';
+import LanguageSwitcher from '../header/LanguageSwitcher';
 
 const LandingHeader = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const LandingHeader = () => {
               >
                 My Tests
               </Button>
+              <LanguageSwitcher />
               <Button 
                 onClick={() => navigate('/generate')}
                 className="h-10 text-base font-black bg-accent text-accent-foreground border-4 border-foreground hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
@@ -39,6 +41,7 @@ const LandingHeader = () => {
               >
                 Log in
               </Button>
+              <LanguageSwitcher />
               <Button 
                 onClick={() => navigate('/generate')}
                 className="h-10 text-base font-black bg-accent text-accent-foreground border-4 border-foreground hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
