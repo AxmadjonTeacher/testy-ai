@@ -47,7 +47,7 @@ const DashboardPage = () => {
           
           <Button 
             variant="accent" 
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/admin/upload')}
             className="h-12 text-base font-black"
           >
             Admin upload

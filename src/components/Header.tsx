@@ -4,7 +4,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { useAdminCheck } from '@/hooks/useAdminCheck';
 import HeaderLogo from './header/HeaderLogo';
-import MobileMenuButton from './header/MobileMenuButton';
 import DesktopNavigation from './header/DesktopNavigation';
 import UserActions from './header/UserActions';
 import MobileNavigation from './header/MobileNavigation';
@@ -15,7 +14,6 @@ const Header = () => {
   const { user, signOut } = useAuth();
   const { isAdmin } = useAdminCheck();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSignIn = () => {
     navigate('/auth');
@@ -43,17 +41,13 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo and Mobile Menu */}
+          {/* Logo */}
           <motion.div 
             className="flex items-center gap-3 flex-shrink-0"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <MobileMenuButton 
-              isMobileMenuOpen={isMobileMenuOpen}
-              setIsMobileMenuOpen={setIsMobileMenuOpen}
-            />
             <HeaderLogo />
           </motion.div>
           
@@ -77,8 +71,8 @@ const Header = () => {
 
         {/* Mobile Navigation Menu */}
         <MobileNavigation 
-          isMobileMenuOpen={isMobileMenuOpen}
-          setIsMobileMenuOpen={setIsMobileMenuOpen}
+          isMobileMenuOpen={false}
+          setIsMobileMenuOpen={() => {}}
           isAdmin={isAdmin}
           user={user}
           handleSignIn={handleSignIn}
