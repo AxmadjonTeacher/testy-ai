@@ -98,15 +98,6 @@ const UserActions = ({
               {t('nav.signIn')}
             </Button>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-            <Button 
-              className="bg-primary hover:bg-primary/90 text-white font-medium rounded-full px-6 py-2 shadow-sm flex items-center gap-2" 
-              onClick={handleContact}
-            >
-              <Plus className="h-4 w-4" />
-              {t('nav.contact')}
-            </Button>
-          </motion.div>
         </div>
       )}
     </motion.div>
