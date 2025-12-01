@@ -28,21 +28,21 @@ const LanguageSwitcher = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="ghost" 
+          variant="outline" 
           size="sm"
-          className="flex items-center gap-2 px-3 py-2 hover:bg-primary/5 transition-colors"
+          className="h-10 px-3 font-black bg-card border-4 border-foreground hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
         >
-          <Globe className="h-4 w-4" />
-          <span className="text-sm font-medium">{currentLanguage.flag}</span>
+          <Globe className="h-4 w-4 mr-2" />
+          <span className="text-sm font-black">{currentLanguage.flag}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40 bg-white border border-gray-200 shadow-lg">
+      <DropdownMenuContent align="end" className="w-40 bg-card border-4 border-foreground">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
-            className={`flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-primary/5 ${
-              i18n.language === language.code ? 'bg-primary/10' : ''
+            className={`flex items-center gap-2 px-3 py-2 cursor-pointer font-bold hover:bg-accent hover:text-accent-foreground ${
+              i18n.language === language.code ? 'bg-secondary' : ''
             }`}
           >
             <span>{language.flag}</span>
