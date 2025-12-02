@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Zap, Layers, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import LandingHeader from '@/components/landing/LandingHeader';
+import ContactSection from '@/components/landing/ContactSection';
+import LandingFooter from '@/components/landing/LandingFooter';
 const LandingPage = () => {
   const navigate = useNavigate();
   const features = [{
@@ -123,6 +125,9 @@ const LandingPage = () => {
           </Button>
         </motion.div>
       </section>
+
+      <ContactSection />
+      <LandingFooter />
     </div>;
 };
 export default LandingPage;
