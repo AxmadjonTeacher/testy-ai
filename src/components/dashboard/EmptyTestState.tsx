@@ -2,11 +2,9 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 const EmptyTestState: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   
   return (
     <div className="text-center py-12">
