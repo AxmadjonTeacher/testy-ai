@@ -20,7 +20,7 @@ const LandingFooter: React.FC = () => {
           transition={{ duration: 0.5 }}
         >
           <p className="text-sm font-mono text-muted-foreground">
-            © {new Date().getFullYear()} TestGen. All rights reserved.
+            © {new Date().getFullYear()} Testy. All rights reserved.
           </p>
           
           <button
