@@ -57,11 +57,6 @@ const DesktopNavigation = ({ isAdmin }: DesktopNavigationProps) => {
             </Link>
           </motion.div>
         )}
-        <motion.div variants={itemVariants}>
-          <Link to="/privacy-policy#data-retention" className="px-4 py-2 text-neutral-dark hover:text-primary transition-colors rounded-full hover:bg-primary/5 font-medium text-sm">
-            {t('nav.help')}
-          </Link>
-        </motion.div>
       </div>
     </motion.nav>
   );
