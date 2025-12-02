@@ -5,6 +5,8 @@ import KeyFeaturesSection from '@/components/landing/KeyFeaturesSection';
 import HowItWorksSection from '@/components/landing/HowItWorksSection';
 import FAQSection from '@/components/landing/FAQSection';
 import ReadyToTrySection from '@/components/landing/ReadyToTrySection';
+import ContactSection from '@/components/landing/ContactSection';
+import LandingFooter from '@/components/landing/LandingFooter';
 import AdminRequestForm from '@/components/AdminRequestForm';
 
 const LandingPage: React.FC = () => {
@@ -16,6 +18,8 @@ const LandingPage: React.FC = () => {
       <FAQSection />
       <ReadyToTrySection />
       <AdminRequestForm />
+      <ContactSection />
+      <LandingFooter />
     </div>
   );
 };
