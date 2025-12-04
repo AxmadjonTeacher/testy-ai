@@ -41,9 +41,9 @@ export function createTestInfoParagraph(level: string, grade?: string, teacher?:
 }
 
 /**
- * Creates the student information fields, with improved underline lengths and spacing
+ * Creates the student information fields with date at the end
  */
-export function createStudentInfoParagraph(): Paragraph {
+export function createStudentInfoParagraph(dateString: string): Paragraph {
   return new Paragraph({
     children: [
       new TextRun({
@@ -62,6 +62,10 @@ export function createStudentInfoParagraph(): Paragraph {
         text: "_".repeat(5),
         ...textStyles.normal,
       }),
+      new TextRun({
+        text: "    " + dateString,
+        ...textStyles.bold,
+      }),
     ],
     spacing: {
       after: spacingConfig.afterStudentInfo,
@@ -69,20 +73,4 @@ export function createStudentInfoParagraph(): Paragraph {
   });
 }
 
-/**
- * Creates the instructions paragraph
- */
-export function createInstructionsParagraph(): Paragraph {
-  return new Paragraph({
-    children: [
-      new TextRun({
-        text: "Instructions: Answer all questions by selecting the correct option.",
-        ...textStyles.bold,
-      }),
-    ],
-    spacing: {
-      after: spacingConfig.afterInstructions,
-    },
-  });
-}
 

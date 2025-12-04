@@ -1,6 +1,6 @@
 
-import { Paragraph, ImageRun, AlignmentType, TextRun } from 'docx';
-import { fetchImageData, getNextSaturdayFormatted } from '../documentUtils';
+import { Paragraph, ImageRun, AlignmentType } from 'docx';
+import { fetchImageData } from '../documentUtils';
 import { logoConfig } from '../documentConfig';
 
 /**
@@ -36,33 +36,13 @@ export async function createLogoHeader(): Promise<Paragraph> {
 }
 
 /**
- * Creates a professional header with school name and next Saturday date
+ * Creates a professional header with school logo
  */
 export async function createEnhancedHeader(): Promise<Paragraph[]> {
   const paragraphs: Paragraph[] = [];
   
   // Logo paragraph
   paragraphs.push(await createLogoHeader());
-  
-  // Date paragraph - next Saturday
-  const nextSaturday = getNextSaturdayFormatted();
-  paragraphs.push(
-    new Paragraph({
-      alignment: AlignmentType.CENTER,
-      children: [
-        new TextRun({
-          text: nextSaturday,
-          bold: true,
-          size: 24, // 12pt
-          font: "Times New Roman",
-        }),
-      ],
-      spacing: {
-        before: 120,
-        after: 240,
-      },
-    })
-  );
   
   return paragraphs;
 }
