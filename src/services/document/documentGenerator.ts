@@ -6,12 +6,11 @@ import {
   createEnhancedHeader,
   createTestInfoParagraph,
   createStudentInfoParagraph,
-  createInstructionsParagraph,
   createQuestionParagraph,
   createAnswerKeySection,
   createAnswerSheetSection
 } from './documentComponents';
-import { fetchImageData } from './documentUtils';
+import { getNextSaturdayFormatted } from './documentUtils';
 import type { TestExportData, Question } from '../documentTypes';
 
 /**
@@ -30,11 +29,9 @@ export const generateWordDocument = async (testData: TestExportData): Promise<Bl
   // Add test information
   documentChildren.push(createTestInfoParagraph(level, grade || null, teacher || null));
   
-  // Add student information fields
-  documentChildren.push(createStudentInfoParagraph());
-  
-  // Add instructions
-  documentChildren.push(createInstructionsParagraph());
+  // Add student information fields with date
+  const nextSaturday = getNextSaturdayFormatted();
+  documentChildren.push(createStudentInfoParagraph(nextSaturday));
   
   // Track question counter for numbering
   let questionCounter = 0;
